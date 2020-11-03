@@ -1,9 +1,12 @@
-﻿using Assets.Object;
+﻿using Assets.Constant;
+using Assets.Object;
 using Assets.Pool;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.System
 {
@@ -11,26 +14,43 @@ namespace Assets.System
     {
         private CancellationTokenSource tokenSource;
 
+        public WayType wayType;
         public float tileSize;
         public TileObject tilePrefab;
         public HandObject hand;
         public Vector2Int mapSize;
         public Transform map;
         public Sprite[] tiles;
-        public Dictionary<string, Sprite> tileData;
+        public Dictionary<WayType, Sprite> tileData;
         public TileObject candidateTile;
 
         private void Awake()
         {
+            wayType = WayType.Count;
             ObjectPool.tilePrefab = tilePrefab;
 
             tokenSource = new CancellationTokenSource();
-            tileData = new Dictionary<string, Sprite>();
+            tileData = new Dictionary<WayType, Sprite>();
             for (int i = 0; i < tiles.Length; i++)
             {
-                tileData.Add(tiles[i].name, tiles[i]);
+                tileData.Add((WayType)Enum.Parse(typeof(WayType), tiles[i].name), tiles[i]);
             }
 
+            MakeMap();
+        }
+
+        private async void Start()
+        {
+            await PhaseState.UpdateLoopAsync(this, tokenSource.Token);
+        }
+
+        private void OnApplicationQuit()
+        {
+            tokenSource.Cancel();
+        }
+
+        private void MakeMap()
+        {
             if (mapSize == Vector2.zero)
             {
                 mapSize = new Vector2Int(3, 3);
@@ -43,18 +63,9 @@ namespace Assets.System
                 {
                     var tile = Instantiate(tilePrefab, map);
                     tile.transform.localPosition = new Vector3(x * tileSize, y * tileSize, 0);
+                    tile.onClickMap += BuildTile;
                 }
             }
-        }
-
-        private async void Start()
-        {
-            await PhaseState.UpdateLoopAsync(this, tokenSource.Token);
-        }
-
-        private void OnApplicationQuit()
-        {
-            tokenSource.Cancel();
         }
 
         internal async Task Draw()
@@ -75,10 +86,30 @@ namespace Assets.System
         private void MakeTile()
         {
             var newTile = ObjectPool.GetTile();
-            int randomIndex = Random.Range(0, tiles.Length - 1);
-            newTile.SetSprite(tileData[tiles[randomIndex].name]);
-            newTile.onClick += ClickHand;
+            WayType genType = WayType.Count;
+            if (wayType == WayType.Count)
+            {
+                int randomIndex = Random.Range(1, (int)WayType.Count);
+                Debug.Log(randomIndex);
+                genType = (WayType)randomIndex;
+            }
+            newTile.Ready(tileData[genType]);
+            newTile.onClickHand += ClickHand;
             hand.Push(newTile);
+        }
+
+        private void BuildTile(TileObject clickedTile)
+        {
+            if (!ReferenceEquals(null, candidateTile))
+            {
+                ObjectPool.Return(candidateTile);
+                clickedTile.Build(candidateTile);
+            }
+            else
+            {
+                candidateTile.Unnominate();
+                candidateTile = null;
+            }
         }
 
         private void ClickHand(TileObject clickedTile)
@@ -103,6 +134,27 @@ namespace Assets.System
         {
             candidateTile = null;
             hand.ResetHand();
+        }
+
+        public void OnClickRotateTile()
+        {
+            if (!ReferenceEquals(null, candidateTile))
+            {
+                candidateTile.Rotate();
+            }
+        }
+
+        public void OnClickFlipTile()
+        {
+            if (!ReferenceEquals(null, candidateTile))
+            {
+                candidateTile.Flip();
+            }
+        }
+
+        public void OnClickConfirm()
+        {
+
         }
     }
 }

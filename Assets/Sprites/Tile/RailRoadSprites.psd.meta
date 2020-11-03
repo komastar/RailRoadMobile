@@ -16,7 +16,7 @@ TextureImporter:
     second: Rail_X
   - first:
       213: -8813619295219183997
-    second: RoadI
+    second: Road_I
   - first:
       213: 2805504811659910864
     second: Road_L
@@ -34,10 +34,10 @@ TextureImporter:
     second: RailToRoad_L
   - first:
       213: -2887342592114376661
-    second: Road_T_to_Rail_I
+    second: Road_T_To_Rail_I
   - first:
       213: -249311207493857784
-    second: Rail_T_to_Road_I
+    second: Rail_T_To_Road_I
   - first:
       213: -774169716170458233
     second: Road_L_Rail_L
@@ -46,7 +46,7 @@ TextureImporter:
     second: RoadToRail_X
   - first:
       213: -5414672790974005153
-    second: RoadAndRail_X
+    second: Road_And_Rail_X
   - first:
       213: -5914846877651828911
     second: Empty
@@ -231,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RoadI
+      name: Road_I
       rect:
         serializedVersion: 2
         x: 0
@@ -357,7 +357,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_T_to_Rail_I
+      name: Road_T_To_Rail_I
       rect:
         serializedVersion: 2
         x: 64
@@ -378,7 +378,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rail_T_to_Road_I
+      name: Rail_T_To_Road_I
       rect:
         serializedVersion: 2
         x: 96
@@ -441,7 +441,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RoadAndRail_X
+      name: Road_And_Rail_X
       rect:
         serializedVersion: 2
         x: 64
