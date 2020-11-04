@@ -47,6 +47,16 @@
         Road_T_To_Rail_I,
         Road_X,
         RoadToRail_X,
-        Count
+        Count,
+        Road_Start,
+        Rail_Start
+    }
+
+    public enum Direction
+    {
+        Up = 0,
+        Left,
+        Down,
+        Right
     }
 }

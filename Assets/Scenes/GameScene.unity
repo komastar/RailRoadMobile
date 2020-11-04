@@ -944,29 +944,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wayType: 0
-  tileSize: 1
   tilePrefab: {fileID: 5884346720186541721, guid: 3d927d60c95839140aa20a6f8ab194fa,
     type: 3}
   hand: {fileID: 707935288}
-  mapSize: {x: 3, y: 3}
-  map: {fileID: 1601235460}
-  tiles:
-  - {fileID: 5329680913271069129, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -9038896463502814307, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: 5864254196683579059, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: 593562404436089010, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -8813619295219183997, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: 2805504811659910864, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: 3777142178542968667, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -5297905299508318636, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -2974261333422144903, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -5379521804373226859, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -2887342592114376661, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -249311207493857784, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -774169716170458233, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: 3054373893705948861, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -5414672790974005153, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
-  - {fileID: -5914846877651828911, guid: b7ddbc99b1a7b674087500bd87a49674, type: 3}
+  map: {fileID: 1601235461}
   candidateTile: {fileID: 0}
 --- !u!1 &1430911740
 GameObject:
@@ -1185,6 +1166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1601235460}
+  - component: {fileID: 1601235461}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -1206,6 +1188,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1601235461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601235459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2ee3519d38a924eb57c959b2656e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSize: 1
+  mapSize: {x: 0, y: 0}
 --- !u!1 &1643039768
 GameObject:
   m_ObjectHideFlags: 0

@@ -83,7 +83,7 @@ namespace Assets.System
 
         public override async Task<PhaseState> UpdateStateAsync(StageController stage)
         {
-            await Task.Delay(500);
+            await Task.Delay(100);
 
             return statePool[Constant.PhaseState.Draw];
         }
@@ -131,7 +131,6 @@ namespace Assets.System
 
                 return statePool[Constant.PhaseState.End];
             }
-
             return statePool[Constant.PhaseState.Build];
         }
     }
@@ -151,7 +150,7 @@ namespace Assets.System
         public override async Task<PhaseState> UpdateStateAsync(StageController stage)
         {
             await Task.Yield();
-            await Task.Delay(1000);
+            await Task.Delay(500);
 
             return statePool[Constant.PhaseState.Ready];
         }

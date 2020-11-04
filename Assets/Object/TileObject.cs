@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using System;
 using Assets.Constant;
+using Assets.Manager;
 
 namespace Assets.Object
 {
@@ -9,20 +10,20 @@ namespace Assets.Object
     {
         public int directionIndex;
 
+        public WayObject way;
         public SpriteRenderer tileRenderer;
         public SpriteRenderer wayRenderer;
         public Action<TileObject> onClickHand;
         public Action<TileObject> onClickMap;
         public Action<TileObject> onClickBuild;
+        public Vector2Int gridPos;
 
         public TileState state;
 
         #region Unity Methods
         private void Awake()
         {
-            directionIndex = 0;
-            state = TileState.Empty;
-            wayRenderer.sprite = null;
+            Empty();
         }
 
         private void OnDisable()
@@ -55,21 +56,35 @@ namespace Assets.Object
         #endregion
 
         #region Custom Methods
-        internal void Ready(Sprite sprite)
+        internal void Empty()
+        {
+            directionIndex = 0;
+            state = TileState.Empty;
+            wayRenderer.sprite = null;
+        }
+
+        internal void Ready(WayType wayType)
         {
             onClickMap = null;
             state = TileState.Ready;
-            wayRenderer.sprite = sprite;
-            name = sprite.name;
+            wayRenderer.sprite = SpriteManager.Get().GetWaySprite(wayType);
+            name = wayType.ToString();
+            way.Setup(wayType);
         }
 
         internal void Build(TileObject tile)
         {
+            name = tile.name;
             onClickHand = null;
             state = TileState.Build;
             wayRenderer.sprite = tile.GetSprite();
             directionIndex = tile.directionIndex;
             UpdateRotation();
+            way.wayType = tile.way.wayType;
+            for (int i = 0; i < 4; i++)
+            {
+                way.joints[i].jointType = tile.way.joints[(i + directionIndex) % 4].jointType;
+            }
         }
 
         internal void Fix()
@@ -93,9 +108,9 @@ namespace Assets.Object
             return wayRenderer.sprite;
         }
 
-        internal void Rotate()
+        internal void Rotate(int jump = 1)
         {
-            directionIndex++;
+            directionIndex += jump;
             directionIndex %= 4;
             UpdateRotation();
         }
@@ -111,6 +126,52 @@ namespace Assets.Object
             Vector3 scale = wayRenderer.transform.localScale;
             scale.x *= -1f;
             wayRenderer.transform.localScale = scale;
+        }
+
+        internal bool IsBuildable(TileObject candidate, MapObject map)
+        {
+            int missMatchCount = 0;
+            int emptyCount = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                int dirIndex = (i + candidate.directionIndex) % 4;
+                var joint = candidate.way.joints[i];
+                if (joint.jointType != JointType.None)
+                {
+                    var neighbor = map.GetNeighborTile(gridPos, dirIndex);
+                    if (neighbor != null)
+                    {
+                        if (neighbor.way.wayType == WayType.Empty)
+                        {
+                            emptyCount++;
+                        }
+                        else
+                        {
+                            var neighborType = neighbor.GetJointByDirection((dirIndex + 2) % 4).jointType;
+                            if (joint.jointType != neighborType)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                //  neighborType == jointType : pass
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (emptyCount == 4)
+            {
+                return false;
+            }
+
+            return missMatchCount == 0;
+        }
+
+        internal JointObject GetJointByDirection(int dirIndex)
+        {
+            return way.joints[dirIndex];
         }
         #endregion
     }

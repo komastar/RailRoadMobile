@@ -1,4 +1,5 @@
 ﻿using Assets.Constant;
+using Assets.Manager;
 using Assets.Object;
 using Assets.Pool;
 using System;
@@ -15,28 +16,23 @@ namespace Assets.System
         private CancellationTokenSource tokenSource;
 
         public WayType wayType;
-        public float tileSize;
+
         public TileObject tilePrefab;
         public HandObject hand;
-        public Vector2Int mapSize;
-        public Transform map;
-        public Sprite[] tiles;
-        public Dictionary<WayType, Sprite> tileData;
+        public MapObject map;
+
         public TileObject candidateTile;
 
         private void Awake()
         {
+            SpriteManager.Get().Init();
+
             wayType = WayType.Count;
             ObjectPool.tilePrefab = tilePrefab;
 
             tokenSource = new CancellationTokenSource();
-            tileData = new Dictionary<WayType, Sprite>();
-            for (int i = 0; i < tiles.Length; i++)
-            {
-                tileData.Add((WayType)Enum.Parse(typeof(WayType), tiles[i].name), tiles[i]);
-            }
 
-            MakeMap();
+            map.MakeMap(BuildTile);
         }
 
         private async void Start()
@@ -49,36 +45,17 @@ namespace Assets.System
             tokenSource.Cancel();
         }
 
-        private void MakeMap()
-        {
-            if (mapSize == Vector2.zero)
-            {
-                mapSize = new Vector2Int(3, 3);
-            }
-
-            map.position = new Vector3(map.position.x - (mapSize.x * 0.5f) + tileSize * 0.5f, map.position.y - (mapSize.y * 0.5f) + tileSize * 0.5f);
-            for (int y = 0; y < mapSize.y; y++)
-            {
-                for (int x = 0; x < mapSize.x; x++)
-                {
-                    var tile = Instantiate(tilePrefab, map);
-                    tile.transform.localPosition = new Vector3(x * tileSize, y * tileSize, 0);
-                    tile.onClickMap += BuildTile;
-                }
-            }
-        }
-
         internal async Task Draw()
         {
             hand.ReadyHand();
 
             for (int i = 0; i < hand.handTransform.Length; i++)
             {
-                if (!tokenSource.IsCancellationRequested)
+                if (!tokenSource.Token.IsCancellationRequested)
                 {
                     MakeTile();
 
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                 }
             }
         }
@@ -86,14 +63,13 @@ namespace Assets.System
         private void MakeTile()
         {
             var newTile = ObjectPool.GetTile();
-            WayType genType = WayType.Count;
-            if (wayType == WayType.Count)
+            WayType genType = wayType;
+            if (genType == WayType.Count)
             {
                 int randomIndex = Random.Range(1, (int)WayType.Count);
-                Debug.Log(randomIndex);
                 genType = (WayType)randomIndex;
             }
-            newTile.Ready(tileData[genType]);
+            newTile.Ready(genType);
             newTile.onClickHand += ClickHand;
             hand.Push(newTile);
         }
@@ -102,8 +78,14 @@ namespace Assets.System
         {
             if (!ReferenceEquals(null, candidateTile))
             {
-                ObjectPool.Return(candidateTile);
-                clickedTile.Build(candidateTile);
+                if (map.IsBuildable(clickedTile))
+                {
+                    if (clickedTile.IsBuildable(candidateTile, map))
+                    {
+                        clickedTile.Build(candidateTile);
+                        ObjectPool.Return(candidateTile);
+                    }
+                }
             }
             else
             {
