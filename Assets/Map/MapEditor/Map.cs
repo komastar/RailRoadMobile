@@ -74,8 +74,40 @@ namespace Assets.Map.MapEditor
                     var newNode = Instantiate(nodePrefab, transform);
                     newNode.name = "EmptyNode";
                     newNode.transform.localPosition = new Vector3(x * nodeSize - offsetX, y * nodeSize - offsetY, 0);
-                    newNode.Position = new GridInt(x, y);
+                    newNode.Position = new Vector2Int(x, y);
                 }
+            }
+
+            Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        }
+
+        public void Load(Dictionary<int, RouteModel> routeData, Dictionary<string, Sprite> spriteData)
+        {
+            mapSize.x = mapData.MapSize.X;
+            mapSize.y = mapData.MapSize.Y;
+            mapName = mapData.Name;
+            nodeSize = mapData.NodeSize;
+
+            float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.X - 1);
+            float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.Y - 1);
+
+            var nodes = mapData.Nodes;
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                var node = nodes[i];
+                var newNode = Instantiate(nodePrefab, transform);
+                newNode.name = "EmptyNode";
+                if (node.Id != 0)
+                {
+                    newNode.SetupNode(node.Id, spriteData[routeData[node.Id].Name]);
+                }
+                else
+                {
+                    newNode.SetupNode(node.Id, null);
+                }
+                newNode.transform.localPosition = new Vector3(node.Position.X - offsetX, node.Position.Y - offsetY, 0f);
+                newNode.Position = node.Position.ToVector2Int();
+                newNode.Rotate((int)node.Direction);
             }
 
             Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
@@ -93,14 +125,14 @@ namespace Assets.Map.MapEditor
             }
         }
 
-        public void SetRoute(int id)
+        public void SetRoute(int id, Sprite sprite)
         {
             var selected = GetAllSelected();
             if (selected.Count > 0)
             {
                 for (int i = 0; i < selected.Count; i++)
                 {
-                    selected[i].SetupNode(id);
+                    selected[i].SetupNode(id, sprite);
                 }
             }
         }

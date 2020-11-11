@@ -24,7 +24,7 @@
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1001,
       "Position": {
         "X": 2,
         "Y": 0
@@ -88,12 +88,12 @@
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1002,
       "Position": {
         "X": 0,
         "Y": 2
       },
-      "Direction": 0
+      "Direction": 3
     },
     {
       "Id": 0,
@@ -120,12 +120,12 @@
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1002,
       "Position": {
         "X": 4,
         "Y": 2
       },
-      "Direction": 0
+      "Direction": 1
     },
     {
       "Id": 0,
@@ -184,12 +184,12 @@
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1001,
       "Position": {
         "X": 2,
         "Y": 4
       },
-      "Direction": 0
+      "Direction": 2
     },
     {
       "Id": 0,

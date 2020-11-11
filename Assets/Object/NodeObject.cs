@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Manager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,19 @@ namespace Assets.Object
         public int routeId;
         public int direction = 0;
         public NodeObject[] neighbors;
-        public GridInt Position;
-        public GameObject routeRenderer;
+        public Vector2Int Position;
+        public SpriteRenderer routeRenderer;
 
         public void Rotate(int dir = -1)
         {
-            direction += (dir == -1 ? 1 : dir);
+            if (dir == -1)
+            {
+                direction++;
+            }
+            else
+            {
+                direction = dir;
+            }
             direction %= 4;
             UpdateRotation();
         }
@@ -28,9 +36,10 @@ namespace Assets.Object
             routeRenderer.transform.rotation = Quaternion.Euler(rotation);
         }
 
-        public void SetupNode(int id)
+        public void SetupNode(int id, Sprite sprite)
         {
             routeId = id;
+            routeRenderer.sprite = sprite;
         }
 
         public void ResetNode()

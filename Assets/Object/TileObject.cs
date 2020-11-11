@@ -74,7 +74,7 @@ namespace Assets.Object
         {
             onClickMap = null;
             state = TileState.Ready;
-            routeRenderer.sprite = SpriteManager.Get().GetWaySprite(wayType);
+            routeRenderer.sprite = SpriteManager.Get().routeSprites[wayType.ToString()];
             name = wayType.ToString();
         }
 

@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc231fe237f4c5148871709f79d6dd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  routeId: 0
   direction: 0
   neighbors: []
-  routeRenderer: {fileID: 1186369430421579998}
+  routeRenderer: {fileID: 1186369430421579992}
 --- !u!61 &9123447796212423310
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -200,15 +201,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a81c30b4eb3b6a549a783dfade2f65f0, type: 3}
---- !u!1 &1186369430421579998 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 716644071435954791, guid: a81c30b4eb3b6a549a783dfade2f65f0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1838826864617800377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1186369430421579999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 716644071435954790, guid: a81c30b4eb3b6a549a783dfade2f65f0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1838826864617800377}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1186369430421579992 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 716644071435954785, guid: a81c30b4eb3b6a549a783dfade2f65f0,
     type: 3}
   m_PrefabInstance: {fileID: 1838826864617800377}
   m_PrefabAsset: {fileID: 0}

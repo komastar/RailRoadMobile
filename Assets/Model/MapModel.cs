@@ -1,5 +1,6 @@
 ﻿using Assets.Constant;
 using Assets.Object;
+using System;
 using UnityEngine;
 
 public struct GridInt
@@ -10,8 +11,19 @@ public struct GridInt
         Y = y;
     }
 
+    public GridInt(Vector2Int xy)
+    {
+        X = xy.x;
+        Y = xy.y;
+    }
+
     public int X { get; set; }
     public int Y { get; set; }
+
+    public Vector2Int ToVector2Int()
+    {
+        return new Vector2Int(X, Y);
+    }
 }
 
 public struct MapModel
@@ -32,7 +44,7 @@ public struct NodeModel
     public void Convert(NodeObject node)
     {
         Id = node.routeId;
-        Position = node.Position;
+        Position = new GridInt(node.Position);
         Direction = (Direction)node.direction;
     }
 }

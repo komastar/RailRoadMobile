@@ -25,8 +25,6 @@ namespace Assets.System
 
         private void Awake()
         {
-            SpriteManager.Get().Init();
-
             wayType = WayType.Count;
             ObjectPool.tilePrefab = tilePrefab;
 
