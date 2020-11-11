@@ -21,7 +21,7 @@ public class DataManager : Singleton<DataManager>
         for (int i = 0; i < routeArray.Length; i++)
         {
             var route = routeArray[i].ToObject<T>();
-            database.Add((route as IDataModel).Id, route);
+            database.Add((route as IActor).Id, route);
         }
     }
 }

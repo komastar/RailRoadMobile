@@ -1,4 +1,4 @@
-﻿public class RouteModel : IDataModel
+﻿public class RouteModel : IActor
 {
     public int Id { get; set; }
     public string Name { get; set; }
