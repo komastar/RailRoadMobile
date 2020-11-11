@@ -1,13 +1,30 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour
+public class NodeObject : MonoBehaviour, IActor
 {
+    public int Id { get => routeId; set => routeId = value; }
     public int routeId;
     public int direction = 0;
     public NodeObject[] neighbors;
     public Vector2Int Position;
     public SpriteRenderer routeRenderer;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + routeRenderer.transform.up * -.4f, transform.position + routeRenderer.transform.up * .4f);
+        Gizmos.DrawLine(transform.position + routeRenderer.transform.right * .25f, transform.position + routeRenderer.transform.up * .4f);
+        Gizmos.DrawLine(transform.position + routeRenderer.transform.right * -.25f, transform.position + routeRenderer.transform.up * .4f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(transform.position, Vector3.one * .25f);
+    }
 
     public void Rotate(int dir = -1)
     {

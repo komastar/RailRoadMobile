@@ -3,207 +3,207 @@
   "Name": "NewMap",
   "NodeSize": 1.0,
   "MapSize": {
-    "X": 5,
-    "Y": 5
+    "x": 5,
+    "y": 5
   },
   "Nodes": [
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 0,
-        "Y": 0
+        "x": 0,
+        "y": 0
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 1,
-        "Y": 0
+        "x": 1,
+        "y": 0
       },
       "Direction": 0
     },
     {
       "Id": 1001,
       "Position": {
-        "X": 2,
-        "Y": 0
+        "x": 2,
+        "y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 3,
+        "y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 4,
+        "y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 0,
+        "y": 1
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 3,
-        "Y": 0
+        "x": 1,
+        "y": 1
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 4,
-        "Y": 0
+        "x": 2,
+        "y": 1
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 0,
-        "Y": 1
+        "x": 3,
+        "y": 1
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 1,
-        "Y": 1
-      },
-      "Direction": 0
-    },
-    {
-      "Id": 0,
-      "Position": {
-        "X": 2,
-        "Y": 1
-      },
-      "Direction": 0
-    },
-    {
-      "Id": 0,
-      "Position": {
-        "X": 3,
-        "Y": 1
-      },
-      "Direction": 0
-    },
-    {
-      "Id": 0,
-      "Position": {
-        "X": 4,
-        "Y": 1
+        "x": 4,
+        "y": 1
       },
       "Direction": 0
     },
     {
       "Id": 1002,
       "Position": {
-        "X": 0,
-        "Y": 2
+        "x": 0,
+        "y": 2
       },
       "Direction": 3
     },
     {
       "Id": 0,
       "Position": {
-        "X": 1,
-        "Y": 2
+        "x": 1,
+        "y": 2
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 2,
-        "Y": 2
+        "x": 2,
+        "y": 2
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 3,
-        "Y": 2
+        "x": 3,
+        "y": 2
       },
       "Direction": 0
     },
     {
       "Id": 1002,
       "Position": {
-        "X": 4,
-        "Y": 2
+        "x": 4,
+        "y": 2
       },
       "Direction": 1
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 0,
-        "Y": 3
+        "x": 0,
+        "y": 3
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 1,
-        "Y": 3
+        "x": 1,
+        "y": 3
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 2,
-        "Y": 3
+        "x": 2,
+        "y": 3
       },
       "Direction": 0
     },
     {
       "Id": 0,
       "Position": {
-        "X": 3,
-        "Y": 3
+        "x": 3,
+        "y": 3
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 4,
-        "Y": 3
+        "x": 4,
+        "y": 3
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 0,
-        "Y": 4
+        "x": 0,
+        "y": 4
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 1,
-        "Y": 4
+        "x": 1,
+        "y": 4
       },
       "Direction": 0
     },
     {
       "Id": 1001,
       "Position": {
-        "X": 2,
-        "Y": 4
+        "x": 2,
+        "y": 4
       },
       "Direction": 2
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 3,
-        "Y": 4
+        "x": 3,
+        "y": 4
       },
       "Direction": 0
     },
     {
-      "Id": 0,
+      "Id": 1000,
       "Position": {
-        "X": 4,
-        "Y": 4
+        "x": 4,
+        "y": 4
       },
       "Direction": 0
     }

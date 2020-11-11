@@ -1,17 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapEditorWindow : EditorWindow
 {
-    public static string lastSavePath;
+    public static string lastPath;
 
     public static MapObject map;
     public static MapModel mapData;
@@ -20,16 +17,25 @@ public class MapEditorWindow : EditorWindow
     public static Dictionary<int, RouteModel> routeData;
     public static Dictionary<string, Sprite> spriteData;
 
+    public static List<MapModel> mapList;
+
+    readonly GUILayoutOption[] labelOption = new GUILayoutOption[] { GUILayout.Width(100) };
+
     private void Awake()
     {
+        titleContent = new GUIContent("Map Editor");
+        minSize = new Vector2(300, 400);
+        maxSize = new Vector2(300, 1200);
         Refresh();
     }
 
     private void Refresh(bool isForce = false)
     {
-        if (string.IsNullOrEmpty(lastSavePath) || isForce)
+        RefreshMapList(isForce);
+
+        if (string.IsNullOrEmpty(lastPath) || isForce)
         {
-            lastSavePath = Application.dataPath;
+            lastPath = Application.dataPath;
         }
 
         if (null == mapData || isForce)
@@ -63,6 +69,24 @@ public class MapEditorWindow : EditorWindow
         }
     }
 
+    private static void RefreshMapList(bool isForce)
+    {
+        if (null == mapList || isForce)
+        {
+            mapList = new List<MapModel>();
+        }
+
+        mapList.Clear();
+        var maps = Directory.GetFiles($"{Application.dataPath}/Data/Map", "*.json");
+        for (int i = 0; i < maps.Length; i++)
+        {
+            var mapJsonString = File.ReadAllText(maps[i]);
+            var mapJsonObj = JObject.Parse(mapJsonString).ToObject<MapModel>();
+            mapJsonObj.Filename = maps[i];
+            mapList.Add(mapJsonObj);
+        }
+    }
+
     private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)
     {
         database = new Dictionary<int, T>();
@@ -93,24 +117,25 @@ public class MapEditorWindow : EditorWindow
 
         if (ReferenceEquals(null, map))
         {
-            FindObjectOfType<Map>();
+            map = FindObjectOfType<MapObject>();
         }
+
 
         #region Map Data
         EditorGUILayout.BeginVertical();
         if (null != mapData)
         {
-            EditorGUILayout.LabelField("Map Data");
+            EditorGUILayout.LabelField("Map Data", labelOption);
             EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.LabelField("Map Name");
+                EditorGUILayout.LabelField("Map Name", labelOption);
                 mapData.Name = EditorGUILayout.TextField(mapData.Name);
             }
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.LabelField("Map Size");
+                EditorGUILayout.LabelField("Map Size", labelOption);
                 mapData.MapSize.x = EditorGUILayout.IntField(mapData.MapSize.x);
                 mapData.MapSize.y = EditorGUILayout.IntField(mapData.MapSize.y);
             }
@@ -118,7 +143,7 @@ public class MapEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.LabelField("Node Size");
+                EditorGUILayout.LabelField("Node Size", labelOption);
                 mapData.NodeSize = EditorGUILayout.FloatField(mapData.NodeSize);
             }
             EditorGUILayout.EndHorizontal();
@@ -141,7 +166,6 @@ public class MapEditorWindow : EditorWindow
             {
                 if (GUILayout.Button("Generate"))
                 {
-                    map.Clear();
                     map.MakeMap(mapData);
                 }
                 else if (GUILayout.Button("Clear"))
@@ -150,14 +174,14 @@ public class MapEditorWindow : EditorWindow
                 }
                 else if (GUILayout.Button("Save"))
                 {
-                    string path = EditorUtility.SaveFilePanel("MapData Save", lastSavePath, mapData.Name, "json");
+                    string path = EditorUtility.SaveFilePanel("MapData Save", lastPath, mapData.Name, "json");
                     if (string.IsNullOrEmpty(path))
                     {
                         return;
                     }
 
-                    lastSavePath = path;
-                    map.Save(lastSavePath, mapData);
+                    UpdateLastPath(path);
+                    map.Save(path, mapData);
                 }
                 else if (GUILayout.Button("Load"))
                 {
@@ -166,11 +190,12 @@ public class MapEditorWindow : EditorWindow
                     {
                         return;
                     }
+
+                    UpdateLastPath(path);
                     EditorUtility.DisplayProgressBar("Load Map Data", "Make Database", .3f);
                     Refresh(true);
                     var jsonString = File.ReadAllText(path);
                     mapData = JObject.Parse(jsonString).ToObject<MapModel>();
-                    map.Clear();
                     EditorUtility.DisplayProgressBar("Load Map Data", "Make Nodes", .6f);
                     map.MakeMap(mapData, routeData, spriteData);
                     EditorUtility.DisplayProgressBar("Load Map Data", "Done", 1f);
@@ -220,15 +245,7 @@ public class MapEditorWindow : EditorWindow
                 routeId = EditorGUILayout.IntField(routeId);
                 if (GUILayout.Button("Set"))
                 {
-                    string spriteName = routeData[routeId].Name;
-                    var nodes = GetAllSelected();
-                    for (int i = 0; i < nodes.Count; i++)
-                    {
-                        if (!ReferenceEquals(null, nodes[i]))
-                        {
-                            nodes[i].SetupNode(routeId, spriteData[spriteName]);
-                        }
-                    }
+                    SetNode(routeId);
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -236,11 +253,15 @@ public class MapEditorWindow : EditorWindow
             {
                 if (GUILayout.Button("Rail"))
                 {
-                    routeId = 1001;
+                    SetNode(1001);
                 }
                 else if (GUILayout.Button("Road"))
                 {
-                    routeId = 1002;
+                    SetNode(1002);
+                }
+                else if (GUILayout.Button("Wall"))
+                {
+                    SetNode(1000);
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -258,15 +279,59 @@ public class MapEditorWindow : EditorWindow
             }
         }
         EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical();
+        if (null != mapList && mapList.Count > 0)
+        {
+            for (int i = 0; i < mapList.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                {
+                    EditorGUILayout.LabelField(Path.GetFileName(mapList[i].Filename), labelOption);
+                    EditorGUILayout.LabelField(mapList[i].Name, labelOption);
+                    if (GUILayout.Button("Open"))
+                    {
+                        UpdateLastPath(mapList[i].Filename);
+                        mapData = mapList[i];
+                        map.MakeMap(mapList[i], routeData, spriteData);
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private static void UpdateLastPath(string path)
+    {
+        lastPath = Path.GetDirectoryName(path);
+    }
+
+    private void SetNode(int id)
+    {
+        string spriteName = routeData[id].Name;
+        var nodes = GetAllSelected();
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (!ReferenceEquals(null, nodes[i]))
+            {
+                Sprite sprite = null;
+                if (spriteData.ContainsKey(spriteName))
+                {
+                    sprite = spriteData[spriteName];
+                }
+                nodes[i].SetupNode(id, sprite);
+            }
+        }
     }
 
     private List<NodeObject> GetAllSelected()
     {
-        var objs = Selection.objects;
+        var objs = Selection.gameObjects;
         List<NodeObject> nodes = new List<NodeObject>();
         for (int i = 0; i < objs.Length; i++)
         {
-            nodes.Add((objs[i] as GameObject).GetComponent<NodeObject>());
+            nodes.Add(objs[i].GetComponent<NodeObject>());
         }
 
         return nodes;

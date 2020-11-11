@@ -7,10 +7,12 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     public Dictionary<int, RouteModel> RouteData;
+    public Dictionary<int, DiceModel> DiceData;
 
     private void Awake()
     {
         MakeDatabase("Route", ref RouteData);
+        MakeDatabase("Dice", ref DiceData);
     }
 
     private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)

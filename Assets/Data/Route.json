@@ -4,6 +4,18 @@
     },
     "Route": [
         {
+            "Id": 0,
+            "Name": "Empty",
+            "IsRotate": false,
+            "IsFlip": false
+        },
+        {
+            "Id": 1000,
+            "Name": "Wall",
+            "IsRotate": false,
+            "IsFlip": false
+        },
+        {
             "Id": 1001,
             "Name": "NR-Straight-Rail",
             "IsRotate": true,

@@ -11,6 +11,7 @@ public class MapObject : MonoBehaviour
 
     public void MakeMap(MapModel mapData)
     {
+        Clear();
         Vector2Int mapSize = mapData.MapSize.ToVector2Int();
         float nodeSize = mapData.NodeSize;
         float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.x - 1);
@@ -36,6 +37,7 @@ public class MapObject : MonoBehaviour
         , Dictionary<int, RouteModel> routeData = null
         , Dictionary<string, Sprite> spriteData = null)
     {
+        Clear();
         Vector2Int mapSize = mapData.MapSize.ToVector2Int();
         float nodeSize = mapData.NodeSize;
         float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.x - 1);
@@ -46,14 +48,13 @@ public class MapObject : MonoBehaviour
         {
             var node = nodes[i];
             var newNode = Instantiate(nodePrefab, transform);
-            if (node.Id != 0)
+            Sprite sprite = null;
+            if (spriteData.ContainsKey(routeData[node.Id].Name))
             {
-                newNode.SetupNode(node.Id, spriteData[routeData[node.Id].Name]);
+                sprite = spriteData[routeData[node.Id].Name];
             }
-            else
-            {
-                newNode.SetupNode(node.Id, null);
-            }
+
+            newNode.SetupNode(node.Id, sprite);
             newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
             newNode.transform.localScale = Vector3.one * nodeSize;
             newNode.Position = node.Position.ToVector2Int();
