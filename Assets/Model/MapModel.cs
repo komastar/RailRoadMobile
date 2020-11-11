@@ -1,45 +1,48 @@
-﻿using Assets.Constant;
-using Assets.Object;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public struct GridInt
 {
-    public GridInt(int x, int y)
+    public int x;
+    public int y;
+
+    public GridInt(int _x, int _y)
     {
-        X = x;
-        Y = y;
+        x = _x;
+        y = _y;
     }
 
     public GridInt(Vector2Int xy)
     {
-        X = xy.x;
-        Y = xy.y;
+        x = xy.x;
+        y = xy.y;
     }
-
-    public int X { get; set; }
-    public int Y { get; set; }
 
     public Vector2Int ToVector2Int()
     {
-        return new Vector2Int(X, Y);
+        return new Vector2Int(x, y);
     }
 }
 
-public struct MapModel
+public class MapModel
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public float NodeSize { get; set; }
-    public GridInt MapSize { get; set; }
-    public NodeModel[] Nodes { get; set; }
+    public int Id;
+    public string Name;
+    public float NodeSize;
+    public GridInt MapSize;
+    public NodeModel[] Nodes;
+
+    public MapModel()
+    {
+        Name = "NewMap";
+        NodeSize = 1f;
+    }
 }
 
 public struct NodeModel
 {
-    public int Id { get; set; }
-    public GridInt Position { get; set; }
-    public Direction Direction { get; set; }
+    public int Id;
+    public GridInt Position;
+    public Direction Direction;
 
     public void Convert(NodeObject node)
     {

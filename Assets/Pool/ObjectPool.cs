@@ -1,37 +1,34 @@
-﻿using Assets.Object;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace Assets.Pool
+public static class ObjectPool<T> where T : Component
 {
-    public static class ObjectPool
+    private static Queue<T> pool;
+    public static T prefab;
+
+    public static T GetEmptyTile()
     {
-        private static Queue<TileObject> pool;
-        public static TileObject tilePrefab;
-
-        public static TileObject GetEmptyTile()
+        if (pool == null)
         {
-            if (pool == null)
-            {
-                pool = new Queue<TileObject>();
-            }
-
-            if (pool.Count > 0)
-            {
-                var tile = pool.Dequeue();
-                tile.gameObject.SetActive(true);
-
-                return tile;
-            }
-            else
-            {
-                return UnityEngine.Object.Instantiate(tilePrefab);
-            }
+            pool = new Queue<T>();
         }
 
-        public static void Return(TileObject tile)
+        if (pool.Count > 0)
         {
-            tile.gameObject.SetActive(false);
-            pool.Enqueue(tile);
+            var tile = pool.Dequeue();
+            tile.gameObject.SetActive(true);
+
+            return tile;
         }
+        else
+        {
+            return Object.Instantiate(prefab);
+        }
+    }
+
+    public static void Return(T tile)
+    {
+        tile.gameObject.SetActive(false);
+        pool.Enqueue(tile);
     }
 }

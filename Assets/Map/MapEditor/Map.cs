@@ -1,164 +1,156 @@
-﻿using Assets.Constant;
-using Assets.Object;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Map.MapEditor
+public class Map : MonoBehaviour
 {
-    public class Map : MonoBehaviour
+    public NodeObject nodePrefab;
+    public MapModel mapData;
+    public Vector2Int mapSize;
+    public float nodeSize;
+    public string mapName;
+
+    public void Clear()
     {
-        public NodeObject nodePrefab;
-        public MapModel mapData;
-        public Vector2Int mapSize;
-        public float nodeSize;
-        public string mapName;
-
-        public void Clear()
+        var children = GetComponentsInChildren<NodeObject>();
+        for (int i = 0; i < children.Length; i++)
         {
-            var children = GetComponentsInChildren<NodeObject>();
-            for (int i = 0; i < children.Length; i++)
-            {
-                DestroyImmediate(children[i].gameObject);
-            }
+            DestroyImmediate(children[i].gameObject);
+        }
+    }
+
+    public void Save()
+    {
+        string saveName = mapData.Name;
+        if (string.IsNullOrEmpty(saveName))
+        {
+            saveName = mapName;
+            mapData.NodeSize = 1f;
+            mapData.MapSize = new GridInt(mapSize.x, mapSize.y);
         }
 
-        public void Save()
+        var nodes = GetComponentsInChildren<NodeObject>();
+        mapData.Nodes = new NodeModel[nodes.Length];
+        for (int i = 0; i < nodes.Length; i++)
         {
-            string saveName = mapData.Name;
-            if (string.IsNullOrEmpty(saveName))
-            {
-                saveName = mapName;
-                mapData.NodeSize = 1f;
-                mapData.MapSize = new GridInt(mapSize.x, mapSize.y);
-            }
-
-            var nodes = GetComponentsInChildren<NodeObject>();
-            mapData.Nodes = new NodeModel[nodes.Length];
-            for (int i = 0; i < nodes.Length; i++)
-            {
-                mapData.Nodes[i].Convert(nodes[i]);
-            }
-
-            var save = JObject.FromObject(mapData).ToString(Formatting.Indented);
-            string path = $"{Application.dataPath}/Data/.Map";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            path = $"{path}/{saveName}.json";
-
-            File.WriteAllText(path, save);
+            mapData.Nodes[i].Convert(nodes[i]);
         }
 
-        public void Generate()
+        var save = JObject.FromObject(mapData).ToString(Formatting.Indented);
+        string path = $"{Application.dataPath}/Data/.Map";
+        if (!Directory.Exists(path))
         {
-            mapSize.x = mapData.MapSize.X;
-            mapSize.y = mapData.MapSize.Y;
-            mapName = mapData.Name;
-            nodeSize = mapData.NodeSize;
-
-            float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.X - 1);
-            float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.Y - 1);
-            for (int y = 0; y < mapData.MapSize.Y; y++)
-            {
-                for (int x = 0; x < mapData.MapSize.X; x++)
-                {
-                    var newNode = Instantiate(nodePrefab, transform);
-                    newNode.name = "EmptyNode";
-                    newNode.transform.localPosition = new Vector3(x * nodeSize - offsetX, y * nodeSize - offsetY, 0);
-                    newNode.Position = new Vector2Int(x, y);
-                }
-            }
-
-            Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+            Directory.CreateDirectory(path);
         }
+        path = $"{path}/{saveName}.json";
 
-        public void Load(Dictionary<int, RouteModel> routeData, Dictionary<string, Sprite> spriteData)
+        File.WriteAllText(path, save);
+    }
+
+    public void Generate()
+    {
+        mapSize.x = mapData.MapSize.x;
+        mapSize.y = mapData.MapSize.y;
+        mapName = mapData.Name;
+        nodeSize = mapData.NodeSize;
+
+        float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.x - 1);
+        float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.y - 1);
+        for (int y = 0; y < mapData.MapSize.y; y++)
         {
-            mapSize.x = mapData.MapSize.X;
-            mapSize.y = mapData.MapSize.Y;
-            mapName = mapData.Name;
-            nodeSize = mapData.NodeSize;
-
-            float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.X - 1);
-            float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.Y - 1);
-
-            var nodes = mapData.Nodes;
-            for (int i = 0; i < nodes.Length; i++)
+            for (int x = 0; x < mapData.MapSize.x; x++)
             {
-                var node = nodes[i];
                 var newNode = Instantiate(nodePrefab, transform);
                 newNode.name = "EmptyNode";
-                if (node.Id != 0)
-                {
-                    newNode.SetupNode(node.Id, spriteData[routeData[node.Id].Name]);
-                }
-                else
-                {
-                    newNode.SetupNode(node.Id, null);
-                }
-                newNode.transform.localPosition = new Vector3(node.Position.X - offsetX, node.Position.Y - offsetY, 0f);
-                newNode.Position = node.Position.ToVector2Int();
-                newNode.Rotate((int)node.Direction);
+                newNode.transform.localPosition = new Vector3(x * nodeSize - offsetX, y * nodeSize - offsetY, 0);
+                newNode.Position = new Vector2Int(x, y);
             }
-
-            Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
         }
 
-        public void Reset()
+        Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+    }
+
+    public void Load(Dictionary<int, RouteModel> routeData, Dictionary<string, Sprite> spriteData)
+    {
+        mapSize.x = mapData.MapSize.x;
+        mapSize.y = mapData.MapSize.y;
+        mapName = mapData.Name;
+        nodeSize = mapData.NodeSize;
+
+        float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.x - 1);
+        float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.y - 1);
+
+        var nodes = mapData.Nodes;
+        for (int i = 0; i < nodes.Length; i++)
         {
-            var selected = GetAllSelected();
-            if (selected.Count > 0)
+            var node = nodes[i];
+            var newNode = Instantiate(nodePrefab, transform);
+            newNode.name = "EmptyNode";
+            if (node.Id != 0)
             {
-                for (int i = 0; i < selected.Count; i++)
-                {
-                    selected[i].ResetNode();
-                }
+                newNode.SetupNode(node.Id, spriteData[routeData[node.Id].Name]);
             }
+            else
+            {
+                newNode.SetupNode(node.Id, null);
+            }
+            newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
+            newNode.Position = node.Position.ToVector2Int();
+            newNode.Rotate((int)node.Direction);
         }
 
-        public void SetRoute(int id, Sprite sprite)
+        Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+    }
+
+    public void Reset()
+    {
+        var selected = GetAllSelected();
+        if (selected.Count > 0)
         {
-            var selected = GetAllSelected();
-            if (selected.Count > 0)
+            for (int i = 0; i < selected.Count; i++)
             {
-                for (int i = 0; i < selected.Count; i++)
-                {
-                    selected[i].SetupNode(id, sprite);
-                }
+                selected[i].ResetNode();
             }
         }
+    }
 
-        public void Rotate()
+    public void SetRoute(int id, Sprite sprite)
+    {
+        var selected = GetAllSelected();
+        if (selected.Count > 0)
         {
-            var selected = GetAllSelected();
-            if (selected.Count > 0)
+            for (int i = 0; i < selected.Count; i++)
             {
-                for (int i = 0; i < selected.Count; i++)
-                {
-                    selected[i].Rotate();
-                }
+                selected[i].SetupNode(id, sprite);
             }
         }
+    }
 
-        private List<NodeObject> GetAllSelected()
+    public void Rotate()
+    {
+        var selected = GetAllSelected();
+        if (selected.Count > 0)
         {
-            var objs = Selection.objects;
-            List<NodeObject> nodes = new List<NodeObject>();
-            for (int i = 0; i < objs.Length; i++)
+            for (int i = 0; i < selected.Count; i++)
             {
-                nodes.Add((objs[i] as GameObject).GetComponent<NodeObject>());
+                selected[i].Rotate();
             }
-
-            return nodes;
         }
+    }
+
+    private List<NodeObject> GetAllSelected()
+    {
+        var objs = Selection.objects;
+        List<NodeObject> nodes = new List<NodeObject>();
+        for (int i = 0; i < objs.Length; i++)
+        {
+            nodes.Add((objs[i] as GameObject).GetComponent<NodeObject>());
+        }
+
+        return nodes;
     }
 }

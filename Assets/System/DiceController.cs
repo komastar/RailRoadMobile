@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.System
+public class DiceController
 {
-    public class DiceController
-    {
-    }
 }

@@ -5,10 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Object.Route
+public class CommonStraightRoute : MonoBehaviour, IRoute
 {
-    public class CommonStraightRoute : MonoBehaviour, IRoute
-    {
 
-    }
 }
