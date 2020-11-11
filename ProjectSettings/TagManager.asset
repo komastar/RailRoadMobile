@@ -41,9 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Tile
+  - name: Terrain
+    uniqueID: 4081377773
+    locked: 0
+  - name: Node
     uniqueID: 542758313
     locked: 0
-  - name: Way
+  - name: Route
     uniqueID: 2589689589
     locked: 0
