@@ -8,7 +8,7 @@ namespace Assets.Pool
         private static Queue<TileObject> pool;
         public static TileObject tilePrefab;
 
-        public static TileObject GetTile()
+        public static TileObject GetEmptyTile()
         {
             if (pool == null)
             {

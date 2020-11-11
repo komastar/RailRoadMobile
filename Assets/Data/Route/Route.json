@@ -1,0 +1,97 @@
+{
+    "Desc": {
+        "Id": "1000~9999"
+    },
+    "Route": [
+        {
+            "Id": 1001,
+            "Name": "NR-Straight-Rail",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 1002,
+            "Name": "NR-Straight-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 1011,
+            "Name": "JC-Straight-Rail-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 2001,
+            "Name": "NR-Corner-Rail",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 2002,
+            "Name": "NR-Corner-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 2011,
+            "Name": "JC-Corner-Rail-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 3001,
+            "Name": "NR-ThreeWay-Rail",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 3002,
+            "Name": "NR-ThreeWay-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 4001,
+            "Name": "NR-X-Rail",
+            "IsRotate": false,
+            "IsFlip": false
+        },
+        {
+            "Id": 4002,
+            "Name": "NR-X-Road",
+            "IsRotate": false,
+            "IsFlip": false
+        },
+        {
+            "Id": 4011,
+            "Name": "OP-XStraight-Rail-Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 4021,
+            "Name": "JC-X-3Road-1Rail",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 4022,
+            "Name": "JC-X-3Rail-1Road",
+            "IsRotate": true,
+            "IsFlip": false
+        },
+        {
+            "Id": 4031,
+            "Name": "JC-XCorner-Road-Rail",
+            "IsRotate": true,
+            "IsFlip": true
+        },
+        {
+            "Id": 4032,
+            "Name": "JC-XStraight-Road-Rail",
+            "IsRotate": true,
+            "IsFlip": false
+        }
+    ]
+}

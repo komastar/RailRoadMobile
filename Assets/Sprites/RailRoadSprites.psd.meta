@@ -4,49 +4,49 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5329680913271069129
-    second: Rail_I
+    second: NR-Straight-Rail
   - first:
       213: -9038896463502814307
-    second: Rail_L
+    second: NR-Corner-Rail
   - first:
       213: 5864254196683579059
-    second: Rail_T
+    second: NR-ThreeWay-Rail
   - first:
       213: 593562404436089010
-    second: Rail_X
+    second: NR-X-Rail
   - first:
       213: -8813619295219183997
-    second: Road_I
+    second: NR-Straight-Road
   - first:
       213: 2805504811659910864
-    second: Road_L
+    second: NR-Corner-Road
   - first:
       213: 3777142178542968667
-    second: Road_T
+    second: NR-ThreeWay-Road
   - first:
       213: -5297905299508318636
-    second: Road_X
+    second: NR-X-Road
   - first:
       213: -2974261333422144903
-    second: RailToRoad_I
+    second: JC-Straight-Rail-Road
   - first:
       213: -5379521804373226859
-    second: RailToRoad_L
+    second: JC-Corner-Rail-Road
   - first:
       213: -2887342592114376661
-    second: Road_T_To_Rail_I
+    second: JC-X-3Road-1Rail
   - first:
       213: -249311207493857784
-    second: Rail_T_To_Road_I
+    second: JC-X-3Rail-1Road
   - first:
       213: -774169716170458233
-    second: Road_L_Rail_L
+    second: JC-XCorner-Road-Rail
   - first:
       213: 3054373893705948861
-    second: RoadToRail_X
+    second: JC-XStraight-Road-Rail
   - first:
       213: -5414672790974005153
-    second: Road_And_Rail_X
+    second: OP-XStraight-Road-Rail
   - first:
       213: -5914846877651828911
     second: Empty
@@ -95,7 +95,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -147,7 +147,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rail_I
+      name: NR-Straight-Rail
       rect:
         serializedVersion: 2
         x: 0
@@ -168,7 +168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rail_L
+      name: NR-Corner-Rail
       rect:
         serializedVersion: 2
         x: 32
@@ -189,7 +189,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rail_T
+      name: NR-ThreeWay-Rail
       rect:
         serializedVersion: 2
         x: 64
@@ -210,7 +210,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rail_X
+      name: NR-X-Rail
       rect:
         serializedVersion: 2
         x: 96
@@ -231,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_I
+      name: NR-Straight-Road
       rect:
         serializedVersion: 2
         x: 0
@@ -252,7 +252,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_L
+      name: NR-Corner-Road
       rect:
         serializedVersion: 2
         x: 32
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_T
+      name: NR-ThreeWay-Road
       rect:
         serializedVersion: 2
         x: 64
@@ -294,7 +294,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_X
+      name: NR-X-Road
       rect:
         serializedVersion: 2
         x: 96
@@ -315,7 +315,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RailToRoad_I
+      name: JC-Straight-Rail-Road
       rect:
         serializedVersion: 2
         x: 0
@@ -336,7 +336,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RailToRoad_L
+      name: JC-Corner-Rail-Road
       rect:
         serializedVersion: 2
         x: 32
@@ -357,7 +357,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_T_To_Rail_I
+      name: JC-X-3Road-1Rail
       rect:
         serializedVersion: 2
         x: 64
@@ -378,7 +378,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rail_T_To_Road_I
+      name: JC-X-3Rail-1Road
       rect:
         serializedVersion: 2
         x: 96
@@ -399,7 +399,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_L_Rail_L
+      name: JC-XCorner-Road-Rail
       rect:
         serializedVersion: 2
         x: 0
@@ -420,7 +420,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RoadToRail_X
+      name: JC-XStraight-Road-Rail
       rect:
         serializedVersion: 2
         x: 32
@@ -441,7 +441,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_And_Rail_X
+      name: OP-XStraight-Road-Rail
       rect:
         serializedVersion: 2
         x: 64

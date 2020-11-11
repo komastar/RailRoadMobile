@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets.System
 {
-    public class StageController : MonoBehaviour
+    public class StageController
     {
         private CancellationTokenSource tokenSource;
 
@@ -62,7 +62,7 @@ namespace Assets.System
 
         private void MakeTile()
         {
-            var newTile = ObjectPool.GetTile();
+            var newTile = ObjectPool.GetEmptyTile();
             WayType genType = wayType;
             if (genType == WayType.Count)
             {

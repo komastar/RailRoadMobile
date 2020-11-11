@@ -15,11 +15,18 @@ namespace Assets.Object
         public float tileSize;
         public TileObject[][] map;
         public Vector2Int mapSize;
-        public HashSet<Vector2Int> openTile;
+        public HashSet<TileObject> openTile;
+        public HashSet<TileObject> closedTile;
 
         private void Awake()
         {
-            openTile = new HashSet<Vector2Int>();
+            openTile = new HashSet<TileObject>();
+        }
+
+        public void MakeMap(MapModel mapData)
+        {
+            mapSize = new Vector2Int(mapData.MapSize.X, mapData.MapSize.Y);
+            TileObject emptyTile = ObjectPool.GetEmptyTile();
         }
 
         public void MakeMap(Action<TileObject> onClickMap)
@@ -40,7 +47,7 @@ namespace Assets.Object
             {
                 for (int x = 0; x < mapSize.x; x++)
                 {
-                    var tile = ObjectPool.GetTile();
+                    var tile = ObjectPool.GetEmptyTile();
                     tile.transform.parent = transform;
                     tile.transform.localPosition = new Vector3(x * tileSize, y * tileSize, 0);
                     tile.Empty();
@@ -69,7 +76,7 @@ namespace Assets.Object
 
         internal bool IsBuildable(TileObject clickedTile)
         {
-            return openTile.Contains(clickedTile.gridPos);
+            return openTile.Contains(clickedTile);
         }
 
         public TileObject GetNeighborTile(Vector2Int pos, int dirIndex)

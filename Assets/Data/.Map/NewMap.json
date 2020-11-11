@@ -1,0 +1,211 @@
+{
+  "Id": 0,
+  "Name": "NewMap",
+  "NodeSize": 1.0,
+  "MapSize": {
+    "X": 5,
+    "Y": 5
+  },
+  "Nodes": [
+    {
+      "Id": 0,
+      "Position": {
+        "X": 0,
+        "Y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 1,
+        "Y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 2,
+        "Y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 3,
+        "Y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 4,
+        "Y": 0
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 0,
+        "Y": 1
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 1,
+        "Y": 1
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 2,
+        "Y": 1
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 3,
+        "Y": 1
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 4,
+        "Y": 1
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 0,
+        "Y": 2
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 1,
+        "Y": 2
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 2,
+        "Y": 2
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 3,
+        "Y": 2
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 4,
+        "Y": 2
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 0,
+        "Y": 3
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 1,
+        "Y": 3
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 2,
+        "Y": 3
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 3,
+        "Y": 3
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 4,
+        "Y": 3
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 0,
+        "Y": 4
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 1,
+        "Y": 4
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 2,
+        "Y": 4
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 3,
+        "Y": 4
+      },
+      "Direction": 0
+    },
+    {
+      "Id": 0,
+      "Position": {
+        "X": 4,
+        "Y": 4
+      },
+      "Direction": 0
+    }
+  ]
+}
