@@ -23,9 +23,13 @@ public class MapObject : MonoBehaviour
                 var newNode = Instantiate(nodePrefab, transform);
                 newNode.name = "EmptyNode";
                 newNode.transform.localPosition = new Vector3(x * nodeSize - offsetX, y * nodeSize - offsetY, 0);
+                newNode.transform.localScale = Vector3.one * nodeSize;
                 newNode.Position = new Vector2Int(x, y);
             }
         }
+
+        var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        Camera.main.orthographicSize = orthoSize;
     }
 
     public void MakeMap(MapModel mapData
@@ -51,11 +55,13 @@ public class MapObject : MonoBehaviour
                 newNode.SetupNode(node.Id, null);
             }
             newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
+            newNode.transform.localScale = Vector3.one * nodeSize;
             newNode.Position = node.Position.ToVector2Int();
             newNode.Rotate((int)node.Direction);
         }
 
-        Camera.main.orthographicSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        Camera.main.orthographicSize = orthoSize;
     }
 
     public void Clear()
