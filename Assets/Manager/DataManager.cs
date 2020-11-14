@@ -6,18 +6,18 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    public Dictionary<int, RouteModel> RouteData;
-    public Dictionary<int, DiceModel> DiceData;
+    public Dictionary<int, RouteModel> RouteData { get; private set; }
+    public Dictionary<int, DiceModel> DiceData { get; private set; }
 
     private void Awake()
     {
-        MakeDatabase("Route", ref RouteData);
-        MakeDatabase("Dice", ref DiceData);
+        RouteData = MakeDatabase<RouteModel>("Route");
+        DiceData = MakeDatabase<DiceModel>("Dice");
     }
 
-    private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)
+    private Dictionary<int, T> MakeDatabase<T>(string dataname)
     {
-        database = new Dictionary<int, T>();
+        Dictionary<int, T> database = new Dictionary<int, T>();
         var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Data/{dataname}.json"));
         var routeArray = json[dataname].ToArray();
         for (int i = 0; i < routeArray.Length; i++)
@@ -25,5 +25,7 @@ public class DataManager : Singleton<DataManager>
             var route = routeArray[i].ToObject<T>();
             database.Add((route as IActor).Id, route);
         }
+
+        return database;
     }
 }

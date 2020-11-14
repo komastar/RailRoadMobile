@@ -18,6 +18,9 @@ public partial class MapObject : MonoBehaviour
     private HashSet<NodeObject> closedNodes;
     private HashSet<NodeObject> closedNodesBuffer;
 
+    public NodeObject candidateHand;
+    public NodeObject candidateFix;
+
     public void Init()
     {
         entireNodes = new Dictionary<Vector2Int, NodeObject>();
@@ -61,12 +64,12 @@ public partial class MapObject : MonoBehaviour
         Clear();
         if (routeData == null)
         {
-            routeData = DataManager.Get().RouteData;
+            routeData = dataManager.RouteData;
         }
 
         if (spriteData == null)
         {
-            spriteData = SpriteManager.Get().routeSprites;
+            spriteData = spriteManager.RouteSprites;
         }
 
         Vector2Int mapSize = mapData.MapSize;
@@ -88,7 +91,7 @@ public partial class MapObject : MonoBehaviour
             newNode.SetupNode(node, routeData[node.Id], sprite);
             newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
             newNode.transform.localScale = Vector3.one * nodeSize;
-
+            newNode.onClick += OnClickNode;
             NewNode(newNode);
         }
 
@@ -201,6 +204,16 @@ public partial class MapObject : MonoBehaviour
         closedNodesBuffer.Add(node);
     }
 
+    public void FixNode()
+    {
+        if (IsConstructable(candidateFix))
+        {
+            Destroy(candidateHand);
+            candidateHand = null;
+            candidateFix = null;
+        }
+    }
+
     private bool IsOpenNode(NodeObject node)
     {
         return openNodes.Contains(node);
@@ -209,6 +222,37 @@ public partial class MapObject : MonoBehaviour
     private bool IsCloseNode(NodeObject node)
     {
         return closedNodes.Contains(node);
+    }
+
+    private void OnClickNode(NodeObject node)
+    {
+        if (!ReferenceEquals(null, candidateHand))
+        {
+            var route = dataManager.RouteData[candidateHand.Id];
+            var sprite = spriteManager.RouteSprites[route.Name];
+            node.SetupNode(route, sprite);
+            candidateFix = node;
+        }
+    }
+
+    public bool IsConstructable(NodeObject node)
+    {
+        for (int i = 0; i < Direction.Length; i++)
+        {
+            EJointType joint = node.GetJoint(i);
+            if (joint != EJointType.None)
+            {
+                Vector2Int neighborPos = node.Position + Direction[i];
+                var neighbor = entireNodes[neighborPos];
+                EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
+                if (neighborJoint != joint)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 #if UNITY_EDITOR

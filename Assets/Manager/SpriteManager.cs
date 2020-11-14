@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class SpriteManager : Singleton<SpriteManager>
 {
-    public Dictionary<string, Sprite> routeSprites;
+    public Dictionary<string, Sprite> RouteSprites { get; private set; }
 
     private void Awake()
     {
-        routeSprites = new Dictionary<string, Sprite>();
+        RouteSprites = new Dictionary<string, Sprite>();
         var railRoadSprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/RailRoadSprites.psd").OfType<Sprite>().ToList();
         for (int i = 0; i < railRoadSprites.Count; i++)
         {
-            routeSprites.Add(railRoadSprites[i].name, railRoadSprites[i]);
+            RouteSprites.Add(railRoadSprites[i].name, railRoadSprites[i]);
         }
     }
 }

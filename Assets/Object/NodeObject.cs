@@ -2,9 +2,10 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour, IActor
+public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
 {
     public int Id { get => routeId; set => routeId = value; }
     public int routeId;
@@ -15,6 +16,7 @@ public class NodeObject : MonoBehaviour, IActor
     public EJointType[] Joints;
     public Vector2Int Position;
     public SpriteRenderer routeRenderer;
+    public Action<NodeObject> onClick;
 
     private void OnDrawGizmos()
     {
@@ -31,6 +33,8 @@ public class NodeObject : MonoBehaviour, IActor
             case ENodeState.Close:
                 Gizmos.color = Color.red;
                 break;
+            case ENodeState.None:
+            case ENodeState.Count:
             default:
                 Gizmos.color = Color.black;
                 break;
@@ -42,6 +46,11 @@ public class NodeObject : MonoBehaviour, IActor
     {
         Gizmos.color = Color.green;
         Gizmos.DrawCube(transform.position, Vector3.one * .25f);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        onClick?.Invoke(this);
     }
 
     public void Flip()
