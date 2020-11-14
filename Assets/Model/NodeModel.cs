@@ -1,13 +1,18 @@
-﻿public struct NodeModel
+﻿using UnityEngine;
+
+public class NodeModel
 {
     public int Id;
-    public GridInt Position;
-    public Direction Direction;
+    public Vector2Int Position;
+    public EDirection Direction;
+    public ENodeType NodeType;
+    public EJointType[] Joints;
 
     public void Convert(NodeObject node)
     {
         Id = node.routeId;
-        Position = new GridInt(node.Position);
-        Direction = (Direction)node.direction;
+        Position = node.Position;
+        Direction = (EDirection)node.direction;
+        NodeType = node.NodeType;
     }
 }

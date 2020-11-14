@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UnityEngine;
 
 public class MapModel
 {
@@ -7,7 +8,7 @@ public class MapModel
     [JsonIgnore]
     public string Filename;
     public float NodeSize;
-    public GridInt MapSize;
+    public Vector2Int MapSize;
     public NodeModel[] Nodes;
 
     public MapModel()

@@ -7,103 +7,222 @@
             "Id": 0,
             "Name": "Empty",
             "IsRotate": false,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": false,
+            "Joints": [
+                "None",
+                "None",
+                "None",
+                "None"
+            ]
         },
         {
             "Id": 1000,
             "Name": "Wall",
             "IsRotate": false,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": false,
+            "Joints": [
+                "None",
+                "None",
+                "None",
+                "None"
+            ]
         },
         {
             "Id": 1001,
             "Name": "NR-Straight-Rail",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "None",
+                "Rail",
+                "None"
+            ]
         },
         {
             "Id": 1002,
             "Name": "NR-Straight-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "None",
+                "Road",
+                "None"
+            ]
         },
         {
             "Id": 1011,
             "Name": "JC-Straight-Rail-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "None",
+                "Road",
+                "None"
+            ]
         },
         {
             "Id": 2001,
             "Name": "NR-Corner-Rail",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "Rail",
+                "None",
+                "None"
+            ]
         },
         {
             "Id": 2002,
             "Name": "NR-Corner-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Road",
+                "None",
+                "None"
+            ]
         },
         {
             "Id": 2011,
             "Name": "JC-Corner-Rail-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "Road",
+                "None",
+                "None"
+            ]
         },
         {
             "Id": 3001,
             "Name": "NR-ThreeWay-Rail",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "Rail",
+                "Rail",
+                "None"
+            ]
         },
         {
             "Id": 3002,
             "Name": "NR-ThreeWay-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Road",
+                "Road",
+                "None"
+            ]
         },
         {
             "Id": 4001,
             "Name": "NR-X-Rail",
             "IsRotate": false,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "Rail",
+                "Rail",
+                "Rail"
+            ]
         },
         {
             "Id": 4002,
             "Name": "NR-X-Road",
             "IsRotate": false,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Road",
+                "Road",
+                "Road"
+            ]
         },
         {
             "Id": 4011,
             "Name": "OP-XStraight-Rail-Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": false,
+            "Joints": [
+                "Road",
+                "Rail",
+                "Road",
+                "Rail"
+            ]
         },
         {
             "Id": 4021,
             "Name": "JC-X-3Road-1Rail",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Road",
+                "Rail",
+                "Road"
+            ]
         },
         {
             "Id": 4022,
             "Name": "JC-X-3Rail-1Road",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Rail",
+                "Rail",
+                "Road",
+                "Rail"
+            ]
         },
         {
             "Id": 4031,
             "Name": "JC-XCorner-Road-Rail",
             "IsRotate": true,
-            "IsFlip": true
+            "IsFlip": true,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Road",
+                "Rail",
+                "Rail"
+            ]
         },
         {
             "Id": 4032,
             "Name": "JC-XStraight-Road-Rail",
             "IsRotate": true,
-            "IsFlip": false
+            "IsFlip": false,
+            "IsTransfer": true,
+            "Joints": [
+                "Road",
+                "Rail",
+                "Road",
+                "Rail"
+            ]
         }
     ]
 }

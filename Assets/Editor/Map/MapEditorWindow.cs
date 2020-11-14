@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,13 @@ public class MapEditorWindow : EditorWindow
 
     public static List<MapModel> mapList;
 
-    readonly GUILayoutOption[] labelOption = new GUILayoutOption[] { GUILayout.Width(100) };
+    private readonly GUILayoutOption[] labelOption = new GUILayoutOption[] { GUILayout.Width(100) };
+
+    private List<string> routes;
+    private int selectedRouteIndex;
+
+    private string[] nodeTypes;
+    private int selectedNodeTypeIndex;
 
     private void Awake()
     {
@@ -52,6 +59,17 @@ public class MapEditorWindow : EditorWindow
         {
             routeData = new Dictionary<int, RouteModel>();
             MakeDatabase("Route", ref routeData);
+            routes = new List<string>();
+            foreach (var route in routeData)
+            {
+                routes.Add(route.Value.Name);
+            }
+        }
+
+        nodeTypes = new string[(int)ENodeType.Count];
+        for (int i = 0; i < (int)ENodeType.Count; i++)
+        {
+            nodeTypes[i] = ((ENodeType)i).ToString();
         }
 
         if (null == spriteData || isForce)
@@ -166,7 +184,8 @@ public class MapEditorWindow : EditorWindow
             {
                 if (GUILayout.Button("Generate"))
                 {
-                    map.MakeMap(mapData);
+                    var emptyRoute = routeData[1000];
+                    map.MakeEmptyMap(mapData, emptyRoute);
                 }
                 else if (GUILayout.Button("Clear"))
                 {
@@ -242,26 +261,20 @@ public class MapEditorWindow : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             {
-                routeId = EditorGUILayout.IntField(routeId);
+                selectedRouteIndex = EditorGUILayout.Popup("Route", selectedRouteIndex, routes.ToArray());
                 if (GUILayout.Button("Set"))
                 {
-                    SetNode(routeId);
+                    var route = routeData.Values.First(r => r.Name == routes[selectedRouteIndex]);
+                    SetNode(route);
                 }
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             {
-                if (GUILayout.Button("Rail"))
+                selectedNodeTypeIndex = EditorGUILayout.Popup("NodeType", selectedNodeTypeIndex, nodeTypes);
+                if (GUILayout.Button("Set"))
                 {
-                    SetNode(1001);
-                }
-                else if (GUILayout.Button("Road"))
-                {
-                    SetNode(1002);
-                }
-                else if (GUILayout.Button("Wall"))
-                {
-                    SetNode(1000);
+                    SetNodeType(nodeTypes[selectedNodeTypeIndex]);
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -307,9 +320,9 @@ public class MapEditorWindow : EditorWindow
         lastPath = Path.GetDirectoryName(path);
     }
 
-    private void SetNode(int id)
+    private void SetNode(RouteModel route)
     {
-        string spriteName = routeData[id].Name;
+        string spriteName = routeData[route.Id].Name;
         var nodes = GetAllSelected();
         for (int i = 0; i < nodes.Count; i++)
         {
@@ -320,7 +333,20 @@ public class MapEditorWindow : EditorWindow
                 {
                     sprite = spriteData[spriteName];
                 }
-                nodes[i].SetupNode(id, sprite);
+                nodes[i].SetupNode(route, sprite);
+            }
+        }
+    }
+
+    private void SetNodeType(string nodeTypeString)
+    {
+        ENodeType nodeType = (ENodeType)Enum.Parse(typeof(ENodeType), nodeTypeString);
+        var nodes = GetAllSelected();
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (!ReferenceEquals(null, nodes[i]))
+            {
+                nodes[i].NodeType = nodeType;
             }
         }
     }

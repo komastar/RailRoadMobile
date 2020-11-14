@@ -1,7 +1,12 @@
-﻿public static class Way
+﻿using UnityEngine;
+
+public partial class MapObject
 {
-    public static int Up => 0;
-    public static int Left => 1;
-    public static int Down => 2;
-    public static int Right => 3;
+    public static readonly Vector2Int[] Direction = new Vector2Int[4]
+    {
+        Vector2Int.up
+        , Vector2Int.left
+        , Vector2Int.down
+        , Vector2Int.right
+    };
 }

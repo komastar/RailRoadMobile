@@ -1,18 +1,34 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
-namespace Assets.Scene
+public class MainGameScene : MonoBehaviour
 {
-    public class MainGameScene : MonoBehaviour
+    public TextAsset mapJson;
+    public MapObject mapObject;
+
+    private StageController stage;
+    private DiceController dice;
+
+    private HashSet<NodeObject> openNodes;
+
+    private void Awake()
     {
-        private StageController stage;
-        private DiceController dice;
+        SpriteManager.Get();
+        DataManager.Get();
 
-        public WayType wayType;
+        openNodes = new HashSet<NodeObject>();
 
-        private void Awake()
-        {
-            stage = new StageController();
-            dice = new DiceController();
-        }
+        stage = new StageController();
+        dice = new DiceController();
+
+        mapObject.Init();
+
+#if UNITY_EDITOR
+        MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
+        mapObject.MakeMap(map);
+        mapObject.OpenMap();
+#endif
     }
 }
