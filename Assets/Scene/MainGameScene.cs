@@ -8,8 +8,10 @@ public class MainGameScene : MonoBehaviour
 {
 #if UNITY_EDITOR
     public TextAsset mapJson;
+    public TextAsset stageJson;
 #endif
     public MapObject mapObject;
+    public HandObject handObject;
 
     private void Awake()
     {
@@ -17,7 +19,9 @@ public class MainGameScene : MonoBehaviour
         DataManager.Get();
 
         mapObject.Init();
+        handObject.Init();
 #if UNITY_EDITOR
+        handObject.stage = JObject.Parse(stageJson.text).ToObject<StageModel>();
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
         mapObject.MakeMap(map);
         mapObject.OpenMap();
@@ -37,5 +41,10 @@ public class MainGameScene : MonoBehaviour
     public void OnClickFix()
     {
         mapObject.FixNode();
+    }
+
+    public void OnClickRoll()
+    {
+        handObject.Roll();
     }
 }

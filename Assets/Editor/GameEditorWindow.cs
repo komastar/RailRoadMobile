@@ -72,16 +72,20 @@ public class GameEditorWindow : EditorWindow
 
     private void Init()
     {
-        mapObj = FindObjectOfType<MapObject>();
-        routeData = DataManager.Get().RouteData;
-        spriteData = new Dictionary<string, Sprite>();
-
-        routes = new string[routeData.Values.Count];
-        int i = 0;
-        foreach (var route in routeData)
+        if (EditorApplication.isPlaying)
         {
-            routes[i++] = route.Value.Name;
-            spriteData.Add(route.Value.Name, SpriteManager.Get().GetSprite(route.Value.Name));
+            mapObj = FindObjectOfType<MapObject>();
+
+            routeData = DataManager.Get().RouteData;
+            spriteData = new Dictionary<string, Sprite>();
+
+            routes = new string[routeData.Values.Count];
+            int i = 0;
+            foreach (var route in routeData)
+            {
+                routes[i++] = route.Value.Name;
+                spriteData.Add(route.Value.Name, SpriteManager.Get().GetSprite(route.Value.Name));
+            }
         }
     }
 }
