@@ -161,7 +161,7 @@
         },
         {
             "Id": 4011,
-            "Name": "OP-XStraight-Rail-Road",
+            "Name": "OP-XStraight-Road-Rail",
             "IsRotate": true,
             "IsFlip": false,
             "IsTransfer": false,

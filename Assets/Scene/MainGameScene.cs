@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainGameScene : MonoBehaviour
 {
@@ -21,6 +22,16 @@ public class MainGameScene : MonoBehaviour
         mapObject.MakeMap(map);
         mapObject.OpenMap();
 #endif
+    }
+
+    public void OnClickRotate()
+    {
+        mapObject.Rotate();
+    }
+
+    public void OnClickFlip()
+    {
+        mapObject.Flip();
     }
 
     public void OnClickFix()

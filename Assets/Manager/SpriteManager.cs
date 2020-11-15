@@ -16,4 +16,16 @@ public class SpriteManager : Singleton<SpriteManager>
             RouteSprites.Add(railRoadSprites[i].name, railRoadSprites[i]);
         }
     }
+
+    public Sprite GetSprite(string key)
+    {
+        if (RouteSprites.ContainsKey(key))
+        {
+            return RouteSprites[key];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

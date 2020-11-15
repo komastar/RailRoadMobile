@@ -18,11 +18,12 @@ public partial class MapObject : MonoBehaviour
     private HashSet<NodeObject> closedNodes;
     private HashSet<NodeObject> closedNodesBuffer;
 
-    public NodeObject candidateHand;
+    public int candidateId;
     public NodeObject candidateFix;
 
     public void Init()
     {
+        candidateId = 0;
         entireNodes = new Dictionary<Vector2Int, NodeObject>();
         openNodes = new HashSet<NodeObject>();
         closedNodes = new HashSet<NodeObject>();
@@ -132,6 +133,12 @@ public partial class MapObject : MonoBehaviour
         }
     }
 
+    public void SetCandidate(int id)
+    {
+        candidateId = id;
+        candidateFix = null;
+    }
+
     private void NewNode(NodeObject node)
     {
         entireNodes.Add(node.Position, node);
@@ -147,6 +154,7 @@ public partial class MapObject : MonoBehaviour
     {
         openNodes.Remove(node);
         node.Close();
+        closedNodes.Add(node);
     }
 
     private void ExpandNodes()
@@ -157,25 +165,33 @@ public partial class MapObject : MonoBehaviour
             ExpandNode(node);
         }
 
+        CommitOpenNode();
+        CommitCloseNode();
+    }
+
+    private void CommitOpenNode()
+    {
         foreach (var node in openNodesBuffer)
         {
             Debug.Log($"Open : {node.name}");
             OpenNode(node);
         }
+        openNodesBuffer.Clear();
+    }
 
+    private void CommitCloseNode()
+    {
         foreach (var node in closedNodesBuffer)
         {
             Debug.Log($"Close : {node.name}");
             CloseNode(node);
         }
-
-        openNodesBuffer.Clear();
         closedNodesBuffer.Clear();
     }
 
     private void ExpandNode(NodeObject node)
     {
-        if (IsCloseNode(node))
+        if (IsCloseNode(node) || node.IsEmpty())
         {
             return;
         }
@@ -204,13 +220,38 @@ public partial class MapObject : MonoBehaviour
         closedNodesBuffer.Add(node);
     }
 
+    public void Rotate()
+    {
+        if (!ReferenceEquals(null, candidateFix))
+        {
+            candidateFix.Rotate();
+        }
+    }
+
+    public void Flip()
+    {
+        if (!ReferenceEquals(null, candidateFix))
+        {
+            candidateFix.Flip();
+        }
+    }
+
     public void FixNode()
     {
-        if (IsConstructable(candidateFix))
+        if (!ReferenceEquals(null, candidateFix))
         {
-            Destroy(candidateHand);
-            candidateHand = null;
-            candidateFix = null;
+            if (IsConstructable(candidateFix))
+            {
+                ExpandNodes();
+                Debug.Log($"Fix suc : {candidateFix.name}");
+                CloseNode(candidateFix);
+                candidateId = 0;
+                candidateFix = null;
+            }
+            else
+            {
+                Debug.Log($"Fix fail : {candidateFix.name}");
+            }
         }
     }
 
@@ -226,10 +267,16 @@ public partial class MapObject : MonoBehaviour
 
     private void OnClickNode(NodeObject node)
     {
-        if (!ReferenceEquals(null, candidateHand))
+        if (node.NodeState == ENodeState.Close)
         {
-            var route = dataManager.RouteData[candidateHand.Id];
+            return;
+        }
+
+        if (ReferenceEquals(null, candidateFix))
+        {
+            var route = dataManager.RouteData[candidateId];
             var sprite = spriteManager.RouteSprites[route.Name];
+            Debug.Log($"Build suc : {route.Name}");
             node.SetupNode(route, sprite);
             candidateFix = node;
         }
@@ -237,22 +284,36 @@ public partial class MapObject : MonoBehaviour
 
     public bool IsConstructable(NodeObject node)
     {
+        int connectCount = 0;
         for (int i = 0; i < Direction.Length; i++)
         {
+            Vector2Int neighborPos = node.Position + Direction[i];
+            var neighbor = entireNodes[neighborPos];
+            
             EJointType joint = node.GetJoint(i);
-            if (joint != EJointType.None)
+            EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
+            if (IsCloseNode(neighbor))
             {
-                Vector2Int neighborPos = node.Position + Direction[i];
-                var neighbor = entireNodes[neighborPos];
-                EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
-                if (neighborJoint != joint)
+                if (neighborJoint != EJointType.None
+                    && neighborJoint == joint)
                 {
-                    return false;
+                    connectCount++;
                 }
+                else if (neighborJoint == EJointType.None
+                    && joint != EJointType.None)
+                {
+                    connectCount++;
+                }
+            }
+            else
+            {
+                connectCount++;
             }
         }
 
-        return true;
+        Debug.Log($"Connect : {connectCount}");
+
+        return (connectCount == 4);
     }
 
 #if UNITY_EDITOR

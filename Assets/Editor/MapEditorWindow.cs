@@ -28,100 +28,19 @@ public class MapEditorWindow : EditorWindow
     private string[] nodeTypes;
     private int selectedNodeTypeIndex;
 
+    [MenuItem("DevAssist/Map Editor")]
+    public static void OpenWindow()
+    {
+        EditorWindow window = GetWindow(typeof(MapEditorWindow));
+        window.Show();
+    }
+
     private void Awake()
     {
         titleContent = new GUIContent("Map Editor");
         minSize = new Vector2(300, 400);
         maxSize = new Vector2(300, 1200);
         Refresh();
-    }
-
-    private void Refresh(bool isForce = false)
-    {
-        RefreshMapList(isForce);
-
-        if (string.IsNullOrEmpty(lastPath) || isForce)
-        {
-            lastPath = Application.dataPath;
-        }
-
-        if (null == mapData || isForce)
-        {
-            mapData = new MapModel();
-        }
-
-        if (ReferenceEquals(null, map) || isForce)
-        {
-            map = FindObjectOfType<MapObject>();
-        }
-
-        if (null == routeData || isForce)
-        {
-            routeData = new Dictionary<int, RouteModel>();
-            MakeDatabase("Route", ref routeData);
-            routes = new List<string>();
-            foreach (var route in routeData)
-            {
-                routes.Add(route.Value.Name);
-            }
-        }
-
-        nodeTypes = new string[(int)ENodeType.Count];
-        for (int i = 0; i < (int)ENodeType.Count; i++)
-        {
-            nodeTypes[i] = ((ENodeType)i).ToString();
-        }
-
-        if (null == spriteData || isForce)
-        {
-            spriteData = new Dictionary<string, Sprite>();
-            var sprites = AssetDatabase.LoadAllAssetsAtPath($"Assets/Sprites/RailRoadSprites.psd");
-            for (int i = 0; i < sprites.Length; i++)
-            {
-                var sprite = sprites[i] as Sprite;
-                if (sprite != null)
-                {
-                    spriteData.Add(sprites[i].name, sprite);
-                }
-            }
-        }
-    }
-
-    private static void RefreshMapList(bool isForce)
-    {
-        if (null == mapList || isForce)
-        {
-            mapList = new List<MapModel>();
-        }
-
-        mapList.Clear();
-        var maps = Directory.GetFiles($"{Application.dataPath}/Data/Map", "*.json");
-        for (int i = 0; i < maps.Length; i++)
-        {
-            var mapJsonString = File.ReadAllText(maps[i]);
-            var mapJsonObj = JObject.Parse(mapJsonString).ToObject<MapModel>();
-            mapJsonObj.Filename = maps[i];
-            mapList.Add(mapJsonObj);
-        }
-    }
-
-    private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)
-    {
-        database = new Dictionary<int, T>();
-        var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Data/{dataname}.json"));
-        var routeArray = json[dataname].ToArray();
-        for (int i = 0; i < routeArray.Length; i++)
-        {
-            var route = routeArray[i].ToObject<T>();
-            database.Add((route as IActor).Id, route);
-        }
-    }
-
-    [MenuItem("DevAssist/Map Editor")]
-    public static void OpenWindow()
-    {
-        EditorWindow window = GetWindow(typeof(MapEditorWindow));
-        window.Show();
     }
 
     private void OnGUI()
@@ -177,7 +96,7 @@ public class MapEditorWindow : EditorWindow
 
         #region Map Edit
         EditorGUILayout.BeginVertical();
-        if (null!= mapData)
+        if (null != mapData)
         {
             EditorGUILayout.LabelField("Map Mod");
             EditorGUILayout.BeginHorizontal();
@@ -313,6 +232,87 @@ public class MapEditorWindow : EditorWindow
             }
         }
         EditorGUILayout.EndVertical();
+    }
+
+    private void Refresh(bool isForce = false)
+    {
+        RefreshMapList(isForce);
+
+        if (string.IsNullOrEmpty(lastPath) || isForce)
+        {
+            lastPath = Application.dataPath;
+        }
+
+        if (null == mapData || isForce)
+        {
+            mapData = new MapModel();
+        }
+
+        if (ReferenceEquals(null, map) || isForce)
+        {
+            map = FindObjectOfType<MapObject>();
+        }
+
+        if (null == routeData || isForce)
+        {
+            routeData = new Dictionary<int, RouteModel>();
+            MakeDatabase("Route", ref routeData);
+            routes = new List<string>();
+            foreach (var route in routeData)
+            {
+                routes.Add(route.Value.Name);
+            }
+        }
+
+        nodeTypes = new string[(int)ENodeType.Count];
+        for (int i = 0; i < (int)ENodeType.Count; i++)
+        {
+            nodeTypes[i] = ((ENodeType)i).ToString();
+        }
+
+        if (null == spriteData || isForce)
+        {
+            spriteData = new Dictionary<string, Sprite>();
+            var sprites = AssetDatabase.LoadAllAssetsAtPath($"Assets/Sprites/RailRoadSprites.psd");
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                var sprite = sprites[i] as Sprite;
+                if (sprite != null)
+                {
+                    spriteData.Add(sprites[i].name, sprite);
+                }
+            }
+        }
+    }
+
+    private static void RefreshMapList(bool isForce)
+    {
+        if (null == mapList || isForce)
+        {
+            mapList = new List<MapModel>();
+        }
+
+        mapList.Clear();
+        var maps = Directory.GetFiles($"{Application.dataPath}/Data/Map", "*.json");
+        for (int i = 0; i < maps.Length; i++)
+        {
+            var mapJsonString = File.ReadAllText(maps[i]);
+            var mapJsonObj = JObject.Parse(mapJsonString).ToObject<MapModel>();
+            mapJsonObj.Filename = maps[i];
+            mapList.Add(mapJsonObj);
+        }
+    }
+
+    private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)
+    {
+        database = new Dictionary<int, T>();
+        var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Data/{dataname}.json"));
+        var routeArray = json[dataname].ToArray();
+        for (int i = 0; i < routeArray.Length; i++)
+        {
+            var route = routeArray[i].ToObject<T>();
+            database.Add((route as IActor).Id, route);
+        }
     }
 
     private static void UpdateLastPath(string path)

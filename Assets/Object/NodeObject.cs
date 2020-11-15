@@ -81,7 +81,12 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
     {
         routeId = route.Id;
         name = route.Name;
+        Joints = route.Joints;
         routeRenderer.sprite = sprite;
+        if (routeId == 0)
+        {
+            ResetNode();
+        }
     }
 
     public void SetupNode(NodeModel nodeData, RouteModel routeData, Sprite sprite)
@@ -90,7 +95,6 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
         NodeType = nodeData.NodeType;
         Position = nodeData.Position;
         Rotate((int)nodeData.Direction);
-        Joints = routeData.Joints;
     }
 
     public void ResetNode()
@@ -119,5 +123,10 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
     public void Close()
     {
         NodeState = ENodeState.Close;
+    }
+
+    public bool IsEmpty()
+    {
+        return Id == 0;
     }
 }
