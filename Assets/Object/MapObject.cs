@@ -147,7 +147,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
     private void NewNode(NodeObject node)
     {
-        entireNodes.Add(node.Position, node);
+        entireNodes?.Add(node.Position, node);
     }
 
     private void OpenNode(NodeObject node)
@@ -347,6 +347,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
         mapData.Nodes = new NodeModel[nodes.Length];
         for (int i = 0; i < nodes.Length; i++)
         {
+            mapData.Nodes[i] = new NodeModel();
             mapData.Nodes[i].Convert(nodes[i]);
         }
 
