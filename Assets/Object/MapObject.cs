@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public partial class MapObject : MonoBehaviour
+public partial class MapObject : MonoBehaviour, IGameActor
 {
     public NodeObject nodePrefab;
+    public HandObject hand;
 
     private DataManager dataManager;
     private SpriteManager spriteManager;
@@ -20,6 +21,8 @@ public partial class MapObject : MonoBehaviour
 
     public int candidateId;
     public NodeObject candidateFix;
+
+    public int Id { get; set; }
 
     public void Init()
     {
@@ -128,16 +131,19 @@ public partial class MapObject : MonoBehaviour
                 case ENodeType.None:
                 case ENodeType.Normal:
                 case ENodeType.Wall:
+                    CloseNode(node.Value);
                     break;
             }
         }
     }
 
+#if UNITY_EDITOR
     public void SetCandidate(int id)
     {
         candidateId = id;
         candidateFix = null;
     }
+#endif
 
     private void NewNode(NodeObject node)
     {
@@ -267,42 +273,60 @@ public partial class MapObject : MonoBehaviour
 
     private void OnClickNode(NodeObject node)
     {
-        if (node.NodeState == ENodeState.Close)
+        if (node.NodeState != ENodeState.Open)
         {
             return;
         }
 
-        if (ReferenceEquals(null, candidateFix))
+        if (!ReferenceEquals(null, candidateFix))
         {
-            var route = dataManager.RouteData[candidateId];
-            var sprite = spriteManager.RouteSprites[route.Name];
-            Debug.Log($"Build suc : {route.Name}");
-            node.SetupNode(route, sprite);
-            candidateFix = node;
+            candidateFix.ResetNode();
         }
+
+        candidateId = hand.Dice.DiceId;
+        var route = dataManager.RouteData[candidateId];
+        var sprite = spriteManager.RouteSprites[route.Name];
+        node.SetupNode(route, sprite);
+        Debug.Log($"Build : {route.Name}");
+        candidateFix = node;
     }
 
     public bool IsConstructable(NodeObject node)
     {
+        int closeConnectCount = 0;
         int connectCount = 0;
         for (int i = 0; i < Direction.Length; i++)
         {
             Vector2Int neighborPos = node.Position + Direction[i];
             var neighbor = entireNodes[neighborPos];
-            
+            if (neighbor.NodeType == ENodeType.Wall)
+            {
+                connectCount++;
+                continue;
+            }
+
             EJointType joint = node.GetJoint(i);
             EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
             if (IsCloseNode(neighbor))
             {
-                if (neighborJoint != EJointType.None
-                    && neighborJoint == joint)
+                if (joint == EJointType.None)
                 {
-                    connectCount++;
+                    if (neighborJoint != EJointType.None)
+                    {
+                        connectCount++;
+                    }
                 }
-                else if (neighborJoint == EJointType.None
-                    && joint != EJointType.None)
+                else
                 {
-                    connectCount++;
+                    if (neighborJoint == EJointType.None)
+                    {
+                        connectCount++;
+                    }
+                    else if (neighborJoint == joint)
+                    {
+                        connectCount++;
+                        closeConnectCount++;
+                    }
                 }
             }
             else
@@ -311,9 +335,9 @@ public partial class MapObject : MonoBehaviour
             }
         }
 
-        Debug.Log($"Connect : {connectCount}");
+        Debug.Log($"Connect : {connectCount} / {closeConnectCount}");
 
-        return (connectCount == 4);
+        return (connectCount == 4) && (closeConnectCount > 0);
     }
 
 #if UNITY_EDITOR
@@ -328,6 +352,11 @@ public partial class MapObject : MonoBehaviour
 
         var save = JObject.FromObject(mapData).ToString(Formatting.Indented);
         File.WriteAllText(path, save);
+    }
+
+    public void Init(int id)
+    {
+        throw new NotImplementedException();
     }
 #endif
 }

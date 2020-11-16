@@ -11,5 +11,9 @@ public class StageListModel : IActor
 public class StageModel
 {
     public string Name { get; set; }
+    public int Round { get; set; }
+    public int MapId { get; set; }
+    [JsonIgnore]
     public string MapName { get; set; }
+    public int[] Dice { get; set; }
 }

@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
+public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
 {
-    public int Id { get => routeId; set => routeId = value; }
-    public int routeId;
+    public int Id { get; set; }
     public int direction = 0;
     public bool isFlip = false;
     public ENodeType NodeType = ENodeType.Normal;
@@ -53,6 +52,11 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
         onClick?.Invoke(this);
     }
 
+    public void Init(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Flip()
     {
         isFlip = !isFlip;
@@ -79,11 +83,11 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
 
     public void SetupNode(RouteModel route, Sprite sprite)
     {
-        routeId = route.Id;
+        Id = route.Id;
         name = route.Name;
         Joints = route.Joints;
         routeRenderer.sprite = sprite;
-        if (routeId == 0)
+        if (Id == 0)
         {
             ResetNode();
         }
@@ -100,7 +104,7 @@ public class NodeObject : MonoBehaviour, IActor, IPointerClickHandler
     public void ResetNode()
     {
         name = "EmptyNode";
-        routeId = 0;
+        Id = 0;
         direction = 0;
         routeRenderer.sprite = null;
         UpdateRotation();

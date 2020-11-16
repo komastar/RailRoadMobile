@@ -10,7 +10,7 @@ public class NodeModel
 
     public void Convert(NodeObject node)
     {
-        Id = node.routeId;
+        Id = node.Id;
         Position = node.Position;
         Direction = (EDirection)node.direction;
         NodeType = node.NodeType;

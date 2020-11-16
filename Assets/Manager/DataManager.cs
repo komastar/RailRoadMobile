@@ -19,7 +19,7 @@ public class DataManager : Singleton<DataManager>
         StageListData = MakeDatabase<StageListModel>("Stage");
         foreach (var stageItem in StageListData)
         {
-            string path = $"Assets/Data/Stage/{stageItem.Value.Name}";
+            string path = $"Assets/Data/Stage/{stageItem.Value.Name}.json";
             var jsonTextAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
             stageItem.Value.Stage = JObject.Parse(jsonTextAsset.text).ToObject<StageModel>();
         }

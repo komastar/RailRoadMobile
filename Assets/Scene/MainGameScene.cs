@@ -19,13 +19,15 @@ public class MainGameScene : MonoBehaviour
         DataManager.Get();
 
         mapObject.Init();
-        handObject.Init();
 #if UNITY_EDITOR
-        handObject.stage = JObject.Parse(stageJson.text).ToObject<StageModel>();
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
         mapObject.MakeMap(map);
         mapObject.OpenMap();
+        mapObject.hand = handObject;
+
+        handObject.stage = JObject.Parse(stageJson.text).ToObject<StageModel>();
 #endif
+        handObject.Init();
     }
 
     public void OnClickRotate()
