@@ -98,7 +98,7 @@
             "Id": 2011,
             "Name": "JC-Corner-Rail-Road",
             "IsRotate": true,
-            "IsFlip": false,
+            "IsFlip": true,
             "IsTransfer": true,
             "Joints": [
                 "Rail",

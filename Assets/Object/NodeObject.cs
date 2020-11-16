@@ -5,22 +5,29 @@ using UnityEngine.EventSystems;
 [SelectionBase]
 public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
 {
-    public int Id { get; set; }
+    private readonly static Vector3 flipScale = new Vector3(-1f, 1f, 1f);
+
+    private DataManager dataManager;
+    private SpriteManager spriteManager;
+
+    public int Id { get => RouteData.Id; set => RouteData.Id = value; }
     public int direction = 0;
     public bool isFlip = false;
     public ENodeType NodeType = ENodeType.Normal;
     public ENodeState NodeState = ENodeState.None;
     public EJointType[] Joints;
     public Vector2Int Position;
-    public SpriteRenderer routeRenderer;
+    public SpriteRenderer RouteRenderer;
     public Action<NodeObject> onClick;
+
+    public RouteModel RouteData;
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + routeRenderer.transform.up * -.4f, transform.position + routeRenderer.transform.up * .4f);
-        Gizmos.DrawLine(transform.position + routeRenderer.transform.right * .25f, transform.position + routeRenderer.transform.up * .4f);
-        Gizmos.DrawLine(transform.position + routeRenderer.transform.right * -.25f, transform.position + routeRenderer.transform.up * .4f);
+        Gizmos.DrawLine(transform.position + RouteRenderer.transform.up * -.4f, transform.position + RouteRenderer.transform.up * .4f);
+        Gizmos.DrawLine(transform.position + RouteRenderer.transform.right * .25f, transform.position + RouteRenderer.transform.up * .4f);
+        Gizmos.DrawLine(transform.position + RouteRenderer.transform.right * -.25f, transform.position + RouteRenderer.transform.up * .4f);
 
         switch (NodeState)
         {
@@ -52,16 +59,37 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
 
     public void Init(int id)
     {
-        throw new NotImplementedException();
+        dataManager = DataManager.Get();
+        spriteManager = SpriteManager.Get();
+        RouteData = dataManager.RouteData[id];
+        RouteRenderer.sprite = spriteManager.GetSprite(RouteData.Name);
     }
 
     public void Flip()
     {
+        if (!RouteData.IsFlip)
+        {
+            return;
+        }
+
         isFlip = !isFlip;
+        if (isFlip)
+        {
+            transform.localScale = flipScale;
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+        }
     }
 
     public void Rotate(int dir = -1)
     {
+        if (!RouteData.IsRotate)
+        {
+            return;
+        }
+
         if (dir == -1)
         {
             direction++;
@@ -76,15 +104,15 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
     private void UpdateRotation()
     {
         Vector3 rotation = new Vector3(0f, 0f, direction * 90f);
-        routeRenderer.transform.rotation = Quaternion.Euler(rotation);
+        RouteRenderer.transform.rotation = Quaternion.Euler(rotation);
     }
 
     public void SetupNode(RouteModel route, Sprite sprite)
     {
-        Id = route.Id;
-        name = route.Name;
-        Joints = route.Joints;
-        routeRenderer.sprite = sprite;
+        RouteData = route;
+        name = RouteData.Name;
+        Joints = RouteData.Joints;
+        RouteRenderer.sprite = sprite;
         if (Id == 0)
         {
             ResetNode();
@@ -104,14 +132,21 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
         name = "EmptyNode";
         Id = 0;
         direction = 0;
-        routeRenderer.sprite = null;
+        RouteRenderer.sprite = null;
         UpdateRotation();
     }
 
     public EJointType GetJoint(int index)
     {
+        if (isFlip)
+        {
+            if (index == 1 || index == 3)
+            {
+                index = (index + 2) % 4;
+            }
+        }
+
         int joint = 4 - direction + index;
-        joint = isFlip ? joint + 2 : joint;
         joint %= 4;
 
         return Joints[joint];
