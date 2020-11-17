@@ -325,6 +325,13 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
             EJointType joint = node.GetJoint(i);
             EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
+            if (joint == neighborJoint)
+            {
+                connectCount++;
+                closeConnectCount++;
+                continue;
+            }
+
             if (IsCloseNode(neighbor))
             {
                 if (joint == EJointType.None)
@@ -336,11 +343,6 @@ public partial class MapObject : MonoBehaviour, IGameActor
                     if (neighborJoint == EJointType.None)
                     {
                         connectCount++;
-                    }
-                    else if (neighborJoint == joint)
-                    {
-                        connectCount++;
-                        closeConnectCount++;
                     }
                 }
             }
