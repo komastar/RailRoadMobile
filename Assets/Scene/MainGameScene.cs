@@ -92,6 +92,7 @@ public class MainGameScene : MonoBehaviour
             if (RoundCount + 1 > stageData.Round)
             {
                 mapObject.Close();
+                OnGameOver();
             }
             else
             {
@@ -104,5 +105,10 @@ public class MainGameScene : MonoBehaviour
     public void OnRoundCountChanged(int round)
     {
         roundText.text = round.ToString();
+    }
+
+    public void OnGameOver()
+    {
+        int score = mapObject.GetScore();
     }
 }

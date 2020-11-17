@@ -19,6 +19,8 @@ public partial class MapObject : MonoBehaviour, IGameActor
     private HashSet<NodeObject> closedNodes;
     private HashSet<NodeObject> closedNodesBuffer;
 
+    private Dictionary<NodeObject, SortedSet<NodeObject>> connExits = new Dictionary<NodeObject, SortedSet<NodeObject>>();
+
     public int candidateId;
     public NodeObject candidateFix;
     public Action onFixPhaseExit;
@@ -102,6 +104,43 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
         Camera.main.orthographicSize = orthoSize;
+    }
+
+    public int GetScore()
+    {
+        foreach (var node in entireNodes)
+        {
+            if (node.Value.NodeType == ENodeType.Entrance)
+            {
+                connExits.Add(node.Value, new SortedSet<NodeObject>() { node.Value });
+            }
+        }
+
+        foreach (var node in connExits)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                CollectNeighborRecursive(node.Key, node.Key.Neighbors[i]);
+            }
+            Debug.Log($"Score : {node.Key.name} - {node.Value.Count - 1}");
+        }
+
+        return 0;
+    }
+
+    private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor)
+    {
+        if (!ReferenceEquals(null, neighbor))
+        {
+            if (!connExits[root].Contains(neighbor))
+            {
+                connExits[root].Add(neighbor);
+                for (int i = 0; i < 4; i++)
+                {
+                    CollectNeighborRecursive(root, neighbor.Neighbors[i]);
+                }
+            }
+        }
     }
 
     public void Close()
@@ -257,6 +296,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
         {
             if (IsConstructable(candidateFix))
             {
+                FixNode(candidateFix);
                 ExpandNodes();
                 Debug.Log($"Fix suc : {candidateFix.name}");
                 CloseNode(candidateFix);
@@ -268,6 +308,32 @@ public partial class MapObject : MonoBehaviour, IGameActor
             else
             {
                 Debug.Log($"Fix fail : {candidateFix.name}");
+            }
+        }
+    }
+
+    private void FixNode(NodeObject node)
+    {
+        Vector2Int pos = node.Position;
+        for (int i = 0; i < Direction.Length; i++)
+        {
+            EJointType joint = node.GetJoint(i);
+            if (joint != EJointType.None)
+            {
+                if (node.Neighbors[i] == null)
+                {
+                    Vector2Int neighborPos = pos + Direction[i];
+                    if (entireNodes.ContainsKey(neighborPos))
+                    {
+                        NodeObject neighbor = entireNodes[neighborPos];
+                        EJointType nJoint = neighbor.GetJoint2(i);
+                        if (joint == nJoint)
+                        {
+                            node.Neighbors[i] = neighbor;
+                            neighbor.Neighbors[(i + 2) % 4] = node;
+                        }
+                    }
+                }
             }
         }
     }

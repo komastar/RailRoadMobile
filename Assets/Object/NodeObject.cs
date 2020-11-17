@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
+public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComparable<NodeObject>
 {
     private readonly static Vector3 flipScale = new Vector3(-1f, 1f, 1f);
 
@@ -19,6 +19,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
     public Vector2Int Position;
     public SpriteRenderer RouteRenderer;
     public Action<NodeObject> onClick;
+    public NodeObject[] Neighbors;
 
     public RouteModel RouteData;
 
@@ -64,6 +65,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
         spriteManager = SpriteManager.Get();
         RouteData = dataManager.RouteData[id];
         RouteRenderer.sprite = spriteManager.GetSprite(RouteData.Name);
+        Neighbors = new NodeObject[4];
     }
 
     public void Flip()
@@ -127,6 +129,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
         NodeType = nodeData.NodeType;
         Position = nodeData.Position;
         Rotate((int)nodeData.Direction);
+        Neighbors = new NodeObject[4];
     }
 
     public void ResetNode()
@@ -155,6 +158,11 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
         return Joints[joint];
     }
 
+    public EJointType GetJoint2(int index)
+    {
+        return GetJoint((index + 2) % 2);
+    }
+
     public void Open()
     {
         NodeState = ENodeState.Open;
@@ -168,5 +176,23 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
     public bool IsEmpty()
     {
         return Id == 0;
+    }
+
+    public int CompareTo(NodeObject other)
+    {
+        int pos = Position.x * 1000 + Position.y;
+        int otherPos = other.Position.x * 1000 + other.Position.y;
+        if (pos > otherPos)
+        {
+            return -1;
+        }
+        else if (pos == otherPos)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
     }
 }
