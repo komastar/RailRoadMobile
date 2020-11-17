@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HandObject : MonoBehaviour, IGameActor
@@ -23,6 +24,11 @@ public class HandObject : MonoBehaviour, IGameActor
     public void Init(int id = 0)
     {
         dices = new List<DiceObject>();
+    }
+
+    private void MakeDices()
+    {
+        Debug.Log($"Make Dices : {stage.Dice.Length}");
         for (int i = 0; i < stage.Dice.Length; i++)
         {
             var dice = Instantiate(dicePrefab, transform);
@@ -32,8 +38,19 @@ public class HandObject : MonoBehaviour, IGameActor
         }
     }
 
+    private void ClearDices()
+    {
+        for (int i = 0; i < dices.Count; i++)
+        {
+            Destroy(dices[i].gameObject);
+        }
+        dices.Clear();
+    }
+
     public void Roll()
     {
+        ClearDices();
+        MakeDices();
         for (int i = 0; i < dices.Count; i++)
         {
             dices[i].Roll();
@@ -43,5 +60,22 @@ public class HandObject : MonoBehaviour, IGameActor
     public void OnClickDice(DiceObject dice)
     {
         Dice = dice;
+    }
+
+    public void DisposeNode()
+    {
+        dices.Remove(Dice);
+        Destroy(Dice.gameObject);
+        Dice = null;
+    }
+
+    public int GetDiceCount()
+    {
+        return dices.Count;
+    }
+
+    public int GetDice()
+    {
+        return ReferenceEquals(null, Dice) ? -1 : Dice.DiceId;
     }
 }

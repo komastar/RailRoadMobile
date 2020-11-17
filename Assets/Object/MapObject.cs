@@ -21,6 +21,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
     public int candidateId;
     public NodeObject candidateFix;
+    public Action onFixPhaseExit;
 
     public int Id { get; set; }
 
@@ -101,6 +102,14 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
         Camera.main.orthographicSize = orthoSize;
+    }
+
+    public void Close()
+    {
+        foreach (var node in entireNodes)
+        {
+            CloseNode(node.Value);
+        }
     }
 
     public void Clear()
@@ -251,8 +260,10 @@ public partial class MapObject : MonoBehaviour, IGameActor
                 ExpandNodes();
                 Debug.Log($"Fix suc : {candidateFix.name}");
                 CloseNode(candidateFix);
+                hand.DisposeNode();
                 candidateId = 0;
                 candidateFix = null;
+                onFixPhaseExit?.Invoke();
             }
             else
             {
@@ -283,7 +294,14 @@ public partial class MapObject : MonoBehaviour, IGameActor
             candidateFix.ResetNode();
         }
 
-        candidateId = hand.Dice.DiceId;
+        candidateId = hand.GetDice();
+        if (candidateId < 0)
+        {
+            Debug.Log($"No Candidate Node");
+
+            return;
+        }
+
         var route = dataManager.RouteData[candidateId];
         var sprite = spriteManager.RouteSprites[route.Name];
         node.SetupNode(route, sprite);
@@ -311,10 +329,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
             {
                 if (joint == EJointType.None)
                 {
-                    if (neighborJoint != EJointType.None)
-                    {
-                        connectCount++;
-                    }
+                    connectCount++;
                 }
                 else
                 {

@@ -10,7 +10,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
     private DataManager dataManager;
     private SpriteManager spriteManager;
 
-    public int Id { get => RouteData.Id; set => RouteData.Id = value; }
+    public int Id { get; set; }
     public int direction = 0;
     public bool isFlip = false;
     public ENodeType NodeType = ENodeType.Normal;
@@ -59,6 +59,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
 
     public void Init(int id)
     {
+        Id = id;
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
         RouteData = dataManager.RouteData[id];
@@ -109,6 +110,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
 
     public void SetupNode(RouteModel route, Sprite sprite)
     {
+        Id = route.Id;
         RouteData = route;
         name = RouteData.Name;
         Joints = RouteData.Joints;
@@ -133,6 +135,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler
         Id = 0;
         direction = 0;
         RouteRenderer.sprite = null;
+        Joints = new EJointType[4];
         UpdateRotation();
     }
 
