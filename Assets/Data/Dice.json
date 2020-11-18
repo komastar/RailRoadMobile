@@ -35,6 +35,27 @@
                 4031,
                 4032
             ]
+        },
+        {
+            "Id": 401,
+            "Name": "TestDice1",
+            "Routes": [
+                2002
+            ]
+        },
+        {
+            "Id": 402,
+            "Name": "TestDice2",
+            "Routes": [
+                2001
+            ]
+        },
+        {
+            "Id": 403,
+            "Name": "TestDice3",
+            "Routes": [
+                2011
+            ]
         }
     ]
 }

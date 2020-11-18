@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public partial class MapObject : MonoBehaviour, IGameActor
@@ -19,7 +20,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
     private HashSet<NodeObject> closedNodes;
     private HashSet<NodeObject> closedNodesBuffer;
 
-    private Dictionary<NodeObject, SortedSet<NodeObject>> connExits = new Dictionary<NodeObject, SortedSet<NodeObject>>();
+    private Dictionary<NodeObject, HashSet<Vector2Int>> connExits = new Dictionary<NodeObject, HashSet<Vector2Int>>();
 
     public int candidateId;
     public NodeObject candidateFix;
@@ -112,7 +113,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
         {
             if (node.Value.NodeType == ENodeType.Entrance)
             {
-                connExits.Add(node.Value, new SortedSet<NodeObject>() { node.Value });
+                connExits.Add(node.Value, new HashSet<Vector2Int>() { node.Value.Position });
             }
         }
 
@@ -122,8 +123,43 @@ public partial class MapObject : MonoBehaviour, IGameActor
             {
                 CollectNeighborRecursive(node.Key, node.Key.Neighbors[i]);
             }
-            Debug.Log($"Score : {node.Key.name} - {node.Value.Count - 1}");
         }
+
+        Dictionary<SortedSet<NodeObject>, int> exitScore = new Dictionary<SortedSet<NodeObject>, int>();
+        HashSet<Vector2Int> passNode = new HashSet<Vector2Int>();
+        foreach (var node in connExits)
+        {
+            if (passNode.Contains(node.Key.Position))
+            {
+                continue;
+            }
+
+            SortedSet<NodeObject> exitGroup = new SortedSet<NodeObject>();
+            foreach (var comp in connExits)
+            {
+                if (node.Key.Position != comp.Key.Position)
+                {
+                    if (node.Value.Contains(comp.Key.Position) && comp.Value.Contains(node.Key.Position))
+                    {
+                        exitGroup.Add(node.Key);
+                        exitGroup.Add(comp.Key);
+                        passNode.Add(node.Key.Position);
+                        passNode.Add(comp.Key.Position);
+                    }
+                }
+            }
+            exitScore.Add(exitGroup, node.Value.Count);
+        }
+
+        int totalExitScore = 0;
+        foreach (var score in exitScore)
+        {
+            int scoreCalc = (score.Key.Count - 1) * 4;
+            totalExitScore += scoreCalc;
+            Debug.Log($"Score : {scoreCalc}");
+        }
+
+        Debug.Log($"TotalExitScore : {totalExitScore}");
 
         return 0;
     }
@@ -132,9 +168,9 @@ public partial class MapObject : MonoBehaviour, IGameActor
     {
         if (!ReferenceEquals(null, neighbor))
         {
-            if (!connExits[root].Contains(neighbor))
+            if (!connExits[root].Contains(neighbor.Position))
             {
-                connExits[root].Add(neighbor);
+                connExits[root].Add(neighbor.Position);
                 for (int i = 0; i < 4; i++)
                 {
                     CollectNeighborRecursive(root, neighbor.Neighbors[i]);

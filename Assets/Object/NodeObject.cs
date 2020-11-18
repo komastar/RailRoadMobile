@@ -84,6 +84,10 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
         {
             transform.localScale = Vector3.one;
         }
+
+        var tempJoint = Joints[1];
+        Joints[1] = Joints[3];
+        Joints[3] = tempJoint;
     }
 
     public void Rotate(int dir = -1)
@@ -104,6 +108,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
         direction %= 4;
         UpdateRotation();
     }
+
     private void UpdateRotation()
     {
         Vector3 rotation = new Vector3(0f, 0f, direction * 90f);
@@ -115,7 +120,8 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
         Id = route.Id;
         RouteData = route;
         name = RouteData.Name;
-        Joints = RouteData.Joints;
+        Joints = new EJointType[4];
+        RouteData.Joints.CopyTo(Joints, 0);
         RouteRenderer.sprite = sprite;
         if (Id == 0)
         {
@@ -144,14 +150,6 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
 
     public EJointType GetJoint(int index)
     {
-        if (isFlip)
-        {
-            if (index == 1 || index == 3)
-            {
-                index = (index + 2) % 4;
-            }
-        }
-
         int joint = 4 - direction + index;
         joint %= 4;
 
@@ -160,7 +158,7 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
 
     public EJointType GetJoint2(int index)
     {
-        return GetJoint((index + 2) % 2);
+        return GetJoint((index + 2) % 4);
     }
 
     public void Open()
