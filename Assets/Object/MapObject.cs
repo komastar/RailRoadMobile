@@ -6,8 +6,16 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public partial class MapObject : MonoBehaviour, IGameActor
+public class MapObject : MonoBehaviour, IGameActor
 {
+    public static readonly Vector2Int[] Direction = new Vector2Int[4]
+    {
+        Vector2Int.up
+        , Vector2Int.left
+        , Vector2Int.down
+        , Vector2Int.right
+    };
+
     public NodeObject nodePrefab;
     public HandObject hand;
 
@@ -31,6 +39,8 @@ public partial class MapObject : MonoBehaviour, IGameActor
     public void Init()
     {
         candidateId = 0;
+        onFixPhaseExit = null;
+
         entireNodes = new Dictionary<Vector2Int, NodeObject>();
         openNodes = new HashSet<NodeObject>();
         closedNodes = new HashSet<NodeObject>();
@@ -161,7 +171,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
         Debug.Log($"TotalExitScore : {totalExitScore}");
 
-        return 0;
+        return totalExitScore;
     }
 
     private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor)
@@ -189,6 +199,12 @@ public partial class MapObject : MonoBehaviour, IGameActor
 
     public void Clear()
     {
+        entireNodes?.Clear();
+        openNodes?.Clear();
+        closedNodes?.Clear();
+        openNodesBuffer?.Clear();
+        closedNodesBuffer?.Clear();
+
         var children = GetComponentsInChildren<NodeObject>();
         for (int i = 0; i < children.Length; i++)
         {
@@ -384,7 +400,7 @@ public partial class MapObject : MonoBehaviour, IGameActor
         return closedNodes.Contains(node);
     }
 
-    private void OnClickNode(NodeObject node)
+    public void OnClickNode(NodeObject node)
     {
         if (node.NodeState != ENodeState.Open)
         {
@@ -459,6 +475,11 @@ public partial class MapObject : MonoBehaviour, IGameActor
         return (connectCount == 4) && (closeConnectCount > 0);
     }
 
+    public void Init(int id)
+    {
+        throw new NotImplementedException();
+    }
+
 #if UNITY_EDITOR
     public void Save(string path, MapModel mapData)
     {
@@ -474,9 +495,9 @@ public partial class MapObject : MonoBehaviour, IGameActor
         File.WriteAllText(path, save);
     }
 
-    public void Init(int id)
+    public NodeObject GetNode(Vector2Int pos)
     {
-        throw new NotImplementedException();
+        return entireNodes[pos];
     }
 #endif
 }

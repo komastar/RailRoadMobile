@@ -13,7 +13,7 @@ public class MainGameScene : MonoBehaviour
 
     public MapObject mapObject;
     public HandObject handObject;
-
+    public ScoreObject scoreObject;
     public StageModel stageData;
 
     private int roundCount;
@@ -35,11 +35,7 @@ public class MainGameScene : MonoBehaviour
     private void Awake()
     {
         Init();
-    }
-
-    private void Start()
-    {
-        handObject.Roll();
+        MakeStage();
     }
 
     private void Init()
@@ -47,22 +43,45 @@ public class MainGameScene : MonoBehaviour
         SpriteManager.Get();
         DataManager.Get();
 
-        RoundCount = 1;
+        if (ReferenceEquals(null, scoreObject))
+        {
+            scoreObject = FindObjectOfType<ScoreObject>();
+        }
+        scoreObject.Init();
+        scoreObject.onClose += MakeStage;
 
+        if (ReferenceEquals(null, handObject))
+        {
+            handObject = FindObjectOfType<HandObject>();
+        }
+        handObject.Init();
+
+        if (ReferenceEquals(null, mapObject))
+        {
+            mapObject = FindObjectOfType<MapObject>();
+        }
         mapObject.Init();
         mapObject.onFixPhaseExit += OnFixPhaseExit;
+
+        onRoundCountChanged = null;
+        onRoundCountChanged += OnRoundCountChanged;
+    }
+
+    private void MakeStage()
+    {
+        RoundCount = 1;
+
+        mapObject.hand = handObject;
 #if UNITY_EDITOR
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
         mapObject.MakeMap(map);
         mapObject.OpenMap();
-        mapObject.hand = handObject;
 
         stageData = JObject.Parse(stageJson.text).ToObject<StageModel>();
         handObject.stage = stageData;
 #endif
-        handObject.Init();
 
-        onRoundCountChanged += OnRoundCountChanged;
+        handObject.Roll();
     }
 
     public void OnClickRotate()
@@ -110,5 +129,7 @@ public class MainGameScene : MonoBehaviour
     public void OnGameOver()
     {
         int score = mapObject.GetScore();
+        scoreObject.Open();
+        scoreObject.SetScore(score);
     }
 }

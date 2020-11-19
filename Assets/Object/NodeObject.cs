@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComparable<NodeObject>
+public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparable<NodeObject>
 {
     private readonly static Vector3 flipScale = new Vector3(-1f, 1f, 1f);
 
@@ -13,10 +13,11 @@ public class NodeObject : MonoBehaviour, IGameActor, IPointerClickHandler, IComp
     public int Id { get; set; }
     public int direction = 0;
     public bool isFlip = false;
-    public ENodeType NodeType = ENodeType.Normal;
-    public ENodeState NodeState = ENodeState.None;
+    public ENodeType NodeType { get; set; }
+    public ENodeState NodeState { get; set; }
     public EJointType[] Joints;
-    public Vector2Int Position;
+    public Vector2Int Position { get; set; }
+    public EDirection Direction { get => (EDirection)direction; set => direction = (int)value; }
     public SpriteRenderer RouteRenderer;
     public Action<NodeObject> onClick;
     public NodeObject[] Neighbors;

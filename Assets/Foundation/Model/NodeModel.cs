@@ -8,11 +8,11 @@ public class NodeModel
     public ENodeType NodeType;
     public EJointType[] Joints;
 
-    public void Convert(NodeObject node)
+    public void Convert(INode node)
     {
         Id = node.Id;
         Position = node.Position;
-        Direction = (EDirection)node.direction;
+        Direction = node.Direction;
         NodeType = node.NodeType;
     }
 }
