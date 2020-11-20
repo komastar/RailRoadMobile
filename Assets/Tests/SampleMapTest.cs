@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,7 +18,6 @@ namespace Tests
         [UnityTest]
         public IEnumerator SampleMapTestWithEnumeratorPasses()
         {
-            var mainGame = FindObject<MainGameScene>("SceneScript");
             var rotateButton = FindObject<Button>("Canvas/CommandPanel/RotateButton");
             var flipButton = FindObject<Button>("Canvas/CommandPanel/FlipButton");
             var fixButton = FindObject<Button>("Canvas/CommandPanel/FixButton");
@@ -54,8 +52,6 @@ namespace Tests
             rotates[0] = rotate1;
             rotates[1] = rotate2;
 
-            var wait = new WaitForSecondsRealtime(.0f);
-            var wait2 = new WaitForSecondsRealtime(.0f);
             for (int i = 0; i < 2; i++)
             {
                 var dices = handObject.GetComponentsInChildren<DiceObject>();
@@ -68,28 +64,22 @@ namespace Tests
                     for (int flip = 0; flip < flips[i][j]; flip++)
                     {
                         flipButton.onClick.Invoke();
-                        yield return wait;
                     }
 
                     for (int rotate = 0; rotate < rotates[i][j]; rotate++)
                     {
                         rotateButton.onClick.Invoke();
-                        yield return wait;
                     }
 
                     fixButton.onClick.Invoke();
-
-                    yield return wait2;
                 }
 
                 handObject.Roll();
-                yield return wait2;
+                yield return null;
             }
 
-            yield return wait;
-
             var scoreObj = FindObject<ScoreObject>();
-            Assert.AreEqual(8, scoreObj.Score);
+            Assert.AreEqual(12, scoreObj.Score);
         }
 
         private T FindObject<T>(string name = null) where T : Component

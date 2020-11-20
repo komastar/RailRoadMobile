@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -23,6 +24,9 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     public NodeObject[] Neighbors;
 
     public RouteModel RouteData;
+
+    public bool IsRailRoute = false;
+    public bool IsRoadRoute = false;
 
     private void OnDrawGizmos()
     {
@@ -67,6 +71,8 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
         RouteData = dataManager.RouteData[id];
         RouteRenderer.sprite = spriteManager.GetSprite(RouteData.Name);
         Neighbors = new NodeObject[4];
+        IsRailRoute = false;
+        IsRoadRoute = false;
     }
 
     public void Flip()
@@ -121,8 +127,22 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
         Id = route.Id;
         RouteData = route;
         name = RouteData.Name;
+        IsRailRoute = false;
+        IsRoadRoute = false;
         Joints = new EJointType[4];
         RouteData.Joints.CopyTo(Joints, 0);
+        for (int i = 0; i < 4; i++)
+        {
+            if (Joints[i] == EJointType.Rail)
+            {
+                IsRailRoute = true;
+            }
+            
+            if (Joints[i] == EJointType.Road)
+            {
+                IsRoadRoute = true;
+            }
+        }
         RouteRenderer.sprite = sprite;
         if (Id == 0)
         {
@@ -147,6 +167,8 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
         RouteRenderer.sprite = null;
         Joints = new EJointType[4];
         UpdateRotation();
+        IsRailRoute = false;
+        IsRoadRoute = false;
     }
 
     public EJointType GetJoint(int index)

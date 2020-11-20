@@ -171,7 +171,50 @@ public class MapObject : MonoBehaviour, IGameActor
 
         Debug.Log($"TotalExitScore : {totalExitScore}");
 
-        return totalExitScore;
+        List<NodeObject> rails = new List<NodeObject>();
+        List<NodeObject> roads = new List<NodeObject>();
+        foreach (var node in entireNodes)
+        {
+            if (node.Value.NodeType == ENodeType.Entrance)
+            {
+                continue;
+            }
+
+            if (node.Value.IsRailRoute)
+            {
+                rails.Add(node.Value);
+            }
+
+            if (node.Value.IsRoadRoute)
+            {
+                roads.Add(node.Value);
+            }
+        }
+
+        Debug.Log($"TotalRail : {rails.Count}");
+        Debug.Log($"TotalRoad : {roads.Count}");
+
+        HashSet<NodeObject> visited = new HashSet<NodeObject>();
+        int highestRailScore = 0;
+        foreach (var rail in rails)
+        {
+            visited.Clear();
+            int railScore = CalcLongestWayScoreRecursive(rail, EJointType.Rail, ref visited);
+            highestRailScore = highestRailScore < railScore ? railScore : highestRailScore;
+        }
+
+        int highestRoadScore = 0;
+        foreach (var road in roads)
+        {
+            visited.Clear();
+            int roadScore = CalcLongestWayScoreRecursive(road, EJointType.Road, ref visited);
+            highestRoadScore = highestRoadScore < roadScore ? roadScore: highestRoadScore;
+        }
+
+        Debug.Log($"HighestRail : {highestRailScore}");
+        Debug.Log($"HighestRoad : {highestRoadScore}");
+
+        return totalExitScore + highestRailScore + highestRoadScore;
     }
 
     private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor)
@@ -187,6 +230,39 @@ public class MapObject : MonoBehaviour, IGameActor
                 }
             }
         }
+    }
+
+    private int CalcLongestWayScoreRecursive(NodeObject node, EJointType joint, ref HashSet<NodeObject> visited)
+    {
+        int highestScore = 0;
+        visited.Add(node);
+        if (node.NodeType == ENodeType.Entrance)
+        {
+            return 0;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var joint1 = node.GetJoint(i);
+            if (joint == joint1)
+            {
+                var neighbor = node.Neighbors[i];
+                if (!ReferenceEquals(null, neighbor))
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        var joint2 = neighbor.GetJoint2(i);
+                        if (joint1 == joint2)
+                        {
+                            int score = CalcLongestWayScoreRecursive(neighbor, joint, ref visited);
+                            highestScore = score > highestScore ? score : highestScore;
+                        }
+                    }
+                }
+            }
+        }
+
+        return 1 + highestScore;
     }
 
     public void Close()
