@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 public class MapObject : MonoBehaviour, IGameActor
@@ -212,13 +211,43 @@ public class MapObject : MonoBehaviour, IGameActor
         {
             visited.Clear();
             int roadScore = CalcLongestWayScoreRecursive(road, EJointType.Road, ref visited);
-            highestRoadScore = highestRoadScore < roadScore ? roadScore: highestRoadScore;
+            highestRoadScore = highestRoadScore < roadScore ? roadScore : highestRoadScore;
         }
 
         Debug.Log($"HighestRail : {highestRailScore}");
         Debug.Log($"HighestRoad : {highestRoadScore}");
 
-        return totalExitScore + highestRailScore + highestRoadScore;
+        int faultScore = 0;
+        foreach (var node in closedNodes)
+        {
+            if (!IsEdgeNode(node))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    EJointType joint = node.GetJoint(i);
+                    if (joint != EJointType.None)
+                    {
+                        Vector2Int neighborPos = node.Position + Direction[i];
+                        if (entireNodes.ContainsKey(neighborPos))
+                        {
+                            NodeObject neighbor = entireNodes[neighborPos];
+                            if (!IsEdgeNode(neighbor))
+                            {
+                                EJointType nJoint = neighbor.GetJoint2(i);
+                                if (joint != nJoint)
+                                {
+                                    faultScore++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Debug.Log($"FaultScore : {faultScore}");
+
+        return totalExitScore + highestRailScore + highestRoadScore - faultScore;
     }
 
     private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor, int direction)
@@ -558,6 +587,11 @@ public class MapObject : MonoBehaviour, IGameActor
         Debug.Log($"Connect : {connectCount} / {closeConnectCount}");
 
         return (connectCount == 4) && (closeConnectCount > 0);
+    }
+
+    private bool IsEdgeNode(NodeObject node)
+    {
+        return (node.NodeType == ENodeType.Wall || node.NodeType == ENodeType.Entrance);
     }
 
     public void Init(int id)

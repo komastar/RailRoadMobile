@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 /// 
 /// It overrides UnityEngine.Debug to mute debug messages completely on a platform-specific basis.

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -137,7 +136,7 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
             {
                 IsRailRoute = true;
             }
-            
+
             if (Joints[i] == EJointType.Road)
             {
                 IsRoadRoute = true;

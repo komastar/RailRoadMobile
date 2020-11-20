@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class StageEditorWindow : EditorWindow
@@ -13,7 +10,7 @@ public class StageEditorWindow : EditorWindow
         window.Show();
     }
 
-#region UNITY_METHODS
+    #region UNITY_METHODS
     private void OnGUI()
     {
         if (SceneManager.GetActiveScene().name != "MapScene")
@@ -25,5 +22,5 @@ public class StageEditorWindow : EditorWindow
 
         EditorGUILayout.LabelField("#SCRIPTNAME#");
     }
-#endregion
+    #endregion
 }
