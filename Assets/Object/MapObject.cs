@@ -131,7 +131,7 @@ public class MapObject : MonoBehaviour, IGameActor
         {
             for (int i = 0; i < 4; i++)
             {
-                CollectNeighborRecursive(node.Key, node.Key.Neighbors[i]);
+                CollectNeighborRecursive(node.Key, node.Key.Neighbors[i], i);
             }
         }
 
@@ -221,7 +221,7 @@ public class MapObject : MonoBehaviour, IGameActor
         return totalExitScore + highestRailScore + highestRoadScore;
     }
 
-    private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor)
+    private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor, int direction)
     {
         if (!ReferenceEquals(null, neighbor))
         {
@@ -230,7 +230,12 @@ public class MapObject : MonoBehaviour, IGameActor
                 connExits[root].Add(neighbor.Position);
                 for (int i = 0; i < 4; i++)
                 {
-                    CollectNeighborRecursive(root, neighbor.Neighbors[i]);
+                    if (!neighbor.RouteData.IsTransfer
+                        && neighbor.GetJoint2(direction) != neighbor.GetJoint(i))
+                    {
+                        continue;
+                    }
+                    CollectNeighborRecursive(root, neighbor.Neighbors[i], i);
                 }
             }
         }
