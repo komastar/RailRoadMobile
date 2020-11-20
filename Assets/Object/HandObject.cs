@@ -42,7 +42,7 @@ public class HandObject : MonoBehaviour, IGameActor
     {
         for (int i = 0; i < dices.Count; i++)
         {
-            Destroy(dices[i].gameObject);
+            DestroyImmediate(dices[i].gameObject);
         }
         dices.Clear();
     }

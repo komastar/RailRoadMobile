@@ -858,6 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 44698772}
+  Score: 0
 --- !u!1 &725751336
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,7 +889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapJson: {fileID: 4900000, guid: e37c4f094b3cc8744bc6817e2d821d53, type: 3}
-  stageJson: {fileID: 4900000, guid: e5aa06041317d024cb02273d3dc015fb, type: 3}
+  stageJson: {fileID: 4900000, guid: 50afef78259e6e141a251e47b6518d3d, type: 3}
   roundText: {fileID: 350819692}
   mapObject: {fileID: 6657187381290686287}
   handObject: {fileID: 1376840888}

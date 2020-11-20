@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -18,6 +19,12 @@ namespace Tests
         [UnityTest]
         public IEnumerator SampleMapTestWithEnumeratorPasses()
         {
+            var mainGame = FindObject<MainGameScene>();
+            mainGame.stageJson = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/Stage/Stage01.json");
+            mainGame.MakeStage();
+
+            yield return null;
+
             var rotateButton = FindObject<Button>("Canvas/CommandPanel/RotateButton");
             var flipButton = FindObject<Button>("Canvas/CommandPanel/FlipButton");
             var fixButton = FindObject<Button>("Canvas/CommandPanel/FixButton");
@@ -75,11 +82,11 @@ namespace Tests
                 }
 
                 handObject.Roll();
+
                 yield return null;
             }
 
-            var scoreObj = FindObject<ScoreObject>();
-            Assert.AreEqual(12, scoreObj.Score);
+            Assert.AreEqual(12, mainGame.scoreObject.Score);
         }
 
         private T FindObject<T>(string name = null) where T : Component

@@ -165,6 +165,10 @@ public class MapObject : MonoBehaviour, IGameActor
         foreach (var score in exitScore)
         {
             int scoreCalc = (score.Key.Count - 1) * 4;
+            if (scoreCalc < 0)
+            {
+                continue;
+            }
             totalExitScore += scoreCalc;
             Debug.Log($"Score : {scoreCalc}");
         }
@@ -301,11 +305,12 @@ public class MapObject : MonoBehaviour, IGameActor
             ENodeType nodeType = node.Value.NodeType;
             switch (nodeType)
             {
+                case ENodeType.Normal:
+                    break;
                 case ENodeType.Entrance:
                     OpenNode(node.Value);
                     break;
                 case ENodeType.None:
-                case ENodeType.Normal:
                 case ENodeType.Wall:
                     CloseNode(node.Value);
                     break;
@@ -519,13 +524,6 @@ public class MapObject : MonoBehaviour, IGameActor
 
             EJointType joint = node.GetJoint(i);
             EJointType neighborJoint = neighbor.GetJoint((i + 2) % 4);
-            if (joint == neighborJoint)
-            {
-                connectCount++;
-                closeConnectCount++;
-                continue;
-            }
-
             if (IsCloseNode(neighbor))
             {
                 if (joint == EJointType.None)
@@ -537,6 +535,12 @@ public class MapObject : MonoBehaviour, IGameActor
                     if (neighborJoint == EJointType.None)
                     {
                         connectCount++;
+                    }
+
+                    if (joint == neighborJoint)
+                    {
+                        connectCount++;
+                        closeConnectCount++;
                     }
                 }
             }
