@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainGameScene : MonoBehaviour
 {
-#if UNITY_EDITOR
     public TextAsset mapJson;
     public TextAsset stageJson;
-#endif
     public Text roundText;
 
     public MapObject mapObject;
@@ -73,15 +70,13 @@ public class MainGameScene : MonoBehaviour
         RoundCount = 1;
 
         mapObject.hand = handObject;
-#if UNITY_EDITOR
         stageData = JObject.Parse(stageJson.text).ToObject<StageModel>();
         handObject.stage = stageData;
 
-        mapJson = AssetDatabase.LoadAssetAtPath<TextAsset>($"Assets/Data/Map/{stageData.MapName}.json");
+        mapJson = Resources.Load<TextAsset>($"Data/Map/{stageData.MapName}");
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
         mapObject.MakeMap(map);
         mapObject.OpenMap();
-#endif
 
         handObject.Roll();
     }

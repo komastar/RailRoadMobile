@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class SpriteManager : Singleton<SpriteManager>
@@ -10,7 +9,7 @@ public class SpriteManager : Singleton<SpriteManager>
     private void Awake()
     {
         RouteSprites = new Dictionary<string, Sprite>();
-        var railRoadSprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/RailRoadSprites.psd").OfType<Sprite>().ToList();
+        var railRoadSprites = Resources.LoadAll<Sprite>("Sprites/RailRoadSprites").ToList();
         for (int i = 0; i < railRoadSprites.Count; i++)
         {
             RouteSprites.Add(railRoadSprites[i].name, railRoadSprites[i]);

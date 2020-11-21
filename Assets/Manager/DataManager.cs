@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
@@ -19,8 +17,8 @@ public class DataManager : Singleton<DataManager>
         StageListData = MakeDatabase<StageListModel>("Stage");
         foreach (var stageItem in StageListData)
         {
-            string path = $"Assets/Data/Stage/{stageItem.Value.Name}.json";
-            var jsonTextAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
+            string path = $"Data/Stage/{stageItem.Value.Name}";
+            var jsonTextAsset = Resources.Load<TextAsset>(path);
             stageItem.Value.Stage = JObject.Parse(jsonTextAsset.text).ToObject<StageModel>();
         }
     }
@@ -28,7 +26,8 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, T> MakeDatabase<T>(string dataname)
     {
         Dictionary<int, T> database = new Dictionary<int, T>();
-        var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Data/{dataname}.json"));
+        var textAsset = Resources.Load<TextAsset>($"Data/{dataname}");
+        var json = JObject.Parse(textAsset.text);
         var routeArray = json[dataname].ToArray();
         for (int i = 0; i < routeArray.Length; i++)
         {
