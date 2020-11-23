@@ -2000,6 +2000,7 @@ MonoBehaviour:
   dicePrefab: {fileID: 4365842288121325377, guid: 40f7066308329c14199bd13a1ef97eb1,
     type: 3}
   Dice: {fileID: 0}
+  horizonGroup: {fileID: 1376840889}
 --- !u!114 &1376840889
 MonoBehaviour:
   m_ObjectHideFlags: 0

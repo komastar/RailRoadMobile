@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class HandObject : MonoBehaviour, IGameActor
     public DiceObject dicePrefab;
 
     public DiceObject Dice;
+
+    public Action onChangeHand;
 
     private List<DiceObject> dices;
 
@@ -60,6 +63,7 @@ public class HandObject : MonoBehaviour, IGameActor
     public void OnClickDice(DiceObject dice)
     {
         Dice = dice;
+        onChangeHand?.Invoke();
     }
 
     public void DisposeNode()

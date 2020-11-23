@@ -48,6 +48,8 @@ public class MapObject : MonoBehaviour, IGameActor
 
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
+
+        hand.onChangeHand += OnChangeHand;
     }
 
     public void MakeEmptyMap(MapModel mapData, RouteModel route)
@@ -603,6 +605,15 @@ public class MapObject : MonoBehaviour, IGameActor
     public void Init(int id)
     {
         throw new NotImplementedException();
+    }
+
+    private void OnChangeHand()
+    {
+        if (!ReferenceEquals(null, candidateFix))
+        {
+            candidateFix.ResetNode();
+            candidateFix = null;
+        }
     }
 
 #if UNITY_EDITOR

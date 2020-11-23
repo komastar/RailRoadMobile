@@ -58,6 +58,7 @@ public class MainGameScene : MonoBehaviour
         {
             mapObject = FindObjectOfType<MapObject>();
         }
+        mapObject.hand = handObject;
         mapObject.Init();
         mapObject.onFixPhaseExit += OnFixPhaseExit;
 
@@ -67,7 +68,6 @@ public class MainGameScene : MonoBehaviour
 
     public void MakeStage()
     {
-        mapObject.hand = handObject;
         stageData = JObject.Parse(stageJson.text).ToObject<StageModel>();
         handObject.stage = stageData;
 
