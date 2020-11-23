@@ -116,8 +116,9 @@ public class MapObject : MonoBehaviour, IGameActor
         Camera.main.orthographicSize = orthoSize;
     }
 
-    public int GetScore()
+    public ScoreViewModel GetScore()
     {
+        ScoreViewModel scoreViewModel = new ScoreViewModel();
         foreach (var node in entireNodes)
         {
             if (node.Value.NodeType == ENodeType.Entrance)
@@ -160,7 +161,7 @@ public class MapObject : MonoBehaviour, IGameActor
             exitScore.Add(exitGroup, node.Value.Count);
         }
 
-        int totalExitScore = 0;
+        int networkScore = 0;
         foreach (var score in exitScore)
         {
             int scoreCalc = (score.Key.Count - 1) * 4;
@@ -168,11 +169,12 @@ public class MapObject : MonoBehaviour, IGameActor
             {
                 continue;
             }
-            totalExitScore += scoreCalc;
+            networkScore += scoreCalc;
             Debug.Log($"Score : {scoreCalc}");
         }
 
-        Debug.Log($"TotalExitScore : {totalExitScore}");
+        Debug.Log($"TotalExitScore : {networkScore}");
+        scoreViewModel.NetworkScore = networkScore;
 
         List<NodeObject> rails = new List<NodeObject>();
         List<NodeObject> roads = new List<NodeObject>();
@@ -198,26 +200,28 @@ public class MapObject : MonoBehaviour, IGameActor
         Debug.Log($"TotalRoad : {roads.Count}");
 
         HashSet<NodeObject> visited = new HashSet<NodeObject>();
-        int highestRailScore = 0;
+        int railScore = 0;
         foreach (var rail in rails)
         {
             visited.Clear();
-            int railScore = CalcLongestWayScoreRecursive(rail, EJointType.Rail, ref visited);
-            highestRailScore = highestRailScore < railScore ? railScore : highestRailScore;
+            int currentRailScore = CalcLongestWayScoreRecursive(rail, EJointType.Rail, ref visited);
+            railScore = railScore < currentRailScore ? currentRailScore : railScore;
         }
 
-        int highestRoadScore = 0;
+        int roadScore = 0;
         foreach (var road in roads)
         {
             visited.Clear();
-            int roadScore = CalcLongestWayScoreRecursive(road, EJointType.Road, ref visited);
-            highestRoadScore = highestRoadScore < roadScore ? roadScore : highestRoadScore;
+            int currentRoadScore = CalcLongestWayScoreRecursive(road, EJointType.Road, ref visited);
+            roadScore = roadScore < currentRoadScore ? currentRoadScore : roadScore;
         }
 
-        Debug.Log($"HighestRail : {highestRailScore}");
-        Debug.Log($"HighestRoad : {highestRoadScore}");
+        Debug.Log($"HighestRail : {railScore}");
+        Debug.Log($"HighestRoad : {roadScore}");
+        scoreViewModel.RailScore = railScore;
+        scoreViewModel.RoadScore = roadScore;
 
-        int faultScore = 0;
+        int penaltyScore = 0;
         foreach (var node in closedNodes)
         {
             if (!IsEdgeNode(node))
@@ -236,7 +240,7 @@ public class MapObject : MonoBehaviour, IGameActor
                                 EJointType nJoint = neighbor.GetJoint2(i);
                                 if (joint != nJoint)
                                 {
-                                    faultScore++;
+                                    penaltyScore++;
                                 }
                             }
                         }
@@ -245,9 +249,11 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
-        Debug.Log($"FaultScore : {faultScore}");
+        Debug.Log($"FaultScore : {penaltyScore}");
+        scoreViewModel.PenaltyScore = penaltyScore;
+        scoreViewModel.Calculate();
 
-        return totalExitScore + highestRailScore + highestRoadScore - faultScore;
+        return scoreViewModel;
     }
 
     private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor, int direction)

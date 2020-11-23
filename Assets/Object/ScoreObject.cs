@@ -6,27 +6,35 @@ using UnityEngine.UI;
 
 public class ScoreObject : MonoBehaviour, IPointerClickHandler
 {
-    public Text scoreText;
+    public Text totalScoreText;
+    public Text networkScoreText;
+    public Text railScoreText;
+    public Text roadScoreText;
+    public Text penaltyScoreText;
 
     public Action onClose;
 
-    public int Score;
-
+    public ScoreViewModel scoreViewModel;
     public void Init()
     {
         onClose = null;
         Close();
     }
 
-    public void SetScore(int score)
+    public void SetScore(ScoreViewModel score)
     {
-        scoreText.text = score.ToString();
-        Score = score;
+        scoreViewModel = score;
     }
 
     public void Open()
     {
         gameObject.SetActive(true);
+        totalScoreText.text = scoreViewModel.TotalScore.ToString();
+        networkScoreText.text = scoreViewModel.NetworkScore.ToString();
+        railScoreText.text = scoreViewModel.RailScore.ToString();
+        roadScoreText.text = scoreViewModel.RoadScore.ToString();
+        string minus = scoreViewModel.PenaltyScore > 0 ? "-" : "";
+        penaltyScoreText.text = $"{minus}{scoreViewModel.PenaltyScore}";
     }
 
     public void Close()

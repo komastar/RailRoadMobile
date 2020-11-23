@@ -20,7 +20,7 @@ namespace Tests
         public IEnumerator SampleMapTestWithEnumeratorPasses()
         {
             var mainGame = FindObject<MainGameScene>();
-            mainGame.stageJson = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/Stage/Stage01.json");
+            mainGame.stageJson = Resources.Load<TextAsset>("Data/Stage/Stage01");
             mainGame.MakeStage();
 
             yield return null;
@@ -86,7 +86,9 @@ namespace Tests
                 yield return null;
             }
 
-            Assert.AreEqual(12, mainGame.scoreObject.Score);
+            yield return new WaitForSecondsRealtime(.5f);
+
+            Assert.AreEqual(12, mainGame.scoreObject.scoreViewModel.TotalScore);
         }
 
         private T FindObject<T>(string name = null) where T : Component

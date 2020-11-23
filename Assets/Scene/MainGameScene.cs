@@ -67,8 +67,6 @@ public class MainGameScene : MonoBehaviour
 
     public void MakeStage()
     {
-        RoundCount = 1;
-
         mapObject.hand = handObject;
         stageData = JObject.Parse(stageJson.text).ToObject<StageModel>();
         handObject.stage = stageData;
@@ -79,6 +77,8 @@ public class MainGameScene : MonoBehaviour
         mapObject.OpenMap();
 
         handObject.Roll();
+
+        RoundCount = 1;
     }
 
     public void OnClickRotate()
@@ -120,13 +120,13 @@ public class MainGameScene : MonoBehaviour
 
     public void OnRoundCountChanged(int round)
     {
-        roundText.text = round.ToString();
+        roundText.text = $"Round : {round} / {stageData?.Round}";
     }
 
     public void OnGameOver()
     {
-        int score = mapObject.GetScore();
-        scoreObject.Open();
+        var score = mapObject.GetScore();
         scoreObject.SetScore(score);
+        scoreObject.Open();
     }
 }
