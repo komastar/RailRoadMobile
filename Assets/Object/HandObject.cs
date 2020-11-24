@@ -18,7 +18,7 @@ public class HandObject : MonoBehaviour, IGameActor
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(0, 0, 50, 50), "Roll"))
+        if (GUI.Button(new Rect(0, 200, 150, 150), "Roll"))
         {
             Roll();
         }
