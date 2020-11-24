@@ -14,7 +14,18 @@
                 10005,
                 10006,
                 10007
-            ]
+            ],
+            "NextChapterId": 2
+        },
+        {
+            "Id": 2,
+            "Name": "WestBeach",
+            "Stages": [
+                10007,
+                10006,
+                10005
+            ],
+            "NextChapterId": 1
         }
     ]
 }

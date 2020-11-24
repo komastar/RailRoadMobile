@@ -10,6 +10,9 @@ public class MainGameScene : MonoBehaviour
     public TextAsset mapJson;
     public TextAsset stageJson;
     public Text roundText;
+    public Text chapterNameText;
+    public Text stageNameText;
+    public Text mapNameText;
 
     public MapObject mapObject;
     public HandObject handObject;
@@ -27,8 +30,9 @@ public class MainGameScene : MonoBehaviour
             if (value != roundCount)
             {
                 roundCount = value;
-                onRoundCountChanged?.Invoke(roundCount);
             }
+
+            onRoundCountChanged?.Invoke(roundCount);
         }
     }
 
@@ -39,6 +43,15 @@ public class MainGameScene : MonoBehaviour
         Init();
         InitChapter();
         MakeStage();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetNextStage();
+            MakeStage();
+        }
     }
 
     private void Init()
@@ -86,6 +99,11 @@ public class MainGameScene : MonoBehaviour
     private void SetNextStage()
     {
         currentStage = dataManager.GetNextStage(currentChapter, currentStage);
+        if (currentStage == null)
+        {
+            currentChapter = dataManager.GetNextChapter(currentChapter);
+            currentStage = dataManager.GetFirstStage(currentChapter);
+        }
 
         if (currentStage == null)
         {
@@ -101,7 +119,10 @@ public class MainGameScene : MonoBehaviour
             return;
         }
 
-        Debug.Log($"MapName : {currentStage.MapName}");
+        chapterNameText.text = currentChapter?.Name;
+        mapNameText.text = currentStage.MapName;
+        stageNameText.text = currentStage.Name;
+
         handObject.stage = currentStage;
 
         mapJson = Resources.Load<TextAsset>($"Data/Map/{currentStage.MapName}");

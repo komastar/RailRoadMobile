@@ -1,8 +1,8 @@
 {
     "Name": "TestStage3",
     "Round": 3,
-    "MapId": 1,
-    "MapName": "Map02",
+    "MapId": 2,
+    "MapName": "Map03",
     "Dice": [
         101,
         101,

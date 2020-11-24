@@ -273,7 +273,7 @@ public class MapEditorWindow : EditorWindow
         if (null == spriteData || isForce)
         {
             spriteData = new Dictionary<string, Sprite>();
-            var sprites = AssetDatabase.LoadAllAssetsAtPath($"Assets/Sprites/RailRoadSprites.psd");
+            var sprites = AssetDatabase.LoadAllAssetsAtPath($"Assets/Resources/Sprites/RailRoadSprites.psd");
             for (int i = 0; i < sprites.Length; i++)
             {
                 var sprite = sprites[i] as Sprite;
@@ -293,7 +293,7 @@ public class MapEditorWindow : EditorWindow
         }
 
         mapList.Clear();
-        var maps = Directory.GetFiles($"{Application.dataPath}/Data/Map", "*.json");
+        var maps = Directory.GetFiles($"{Application.dataPath}/Resources/Data/Map", "*.json");
         for (int i = 0; i < maps.Length; i++)
         {
             var mapJsonString = File.ReadAllText(maps[i]);
@@ -306,7 +306,7 @@ public class MapEditorWindow : EditorWindow
     private void MakeDatabase<T>(string dataname, ref Dictionary<int, T> database)
     {
         database = new Dictionary<int, T>();
-        var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Data/{dataname}.json"));
+        var json = JObject.Parse(File.ReadAllText($"{Application.dataPath}/Resources/Data/{dataname}.json"));
         var routeArray = json[dataname].ToArray();
         for (int i = 0; i < routeArray.Length; i++)
         {

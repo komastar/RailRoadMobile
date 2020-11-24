@@ -1,12 +1,12 @@
 {
-  "Id": 1,
-  "Name": "Map02",
+  "Id": 3,
+  "Name": "Map04",
   "NodeSize": 1.0,
   "MapSize": {
-    "x": 6,
-    "y": 6,
-    "magnitude": 8.485281,
-    "sqrMagnitude": 72
+    "x": 8,
+    "y": 8,
+    "magnitude": 11.3137083,
+    "sqrMagnitude": 128
   },
   "Nodes": [
     {
@@ -34,7 +34,7 @@
       "Joints": null
     },
     {
-      "Id": 1000,
+      "Id": 1001,
       "Position": {
         "x": 2,
         "y": 0,
@@ -42,11 +42,11 @@
         "sqrMagnitude": 4
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 1,
       "Joints": null
     },
     {
-      "Id": 1002,
+      "Id": 1000,
       "Position": {
         "x": 3,
         "y": 0,
@@ -54,7 +54,7 @@
         "sqrMagnitude": 9
       },
       "Direction": 0,
-      "NodeType": 1,
+      "NodeType": 3,
       "Joints": null
     },
     {
@@ -70,12 +70,36 @@
       "Joints": null
     },
     {
-      "Id": 1000,
+      "Id": 1002,
       "Position": {
         "x": 5,
         "y": 0,
         "magnitude": 5.0,
         "sqrMagnitude": 25
+      },
+      "Direction": 0,
+      "NodeType": 1,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 0,
+        "magnitude": 6.0,
+        "sqrMagnitude": 36
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 0,
+        "magnitude": 7.0,
+        "sqrMagnitude": 49
       },
       "Direction": 0,
       "NodeType": 3,
@@ -150,11 +174,35 @@
         "sqrMagnitude": 26
       },
       "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 1,
+        "magnitude": 6.08276272,
+        "sqrMagnitude": 37
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 1,
+        "magnitude": 7.071068,
+        "sqrMagnitude": 50
+      },
+      "Direction": 0,
       "NodeType": 3,
       "Joints": null
     },
     {
-      "Id": 1001,
+      "Id": 1002,
       "Position": {
         "x": 0,
         "y": 2,
@@ -222,7 +270,31 @@
         "sqrMagnitude": 29
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 2,
+        "magnitude": 6.3245554,
+        "sqrMagnitude": 40
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1001,
+      "Position": {
+        "x": 7,
+        "y": 2,
+        "magnitude": 7.28011,
+        "sqrMagnitude": 53
+      },
+      "Direction": 1,
+      "NodeType": 1,
       "Joints": null
     },
     {
@@ -286,15 +358,39 @@
       "Joints": null
     },
     {
-      "Id": 1001,
+      "Id": 1000,
       "Position": {
         "x": 5,
         "y": 3,
         "magnitude": 5.83095169,
         "sqrMagnitude": 34
       },
-      "Direction": 1,
-      "NodeType": 1,
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 3,
+        "magnitude": 6.708204,
+        "sqrMagnitude": 45
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 3,
+        "magnitude": 7.615773,
+        "sqrMagnitude": 58
+      },
+      "Direction": 0,
+      "NodeType": 3,
       "Joints": null
     },
     {
@@ -366,19 +462,43 @@
         "sqrMagnitude": 41
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 0,
       "Joints": null
     },
     {
       "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 4,
+        "magnitude": 7.21110249,
+        "sqrMagnitude": 52
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 4,
+        "magnitude": 8.062258,
+        "sqrMagnitude": 65
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1001,
       "Position": {
         "x": 0,
         "y": 5,
         "magnitude": 5.0,
         "sqrMagnitude": 25
       },
-      "Direction": 0,
-      "NodeType": 3,
+      "Direction": 1,
+      "NodeType": 1,
       "Joints": null
     },
     {
@@ -390,11 +510,11 @@
         "sqrMagnitude": 26
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 0,
       "Joints": null
     },
     {
-      "Id": 1002,
+      "Id": 1000,
       "Position": {
         "x": 2,
         "y": 5,
@@ -402,7 +522,7 @@
         "sqrMagnitude": 29
       },
       "Direction": 0,
-      "NodeType": 1,
+      "NodeType": 0,
       "Joints": null
     },
     {
@@ -414,7 +534,7 @@
         "sqrMagnitude": 34
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 0,
       "Joints": null
     },
     {
@@ -426,7 +546,7 @@
         "sqrMagnitude": 41
       },
       "Direction": 0,
-      "NodeType": 3,
+      "NodeType": 0,
       "Joints": null
     },
     {
@@ -436,6 +556,222 @@
         "y": 5,
         "magnitude": 7.071068,
         "sqrMagnitude": 50
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 5,
+        "magnitude": 7.81025,
+        "sqrMagnitude": 61
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1002,
+      "Position": {
+        "x": 7,
+        "y": 5,
+        "magnitude": 8.602325,
+        "sqrMagnitude": 74
+      },
+      "Direction": 1,
+      "NodeType": 1,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 0,
+        "y": 6,
+        "magnitude": 6.0,
+        "sqrMagnitude": 36
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 1,
+        "y": 6,
+        "magnitude": 6.08276272,
+        "sqrMagnitude": 37
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 2,
+        "y": 6,
+        "magnitude": 6.3245554,
+        "sqrMagnitude": 40
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 3,
+        "y": 6,
+        "magnitude": 6.708204,
+        "sqrMagnitude": 45
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 4,
+        "y": 6,
+        "magnitude": 7.21110249,
+        "sqrMagnitude": 52
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 5,
+        "y": 6,
+        "magnitude": 7.81025,
+        "sqrMagnitude": 61
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 6,
+        "magnitude": 8.485281,
+        "sqrMagnitude": 72
+      },
+      "Direction": 0,
+      "NodeType": 0,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 6,
+        "magnitude": 9.219544,
+        "sqrMagnitude": 85
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 0,
+        "y": 7,
+        "magnitude": 7.0,
+        "sqrMagnitude": 49
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 1,
+        "y": 7,
+        "magnitude": 7.071068,
+        "sqrMagnitude": 50
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1002,
+      "Position": {
+        "x": 2,
+        "y": 7,
+        "magnitude": 7.28011,
+        "sqrMagnitude": 53
+      },
+      "Direction": 0,
+      "NodeType": 1,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 3,
+        "y": 7,
+        "magnitude": 7.615773,
+        "sqrMagnitude": 58
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 4,
+        "y": 7,
+        "magnitude": 8.062258,
+        "sqrMagnitude": 65
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1001,
+      "Position": {
+        "x": 5,
+        "y": 7,
+        "magnitude": 8.602325,
+        "sqrMagnitude": 74
+      },
+      "Direction": 0,
+      "NodeType": 1,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 6,
+        "y": 7,
+        "magnitude": 9.219544,
+        "sqrMagnitude": 85
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Joints": null
+    },
+    {
+      "Id": 1000,
+      "Position": {
+        "x": 7,
+        "y": 7,
+        "magnitude": 9.899495,
+        "sqrMagnitude": 98
       },
       "Direction": 0,
       "NodeType": 3,

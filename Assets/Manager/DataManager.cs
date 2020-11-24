@@ -65,7 +65,7 @@ public class DataManager : Singleton<DataManager>
 
     public ChapterModel GetNextChapter(ChapterModel chapter)
     {
-        return null;
+        return ChapterData[chapter.NextChapterId];
     }
 
     public StageModel GetNextStage(ChapterModel chapter, StageModel stage)
@@ -82,13 +82,13 @@ public class DataManager : Singleton<DataManager>
                 }
             }
 
-            int nextStageId = chapter.Stages[stageIndex];
-            return StageListData[nextStageId].Stage;
+            if (stageIndex < chapter.Stages.Length)
+            {
+                int nextStageId = chapter.Stages[stageIndex];
+                return StageListData[nextStageId].Stage;
+            }
         }
-        else
-        {
-            var nextChapter = GetNextChapter(chapter);
-            return GetFirstStage(nextChapter);
-        }
+
+        return null;
     }
 }
