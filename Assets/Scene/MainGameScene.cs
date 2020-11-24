@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MainGameScene : MonoBehaviour
 {
+    private DataManager dataManager;
+
     public TextAsset mapJson;
     public TextAsset stageJson;
     public Text roundText;
@@ -12,7 +14,9 @@ public class MainGameScene : MonoBehaviour
     public MapObject mapObject;
     public HandObject handObject;
     public ScoreObject scoreObject;
-    public StageModel stageData;
+
+    public ChapterModel currentChapter;
+    public StageModel currentStage;
 
     private int roundCount;
     public int RoundCount
@@ -33,13 +37,14 @@ public class MainGameScene : MonoBehaviour
     private void Awake()
     {
         Init();
+        InitChapter();
         MakeStage();
     }
 
     private void Init()
     {
         SpriteManager.Get();
-        DataManager.Get();
+        dataManager = DataManager.Get();
 
         if (ReferenceEquals(null, scoreObject))
         {
@@ -47,6 +52,7 @@ public class MainGameScene : MonoBehaviour
         }
         scoreObject.Init();
         scoreObject.onClose += MakeStage;
+        scoreObject.onClose += SetNextStage;
 
         if (ReferenceEquals(null, handObject))
         {
@@ -66,12 +72,39 @@ public class MainGameScene : MonoBehaviour
         onRoundCountChanged += OnRoundCountChanged;
     }
 
+    private void InitChapter()
+    {
+        currentChapter = dataManager.GetFirstChapter();
+        currentStage = dataManager.GetFirstStage(currentChapter);
+    }
+
+    public void SetStage(StageModel stage)
+    {
+        currentStage = stage;
+    }
+
+    private void SetNextStage()
+    {
+        currentStage = dataManager.GetNextStage(currentChapter, currentStage);
+
+        if (currentStage == null)
+        {
+            Application.Quit();
+        }
+    }
+
     public void MakeStage()
     {
-        stageData = JObject.Parse(stageJson.text).ToObject<StageModel>();
-        handObject.stage = stageData;
+        if (currentStage == null)
+        {
+            Debug.LogError("Stage is null");
+            return;
+        }
 
-        mapJson = Resources.Load<TextAsset>($"Data/Map/{stageData.MapName}");
+        Debug.Log($"MapName : {currentStage.MapName}");
+        handObject.stage = currentStage;
+
+        mapJson = Resources.Load<TextAsset>($"Data/Map/{currentStage.MapName}");
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
         mapObject.MakeMap(map);
         mapObject.OpenMap();
@@ -105,7 +138,7 @@ public class MainGameScene : MonoBehaviour
     {
         if (0 == handObject.GetDiceCount())
         {
-            if (RoundCount + 1 > stageData.Round)
+            if (RoundCount + 1 > currentStage.Round)
             {
                 mapObject.Close();
                 OnGameOver();
@@ -120,7 +153,7 @@ public class MainGameScene : MonoBehaviour
 
     public void OnRoundCountChanged(int round)
     {
-        roundText.text = $"Round : {round} / {stageData?.Round}";
+        roundText.text = $"Round : {round} / {currentStage?.Round}";
     }
 
     public void OnGameOver()

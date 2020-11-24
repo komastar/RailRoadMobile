@@ -9,22 +9,31 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, DiceModel> DiceData { get; private set; }
     public Dictionary<int, StageListModel> StageListData { get; private set; }
     public Dictionary<int, MapModel> MapData { get; private set; }
+    public Dictionary<int, ChapterModel> ChapterData { get; private set; }
 
     private void Awake()
     {
         RouteData = MakeDatabase<RouteModel>("Route");
         DiceData = MakeDatabase<DiceModel>("Dice");
+        ChapterData = MakeDatabase<ChapterModel>();
         StageListData = MakeDatabase<StageListModel>("Stage");
         foreach (var stageItem in StageListData)
         {
             string path = $"Data/Stage/{stageItem.Value.Name}";
             var jsonTextAsset = Resources.Load<TextAsset>(path);
-            stageItem.Value.Stage = JObject.Parse(jsonTextAsset.text).ToObject<StageModel>();
+            var stage = JObject.Parse(jsonTextAsset.text).ToObject<StageModel>();
+            stage.Id = stageItem.Key;
+            stageItem.Value.Stage = stage;
         }
     }
 
-    private Dictionary<int, T> MakeDatabase<T>(string dataname)
+    private Dictionary<int, T> MakeDatabase<T>(string dataname = "")
     {
+        if (string.IsNullOrEmpty(dataname))
+        {
+            var t = typeof(T);
+            dataname = t.Name.Replace("Model", "");
+        }
         Dictionary<int, T> database = new Dictionary<int, T>();
         var textAsset = Resources.Load<TextAsset>($"Data/{dataname}");
         var json = JObject.Parse(textAsset.text);
@@ -36,5 +45,50 @@ public class DataManager : Singleton<DataManager>
         }
 
         return database;
+    }
+
+    public ChapterModel GetFirstChapter()
+    {
+        return ChapterData.Values.First();
+    }
+
+    public StageModel GetFirstStage(ChapterModel chapter)
+    {
+        if (null == chapter)
+        {
+            return null;
+        }
+
+        int firstStageId = chapter.Stages.First();
+        return StageListData[firstStageId].Stage;
+    }
+
+    public ChapterModel GetNextChapter(ChapterModel chapter)
+    {
+        return null;
+    }
+
+    public StageModel GetNextStage(ChapterModel chapter, StageModel stage)
+    {
+        if (chapter.Stages.Contains(stage.Id))
+        {
+            int stageIndex = 0;
+            for (int i = 0; i < chapter.Stages.Length; i++)
+            {
+                stageIndex++;
+                if (stage.Id == chapter.Stages[i])
+                {
+                    break;
+                }
+            }
+
+            int nextStageId = chapter.Stages[stageIndex];
+            return StageListData[nextStageId].Stage;
+        }
+        else
+        {
+            var nextChapter = GetNextChapter(chapter);
+            return GetFirstStage(nextChapter);
+        }
     }
 }

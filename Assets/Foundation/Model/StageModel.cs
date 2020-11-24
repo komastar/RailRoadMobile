@@ -10,6 +10,8 @@ public class StageListModel : IActor
 
 public class StageModel
 {
+    [JsonIgnore]
+    public int Id { get; set; }
     public string Name { get; set; }
     public int Round { get; set; }
     public int MapId { get; set; }

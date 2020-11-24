@@ -24,6 +24,9 @@
             "CommonRouteDice": "일반 노선",
             "UncommonRouteDice": "고급 노선",
             "RareRouteDice": "희귀 노선"
+        },
+        "Chapter": {
+            "SouthShire": "동녘골"
         }
     }
 }

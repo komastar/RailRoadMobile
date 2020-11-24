@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -20,7 +21,9 @@ namespace Tests
         public IEnumerator SampleMapTestWithEnumeratorPasses()
         {
             var mainGame = FindObject<MainGameScene>();
-            mainGame.stageJson = Resources.Load<TextAsset>("Data/Stage/Stage01");
+            var stageJsonText = Resources.Load<TextAsset>("Data/Stage/Stage01");
+            var stage = JObject.Parse(stageJsonText.text).ToObject<StageModel>();
+            mainGame.SetStage(stage);
             mainGame.MakeStage();
 
             yield return null;

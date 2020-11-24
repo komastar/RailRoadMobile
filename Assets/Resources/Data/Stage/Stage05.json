@@ -1,0 +1,11 @@
+{
+    "Name": "TestStage5",
+    "Round": 5,
+    "MapId": 1,
+    "MapName": "Map02",
+    "Dice": [
+        101,
+        101,
+        201
+    ]
+}
