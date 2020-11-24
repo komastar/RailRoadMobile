@@ -49,6 +49,7 @@ public class MapObject : MonoBehaviour, IGameActor
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
 
+        hand.onChangeHand = null;
         hand.onChangeHand += OnChangeHand;
     }
 
@@ -160,22 +161,21 @@ public class MapObject : MonoBehaviour, IGameActor
                     }
                 }
             }
-            exitScore.Add(exitGroup, node.Value.Count);
+            if (exitGroup.Count > 1)
+            {
+                exitScore.Add(exitGroup, node.Value.Count);
+            }
         }
 
         int networkScore = 0;
         foreach (var score in exitScore)
         {
             int scoreCalc = (score.Key.Count - 1) * 4;
-            if (scoreCalc < 0)
-            {
-                continue;
-            }
             networkScore += scoreCalc;
             Debug.Log($"Score : {scoreCalc}");
         }
 
-        Debug.Log($"TotalExitScore : {networkScore}");
+        Debug.Log($"TotalNetworkScore : {networkScore}");
         scoreViewModel.NetworkScore = networkScore;
 
         List<NodeObject> rails = new List<NodeObject>();
@@ -198,9 +198,6 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
-        Debug.Log($"TotalRail : {rails.Count}");
-        Debug.Log($"TotalRoad : {roads.Count}");
-
         HashSet<NodeObject> visited = new HashSet<NodeObject>();
         int railScore = 0;
         foreach (var rail in rails)
@@ -218,8 +215,8 @@ public class MapObject : MonoBehaviour, IGameActor
             roadScore = roadScore < currentRoadScore ? currentRoadScore : roadScore;
         }
 
-        Debug.Log($"HighestRail : {railScore}");
-        Debug.Log($"HighestRoad : {roadScore}");
+        Debug.Log($"TotalRailScore : {railScore}");
+        Debug.Log($"TotalRoadScore : {roadScore}");
         scoreViewModel.RailScore = railScore;
         scoreViewModel.RoadScore = roadScore;
 
@@ -251,7 +248,7 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
-        Debug.Log($"FaultScore : {penaltyScore}");
+        Debug.Log($"TotalFaultScore : {penaltyScore}");
         scoreViewModel.PenaltyScore = penaltyScore;
         scoreViewModel.Calculate();
 
@@ -321,6 +318,7 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public void Clear()
     {
+        connExits?.Clear();
         entireNodes?.Clear();
         openNodes?.Clear();
         closedNodes?.Clear();

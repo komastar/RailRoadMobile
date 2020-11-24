@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 
 public class NodeModel
 {
@@ -6,6 +7,7 @@ public class NodeModel
     public Vector2Int Position;
     public EDirection Direction;
     public ENodeType NodeType;
+    [JsonIgnore]
     public EJointType[] Joints;
 
     public void Convert(INode node)

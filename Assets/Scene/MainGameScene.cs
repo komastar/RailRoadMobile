@@ -64,8 +64,8 @@ public class MainGameScene : MonoBehaviour
             scoreObject = FindObjectOfType<ScoreObject>();
         }
         scoreObject.Init();
-        scoreObject.onClose += MakeStage;
         scoreObject.onClose += SetNextStage;
+        scoreObject.onClose += MakeStage;
 
         if (ReferenceEquals(null, handObject))
         {

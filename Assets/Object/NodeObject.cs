@@ -10,10 +10,14 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     private DataManager dataManager;
     private SpriteManager spriteManager;
 
-    public int Id { get; set; }
+    [SerializeField]
+    private int id;
+    public int Id { get => id; set => id = value; }
     public int direction = 0;
     public bool isFlip = false;
-    public ENodeType NodeType { get; set; }
+    [SerializeField]
+    private ENodeType nodeType;
+    public ENodeType NodeType { get => nodeType; set => nodeType = value; }
     public ENodeState NodeState { get; set; }
     public EJointType[] Joints;
     public Vector2Int Position { get; set; }
