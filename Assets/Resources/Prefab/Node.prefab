@@ -46,13 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc231fe237f4c5148871709f79d6dd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   direction: 0
   isFlip: 0
-  NodeType: 2
-  NodeState: 0
+  nodeType: 0
   Joints: 
-  Position: {x: 0, y: 0}
   RouteRenderer: {fileID: 1186369430421579992}
+  Neighbors: []
+  IsRailRoute: 0
+  IsRoadRoute: 0
 --- !u!61 &9123447796212423310
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -118,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 542758313
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5914846877651828911, guid: b7ddbc99b1a7b674087500bd87a49674,
+  m_Sprite: {fileID: -5914846877651828911, guid: fede7b6753dbb244f9b98164cc88b537,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
