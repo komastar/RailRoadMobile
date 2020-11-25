@@ -135,6 +135,11 @@ public class MainGameScene : MonoBehaviour
         RoundCount = 1;
     }
 
+    public void OnClickCancel()
+    {
+
+    }
+
     public void OnClickRotate()
     {
         mapObject.Rotate();
