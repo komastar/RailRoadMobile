@@ -169,7 +169,6 @@ public class MainGameScene : MonoBehaviour
             {
                 if (RoundCount + 1 > currentStage.Round)
                 {
-                    mapObject.Close();
                     OnGameOver();
                 }
                 else
