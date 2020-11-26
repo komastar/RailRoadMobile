@@ -47,10 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  Round: 0
   direction: 0
   isFlip: 0
-  nodeType: 0
+  nodeType: 2
   Joints: 
+  TileRenderer: {fileID: 1142032774618498389}
   RouteRenderer: {fileID: 1186369430421579992}
   Neighbors: []
   IsRailRoute: 0

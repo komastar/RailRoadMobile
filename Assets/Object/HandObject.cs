@@ -29,8 +29,14 @@ public class HandObject : MonoBehaviour, IGameActor
         dices = new List<DiceObject>();
     }
 
+    public void Ready()
+    {
+        MakeDices();
+    }
+
     private void MakeDices()
     {
+        ClearDices();
         Debug.Log($"Make Dices : {stage.Dice.Length}");
         for (int i = 0; i < stage.Dice.Length; i++)
         {
@@ -45,15 +51,13 @@ public class HandObject : MonoBehaviour, IGameActor
     {
         for (int i = 0; i < dices.Count; i++)
         {
-            DestroyImmediate(dices[i].gameObject);
+            Destroy(dices[i].gameObject);
         }
         dices.Clear();
     }
 
     public void Roll()
     {
-        ClearDices();
-        MakeDices();
         for (int i = 0; i < dices.Count; i++)
         {
             dices[i].Roll();
@@ -62,24 +66,41 @@ public class HandObject : MonoBehaviour, IGameActor
 
     public void OnClickDice(DiceObject dice)
     {
+        if (!ReferenceEquals(null, Dice))
+        {
+            Dice.OnDeselect();
+        }
         Dice = dice;
         onChangeHand?.Invoke();
     }
 
     public void DisposeNode()
     {
-        dices.Remove(Dice);
-        Destroy(Dice.gameObject);
+        Dice.TurnOff();
         Dice = null;
     }
 
     public int GetDiceCount()
     {
-        return dices.Count;
+        return dices.FindAll(d => d.diceButton.interactable == true).Count;
     }
 
     public int GetDice()
     {
         return ReferenceEquals(null, Dice) ? -1 : Dice.DiceId;
+    }
+
+    public void Cancel()
+    {
+        for (int i = 0; i < dices.Count; i++)
+        {
+            dices[i].TurnOn();
+        }
+    }
+
+    public void Return(NodeObject node)
+    {
+        var find = dices.Find(n => n.DiceId == node.Id);
+        find.TurnOn();
     }
 }

@@ -12,6 +12,8 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
 
     [SerializeField]
     private int id;
+
+    public int Round;
     public int Id { get => id; set => id = value; }
     public int direction = 0;
     public bool isFlip = false;
@@ -22,6 +24,7 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     public EJointType[] Joints;
     public Vector2Int Position { get; set; }
     public EDirection Direction { get => (EDirection)direction; set => direction = (int)value; }
+    public SpriteRenderer TileRenderer;
     public SpriteRenderer RouteRenderer;
     public Action<NodeObject> onClick;
     public NodeObject[] Neighbors;
@@ -166,6 +169,7 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     {
         name = "EmptyNode";
         Id = 0;
+        Round = 0;
         direction = 0;
         RouteRenderer.sprite = null;
         Joints = new EJointType[4];
@@ -195,6 +199,16 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     public void Close()
     {
         NodeState = ENodeState.Close;
+    }
+
+    public void Select()
+    {
+        TileRenderer.color = Color.green;
+    }
+
+    public void Deselect()
+    {
+        TileRenderer.color = Color.white;
     }
 
     public bool IsEmpty()

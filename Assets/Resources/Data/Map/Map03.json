@@ -18,8 +18,7 @@
         "sqrMagnitude": 0
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -30,8 +29,7 @@
         "sqrMagnitude": 1
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1001,
@@ -42,8 +40,7 @@
         "sqrMagnitude": 4
       },
       "Direction": 0,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -54,8 +51,7 @@
         "sqrMagnitude": 9
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1001,
@@ -66,8 +62,7 @@
         "sqrMagnitude": 16
       },
       "Direction": 0,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -78,8 +73,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -90,8 +84,7 @@
         "sqrMagnitude": 36
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -102,8 +95,7 @@
         "sqrMagnitude": 1
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -114,8 +106,7 @@
         "sqrMagnitude": 2
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -126,8 +117,7 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -138,8 +128,7 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -150,8 +139,7 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -162,8 +150,7 @@
         "sqrMagnitude": 26
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -174,8 +161,7 @@
         "sqrMagnitude": 37
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1002,
@@ -186,8 +172,7 @@
         "sqrMagnitude": 4
       },
       "Direction": 1,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -198,8 +183,7 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -210,8 +194,7 @@
         "sqrMagnitude": 8
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -222,8 +205,7 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -234,8 +216,7 @@
         "sqrMagnitude": 20
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -246,8 +227,7 @@
         "sqrMagnitude": 29
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 1002,
@@ -258,8 +238,7 @@
         "sqrMagnitude": 40
       },
       "Direction": 1,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -270,8 +249,7 @@
         "sqrMagnitude": 9
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -282,8 +260,7 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -294,8 +271,7 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -306,8 +282,7 @@
         "sqrMagnitude": 18
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -318,8 +293,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -330,8 +304,7 @@
         "sqrMagnitude": 34
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -342,8 +315,7 @@
         "sqrMagnitude": 45
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1002,
@@ -354,8 +326,7 @@
         "sqrMagnitude": 16
       },
       "Direction": 1,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -366,8 +337,7 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -378,8 +348,7 @@
         "sqrMagnitude": 20
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -390,8 +359,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -402,8 +370,7 @@
         "sqrMagnitude": 32
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -414,8 +381,7 @@
         "sqrMagnitude": 41
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 1002,
@@ -426,8 +392,7 @@
         "sqrMagnitude": 52
       },
       "Direction": 1,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -438,8 +403,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -450,8 +414,7 @@
         "sqrMagnitude": 26
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -462,8 +425,7 @@
         "sqrMagnitude": 29
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -474,8 +436,7 @@
         "sqrMagnitude": 34
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -486,8 +447,7 @@
         "sqrMagnitude": 41
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -498,8 +458,7 @@
         "sqrMagnitude": 50
       },
       "Direction": 0,
-      "NodeType": 2,
-      "Joints": null
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -510,8 +469,7 @@
         "sqrMagnitude": 61
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -522,8 +480,7 @@
         "sqrMagnitude": 36
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -534,8 +491,7 @@
         "sqrMagnitude": 37
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1001,
@@ -546,8 +502,7 @@
         "sqrMagnitude": 40
       },
       "Direction": 0,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -558,8 +513,7 @@
         "sqrMagnitude": 45
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 1001,
@@ -570,8 +524,7 @@
         "sqrMagnitude": 52
       },
       "Direction": 0,
-      "NodeType": 1,
-      "Joints": null
+      "NodeType": 1
     },
     {
       "Id": 0,
@@ -582,8 +535,7 @@
         "sqrMagnitude": 61
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     },
     {
       "Id": 0,
@@ -594,8 +546,7 @@
         "sqrMagnitude": 72
       },
       "Direction": 0,
-      "NodeType": 3,
-      "Joints": null
+      "NodeType": 3
     }
   ]
 }

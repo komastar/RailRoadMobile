@@ -27,16 +27,19 @@ public class MapObject : MonoBehaviour, IGameActor
     private HashSet<NodeObject> closedNodes;
     private HashSet<NodeObject> closedNodesBuffer;
 
-    private Dictionary<NodeObject, HashSet<Vector2Int>> connExits = new Dictionary<NodeObject, HashSet<Vector2Int>>();
+    private Dictionary<NodeObject, HashSet<Vector2Int>> connExits;
+    private Dictionary<int, List<NodeObject>> roundNodes;
 
+    public int round;
     public int candidateId;
-    public NodeObject candidateFix;
+    public NodeObject selectedNode;
     public Action onFixPhaseExit;
 
     public int Id { get; set; }
 
     public void Init()
     {
+        round = 0;
         candidateId = 0;
         onFixPhaseExit = null;
 
@@ -45,6 +48,8 @@ public class MapObject : MonoBehaviour, IGameActor
         closedNodes = new HashSet<NodeObject>();
         openNodesBuffer = new HashSet<NodeObject>();
         closedNodesBuffer = new HashSet<NodeObject>();
+        connExits = new Dictionary<NodeObject, HashSet<Vector2Int>>();
+        roundNodes = new Dictionary<int, List<NodeObject>>();
 
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
@@ -117,6 +122,12 @@ public class MapObject : MonoBehaviour, IGameActor
 
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
         Camera.main.orthographicSize = orthoSize;
+    }
+
+    public void NewRound(int roundCount)
+    {
+        round = roundCount;
+        roundNodes.Add(round, new List<NodeObject>());
     }
 
     public ScoreViewModel GetScore()
@@ -324,6 +335,7 @@ public class MapObject : MonoBehaviour, IGameActor
         closedNodes?.Clear();
         openNodesBuffer?.Clear();
         closedNodesBuffer?.Clear();
+        roundNodes?.Clear();
 
         var children = GetComponentsInChildren<NodeObject>();
         for (int i = 0; i < children.Length; i++)
@@ -334,8 +346,10 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public void OpenMap()
     {
+        NewRound(0);
         OpenEntrances();
         ExpandNodes();
+        round = 1;
     }
 
     private void OpenEntrances()
@@ -349,6 +363,7 @@ public class MapObject : MonoBehaviour, IGameActor
                     break;
                 case ENodeType.Entrance:
                     OpenNode(node.Value);
+                    AddRoundNode(node.Value);
                     break;
                 case ENodeType.None:
                 case ENodeType.Wall:
@@ -362,7 +377,7 @@ public class MapObject : MonoBehaviour, IGameActor
     public void SetCandidate(int id)
     {
         candidateId = id;
-        candidateFix = null;
+        selectedNode = null;
     }
 #endif
 
@@ -447,40 +462,47 @@ public class MapObject : MonoBehaviour, IGameActor
         closedNodesBuffer.Add(node);
     }
 
+    private void AddRoundNode(NodeObject node)
+    {
+        if (!roundNodes.ContainsKey(round))
+        {
+            NewRound(round);
+        }
+        roundNodes[round].Add(node);
+        node.Round = round;
+    }
+
     public void Rotate()
     {
-        if (!ReferenceEquals(null, candidateFix))
+        if (!ReferenceEquals(null, selectedNode))
         {
-            candidateFix.Rotate();
+            selectedNode.Rotate();
+            FixNode();
         }
     }
 
     public void Flip()
     {
-        if (!ReferenceEquals(null, candidateFix))
+        if (!ReferenceEquals(null, selectedNode))
         {
-            candidateFix.Flip();
+            selectedNode.Flip();
+            FixNode();
         }
     }
 
     public void FixNode()
     {
-        if (!ReferenceEquals(null, candidateFix))
+        if (!ReferenceEquals(null, selectedNode))
         {
-            if (IsConstructable(candidateFix))
+            if (IsConstructable(selectedNode))
             {
-                FixNode(candidateFix);
-                ExpandNodes();
-                Debug.Log($"Fix suc : {candidateFix.name}");
-                CloseNode(candidateFix);
-                hand.DisposeNode();
-                candidateId = 0;
-                candidateFix = null;
-                onFixPhaseExit?.Invoke();
+                FixNode(selectedNode);
+                Debug.Log($"Fix suc : {selectedNode.name}");
+                CloseNode(selectedNode);
             }
             else
             {
-                Debug.Log($"Fix fail : {candidateFix.name}");
+                Debug.Log($"Fix fail : {selectedNode.name}");
             }
         }
     }
@@ -511,6 +533,43 @@ public class MapObject : MonoBehaviour, IGameActor
         }
     }
 
+    public bool Fix()
+    {
+        var currentRound = roundNodes[round];
+        foreach (var node in currentRound)
+        {
+            if (!IsConstructable(node))
+            {
+                return false;
+            }
+        }
+
+        DeselectNode();
+        ExpandNodes();
+        return true;
+    }
+
+    public void CancelNode()
+    {
+        List<NodeObject> delete = new List<NodeObject>();
+        var currentRoundNodes = roundNodes[round];
+        if (currentRoundNodes.Count > 0)
+        {
+            foreach (var node in currentRoundNodes)
+            {
+                delete.Add(node);
+                node.ResetNode();
+            }
+        }
+
+        for (int i = 0; i < delete.Count; i++)
+        {
+            currentRoundNodes.Remove(delete[i]);
+        }
+        hand.Cancel();
+        DeselectNode();
+    }
+
     private bool IsOpenNode(NodeObject node)
     {
         return openNodes.Contains(node);
@@ -523,29 +582,51 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public void OnClickNode(NodeObject node)
     {
-        if (node.NodeState != ENodeState.Open)
+        if (node.NodeType != ENodeType.Normal)
         {
             return;
-        }
-
-        if (!ReferenceEquals(null, candidateFix))
-        {
-            candidateFix.ResetNode();
         }
 
         candidateId = hand.GetDice();
         if (candidateId < 0)
         {
-            Debug.Log($"No Candidate Node");
-
-            return;
+            if (node.Round == round)
+            {
+                SelectNode(node);
+            }
+        }
+        else
+        {
+            if (node.Round == round)
+            {
+                hand.Return(node);
+            }
+            var route = dataManager.RouteData[candidateId];
+            var sprite = spriteManager.RouteSprites[route.Name];
+            node.SetupNode(route, sprite);
+            AddRoundNode(node);
+            Debug.Log($"Build : {route.Name} / {node.Position}");
+            hand.DisposeNode();
+            SelectNode(node);
         }
 
-        var route = dataManager.RouteData[candidateId];
-        var sprite = spriteManager.RouteSprites[route.Name];
-        node.SetupNode(route, sprite);
-        Debug.Log($"Build : {route.Name}");
-        candidateFix = node;
+        FixNode();
+    }
+
+    private void SelectNode(NodeObject node)
+    {
+        DeselectNode();
+        selectedNode = node;
+        selectedNode.Select();
+    }
+
+    private void DeselectNode()
+    {
+        if (!ReferenceEquals(null, selectedNode))
+        {
+            selectedNode.Deselect();
+        }
+        selectedNode = null;
     }
 
     public bool IsConstructable(NodeObject node)
@@ -607,11 +688,11 @@ public class MapObject : MonoBehaviour, IGameActor
 
     private void OnChangeHand()
     {
-        if (!ReferenceEquals(null, candidateFix))
-        {
-            candidateFix.ResetNode();
-            candidateFix = null;
-        }
+        //if (!ReferenceEquals(null, selectedNode))
+        //{
+        //    selectedNode.ResetNode();
+        //    selectedNode = null;
+        //}
     }
 
 #if UNITY_EDITOR

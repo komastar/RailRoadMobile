@@ -95,7 +95,7 @@
         "sqrMagnitude": 2
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -106,7 +106,7 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -117,7 +117,7 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -128,7 +128,7 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 1000,
@@ -161,7 +161,7 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -172,7 +172,7 @@
         "sqrMagnitude": 8
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -183,7 +183,7 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -194,7 +194,7 @@
         "sqrMagnitude": 20
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 1000,
@@ -227,7 +227,7 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -238,7 +238,7 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -249,7 +249,7 @@
         "sqrMagnitude": 18
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -260,7 +260,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 1001,
@@ -293,7 +293,7 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -304,7 +304,7 @@
         "sqrMagnitude": 20
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -315,7 +315,7 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 0,
@@ -326,7 +326,7 @@
         "sqrMagnitude": 32
       },
       "Direction": 0,
-      "NodeType": 4
+      "NodeType": 2
     },
     {
       "Id": 1000,

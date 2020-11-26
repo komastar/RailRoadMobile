@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class DiceObject : MonoBehaviour, IGameActor
 {
+    public Button diceButton;
+    public Image buttonRenderer;
     public Image routeRenderer;
 
     private DataManager dataManager;
@@ -20,6 +22,7 @@ public class DiceObject : MonoBehaviour, IGameActor
         DiceId = diceData.Routes[Random.Range(0, diceData.Routes.Length)];
         var routeData = dataManager.RouteData[DiceId];
         routeRenderer.sprite = SpriteManager.Get().GetSprite(routeData.Name);
+        TurnOn();
     }
 
     public void Init(int id)
@@ -33,5 +36,27 @@ public class DiceObject : MonoBehaviour, IGameActor
     public void OnClickDice()
     {
         onClick?.Invoke(this);
+        OnSelect();
+    }
+
+    public void OnSelect()
+    {
+        buttonRenderer.color = Color.green;
+    }
+
+    public void OnDeselect()
+    {
+        buttonRenderer.color = Color.white;
+    }
+
+    public void TurnOn()
+    {
+        diceButton.interactable = true;
+    }
+
+    public void TurnOff()
+    {
+        diceButton.interactable = false;
+        OnDeselect();
     }
 }

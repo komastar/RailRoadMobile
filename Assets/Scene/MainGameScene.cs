@@ -124,6 +124,7 @@ public class MainGameScene : MonoBehaviour
         stageNameText.text = currentStage.Name;
 
         handObject.stage = currentStage;
+        handObject.Ready();
 
         mapJson = Resources.Load<TextAsset>($"Data/Map/{currentStage.MapName}");
         MapModel map = JObject.Parse(mapJson.text).ToObject<MapModel>();
@@ -137,7 +138,7 @@ public class MainGameScene : MonoBehaviour
 
     public void OnClickCancel()
     {
-
+        mapObject.CancelNode();
     }
 
     public void OnClickRotate()
@@ -152,7 +153,7 @@ public class MainGameScene : MonoBehaviour
 
     public void OnClickFix()
     {
-        mapObject.FixNode();
+        OnFixPhaseExit();
     }
 
     public void OnClickRoll()
@@ -162,17 +163,21 @@ public class MainGameScene : MonoBehaviour
 
     public void OnFixPhaseExit()
     {
-        if (0 == handObject.GetDiceCount())
+        if (mapObject.Fix())
         {
-            if (RoundCount + 1 > currentStage.Round)
+            if (0 == handObject.GetDiceCount())
             {
-                mapObject.Close();
-                OnGameOver();
-            }
-            else
-            {
-                RoundCount++;
-                handObject.Roll();
+                if (RoundCount + 1 > currentStage.Round)
+                {
+                    mapObject.Close();
+                    OnGameOver();
+                }
+                else
+                {
+                    RoundCount++;
+                    mapObject.NewRound(RoundCount);
+                    handObject.Roll();
+                }
             }
         }
     }

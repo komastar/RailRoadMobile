@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec68f74f98c8c5e40bcf43d259a4f71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diceButton: {fileID: 6188857971188842937}
+  buttonRenderer: {fileID: 7363427535286606717}
   routeRenderer: {fileID: 5245769787254327154}
 --- !u!222 &4365842288121325376
 CanvasRenderer:
