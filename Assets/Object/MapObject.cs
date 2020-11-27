@@ -121,6 +121,8 @@ public class MapObject : MonoBehaviour, IGameActor
         }
 
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        float ratio = Screen.height / (float)Screen.width;
+        orthoSize *= 1f + (ratio - 1.7f);
         Camera.main.orthographicSize = orthoSize;
     }
 
