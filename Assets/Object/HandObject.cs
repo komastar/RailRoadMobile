@@ -7,6 +7,7 @@ public class HandObject : MonoBehaviour, IGameActor
 {
     public int Id { get; set; }
 
+    public GameObject dicePanel;
     public StageModel stage;
     public DiceObject dicePrefab;
 
@@ -40,7 +41,7 @@ public class HandObject : MonoBehaviour, IGameActor
         Debug.Log($"Make Dices : {stage.Dice.Length}");
         for (int i = 0; i < stage.Dice.Length; i++)
         {
-            var dice = Instantiate(dicePrefab, transform);
+            var dice = Instantiate(dicePrefab, dicePanel.transform);
             dice.Init(stage.Dice[i]);
             dice.onClick += OnClickDice;
             dices.Add(dice);
