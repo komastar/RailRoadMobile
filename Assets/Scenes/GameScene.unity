@@ -1563,7 +1563,7 @@ MonoBehaviour:
   stageNameText: {fileID: 1694754866}
   mapNameText: {fileID: 1476888815}
   mapObject: {fileID: 6657187381290686287}
-  handObject: {fileID: 0}
+  handObject: {fileID: 1423625287}
   scoreObject: {fileID: 614640082}
 --- !u!4 &725751338
 Transform:

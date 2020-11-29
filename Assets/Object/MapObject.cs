@@ -185,10 +185,10 @@ public class MapObject : MonoBehaviour, IGameActor
         {
             int scoreCalc = (score.Key.Count - 1) * 4;
             networkScore += scoreCalc;
-            Debug.Log($"Score : {scoreCalc}");
+            Log.Debug($"Score : {scoreCalc}");
         }
 
-        Debug.Log($"TotalNetworkScore : {networkScore}");
+        Log.Debug($"TotalNetworkScore : {networkScore}");
         scoreViewModel.NetworkScore = networkScore;
 
         List<NodeObject> rails = new List<NodeObject>();
@@ -228,8 +228,8 @@ public class MapObject : MonoBehaviour, IGameActor
             roadScore = roadScore < currentRoadScore ? currentRoadScore : roadScore;
         }
 
-        Debug.Log($"TotalRailScore : {railScore}");
-        Debug.Log($"TotalRoadScore : {roadScore}");
+        Log.Debug($"TotalRailScore : {railScore}");
+        Log.Debug($"TotalRoadScore : {roadScore}");
         scoreViewModel.RailScore = railScore;
         scoreViewModel.RoadScore = roadScore;
 
@@ -261,7 +261,7 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
-        Debug.Log($"TotalFaultScore : {penaltyScore}");
+        Log.Debug($"TotalFaultScore : {penaltyScore}");
         scoreViewModel.PenaltyScore = penaltyScore;
         scoreViewModel.Calculate();
 
@@ -499,12 +499,12 @@ public class MapObject : MonoBehaviour, IGameActor
             if (IsConstructable(selectedNode))
             {
                 FixNode(selectedNode);
-                Debug.Log($"Fix suc : {selectedNode.name}");
+                Log.Debug($"Fix suc : {selectedNode.name}");
                 //CloseNode(selectedNode);
             }
             else
             {
-                Debug.Log($"Fix fail : {selectedNode.name}");
+                Log.Debug($"Fix fail : {selectedNode.name}");
             }
         }
     }
@@ -607,7 +607,7 @@ public class MapObject : MonoBehaviour, IGameActor
             var sprite = spriteManager.RouteSprites[route.Name];
             node.SetupNode(route, sprite);
             AddRoundNode(node);
-            Debug.Log($"Build : {route.Name} / {node.Position}");
+            Log.Debug($"Build : {route.Name} / {node.Position}");
             hand.DisposeNode();
             SelectNode(node);
         }
@@ -659,7 +659,7 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
-        Debug.Log($"Connect : {connectCount} / {matchCount}");
+        Log.Debug($"Connect : {connectCount} / {matchCount}");
 
         return (connectCount == 4) && (matchCount > 0);
     }

@@ -17,6 +17,7 @@ public class HandObject : MonoBehaviour, IGameActor
 
     private List<DiceObject> dices;
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         if (GUI.Button(new Rect(0, 200, 150, 150), "Roll"))
@@ -24,6 +25,7 @@ public class HandObject : MonoBehaviour, IGameActor
             Roll();
         }
     }
+#endif
 
     public void Init(int id = 0)
     {
@@ -38,7 +40,7 @@ public class HandObject : MonoBehaviour, IGameActor
     private void MakeDices()
     {
         ClearDices();
-        Debug.Log($"Make Dices : {stage.Dice.Length}");
+        Log.Debug($"Make Dices : {stage.Dice.Length}");
         for (int i = 0; i < stage.Dice.Length; i++)
         {
             var dice = Instantiate(dicePrefab, dicePanel.transform);

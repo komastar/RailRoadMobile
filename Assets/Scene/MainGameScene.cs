@@ -115,11 +115,11 @@ public class MainGameScene : MonoBehaviour
     {
         if (currentStage == null)
         {
-            Debug.LogError("Stage is null");
+            Log.Error("Stage is null");
             return;
         }
 
-        chapterNameText.text = currentChapter?.Name;
+        chapterNameText.text = dataManager.Localize("Chapter", currentChapter?.Name);
         mapNameText.text = currentStage.MapName;
         stageNameText.text = currentStage.Name;
 

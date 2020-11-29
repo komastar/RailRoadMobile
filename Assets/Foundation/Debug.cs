@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using UnityEngine;
 
 /// 
@@ -17,44 +17,59 @@ using UnityEngine;
 ///     http://msdn.microsoft.com/en-us/library/system.diagnostics.conditionalattribute.aspx
 /// 
 /// 2012.11. @kimsama
-/// 
-public static class Debug
+public static class Log
 {
-    public static bool isDebugBuild
-    {
-        get { return UnityEngine.Debug.isDebugBuild; }
-    }
+    public static bool IsDebugBuild => UnityEngine.Debug.isDebugBuild;
 
-    public static void Log(object message)
+    #region Dev
+    [Conditional("UNITY_EDITOR")]
+    public static void Debug(object message)
     {
         UnityEngine.Debug.Log(message);
     }
 
-    public static void Log(object message, UnityEngine.Object context)
+    [Conditional("UNITY_EDITOR")]
+    public static void Debug(object message, UnityEngine.Object context)
     {
         UnityEngine.Debug.Log(message, context);
     }
+    #endregion
 
-    public static void LogError(object message)
+    #region Notice
+    public static void Warn(object message)
+    {
+        UnityEngine.Debug.LogWarning(message);
+    }
+
+    public static void Warn(object message, UnityEngine.Object context)
+    {
+        UnityEngine.Debug.LogWarning(message, context);
+    }
+    #endregion
+
+    #region Critical
+    public static void Error(object message)
     {
         UnityEngine.Debug.LogError(message);
     }
 
-    public static void LogError(object message, UnityEngine.Object context)
+    public static void Error(object message, UnityEngine.Object context)
     {
         UnityEngine.Debug.LogError(message, context);
     }
 
-    public static void LogWarning(object message)
+    public static void Assert(bool condition)
     {
-        UnityEngine.Debug.LogWarning(message.ToString());
+        UnityEngine.Debug.Assert(condition);
     }
 
-    public static void LogWarning(object message, UnityEngine.Object context)
+    public static void Assert(bool condition, object message)
     {
-        UnityEngine.Debug.LogWarning(message.ToString(), context);
+        UnityEngine.Debug.Assert(condition, message);
     }
+    #endregion
 
+    #region Debug.Draw
     public static void DrawLine(Vector3 start, Vector3 end, Color color = default(Color), float duration = 0.0f, bool depthTest = true)
     {
         UnityEngine.Debug.DrawLine(start, end, color, duration, depthTest);
@@ -64,9 +79,5 @@ public static class Debug
     {
         UnityEngine.Debug.DrawRay(start, dir, color, duration, depthTest);
     }
-
-    public static void Assert(bool condition)
-    {
-        if (!condition) throw new Exception();
-    }
+    #endregion
 }

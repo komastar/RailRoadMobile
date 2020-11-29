@@ -10,6 +10,7 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, StageListModel> StageListData { get; private set; }
     public Dictionary<int, MapModel> MapData { get; private set; }
     public Dictionary<int, ChapterModel> ChapterData { get; private set; }
+    public JObject LocalizeData { get; private set; }
 
     private void Awake()
     {
@@ -25,6 +26,9 @@ public class DataManager : Singleton<DataManager>
             stage.Id = stageItem.Key;
             stageItem.Value.Stage = stage;
         }
+
+        var koLocalizeData = Resources.Load<TextAsset>("Data/Localization/ko-kr");
+        LocalizeData = JObject.Parse(koLocalizeData.text);
     }
 
     private Dictionary<int, T> MakeDatabase<T>(string dataname = "")
@@ -90,5 +94,19 @@ public class DataManager : Singleton<DataManager>
         }
 
         return null;
+    }
+
+    public string Localize(string category, string name)
+    {
+        string key = $"{category}.{name}";
+        var t = LocalizeData.SelectToken(key);
+        if (null != t)
+        {
+            return t.ToString();
+        }
+        else
+        {
+            return key;
+        }
     }
 }

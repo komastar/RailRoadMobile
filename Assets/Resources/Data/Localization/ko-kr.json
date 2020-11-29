@@ -1,32 +1,34 @@
 {
-    "Data": {
-        "Map": {
-            "FirstMap": "첫번째 맵"
-        },
-        "Tile": {
-            "NR-Straight-Rail": "직선 철로",
-            "NR-Corner-Rail": "곡선 철로",
-            "NR-ThreeWay-Rail": "삼거리 철로",
-            "NR-Straight-Road": "직선 차로",
-            "NR-Corner-Road": "곡선 차로",
-            "NR-ThreeWay-Road": "삼거리 차로",
-            "JC-Straight-Rail-Road": "직선로 환승",
-            "JC-Corner-Rail-Road": "곡선로 환승",
-            "NR-X-Rail": "사거리 철로",
-            "NR-X-Road": "사거리 차로",
-            "OP-XStraight-Rail-Road": "철로와 고가차로",
-            "JC-X-3Road-1Rail": "삼거리 차로와 철로 환승",
-            "JC-X-3Rail-1Road": "삼거리 철로와 차로 환승",
-            "JC-XCorner-Road-Rail": "곡선 차로와 철로 환승",
-            "JC-XStraight-Road-Rail": "차로와 철로 교차로",
-        },
-        "Dice": {
-            "CommonRouteDice": "일반 노선",
-            "UncommonRouteDice": "고급 노선",
-            "RareRouteDice": "희귀 노선"
-        },
-        "Chapter": {
-            "SouthShire": "동녘골"
-        }
+    "Global": {
+        "Round": "라운드"
+    },
+    "Map": {
+        "FirstMap": "첫번째 맵"
+    },
+    "Tile": {
+        "NR-Straight-Rail": "직선 철로",
+        "NR-Corner-Rail": "곡선 철로",
+        "NR-ThreeWay-Rail": "삼거리 철로",
+        "NR-Straight-Road": "직선 차로",
+        "NR-Corner-Road": "곡선 차로",
+        "NR-ThreeWay-Road": "삼거리 차로",
+        "JC-Straight-Rail-Road": "직선로 환승",
+        "JC-Corner-Rail-Road": "곡선로 환승",
+        "NR-X-Rail": "사거리 철로",
+        "NR-X-Road": "사거리 차로",
+        "OP-XStraight-Rail-Road": "철로와 고가차로",
+        "JC-X-3Road-1Rail": "삼거리 차로와 철로 환승",
+        "JC-X-3Rail-1Road": "삼거리 철로와 차로 환승",
+        "JC-XCorner-Road-Rail": "곡선 차로와 철로 환승",
+        "JC-XStraight-Road-Rail": "차로와 철로 교차로",
+    },
+    "Dice": {
+        "CommonRouteDice": "일반 노선",
+        "UncommonRouteDice": "고급 노선",
+        "RareRouteDice": "희귀 노선"
+    },
+    "Chapter": {
+        "EastDale": "동녘골",
+        "WestBeach": "서쪽 바다"
     }
 }

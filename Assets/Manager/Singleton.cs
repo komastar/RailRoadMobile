@@ -19,7 +19,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>, new()
 
                 if (objs.Length > 1)
                 {
-                    Debug.LogError("There is more than one " + typeof(T).Name + " in the scene.");
+                    Log.Error("There is more than one " + typeof(T).Name + " in the scene.");
                 }
 
                 if (_instance == null)
