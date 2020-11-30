@@ -18,13 +18,13 @@ public class HandObject : MonoBehaviour, IGameActor
     private List<DiceObject> dices;
 
 #if UNITY_EDITOR
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(0, 200, 150, 150), "Roll"))
-        {
-            Roll();
-        }
-    }
+    //private void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(0, 200, 150, 150), "Roll"))
+    //    {
+    //        Roll();
+    //    }
+    //}
 #endif
 
     public void Init(int id = 0)
