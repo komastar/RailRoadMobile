@@ -3,8 +3,8 @@
     "m_SelectedPackage": {
         "deviceId": "ce021712cd25243403",
         "name": "com.Komastar.TileTraveler",
-        "processId": 18864,
-        "exited": false
+        "processId": 8922,
+        "exited": true
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -37,6 +37,12 @@
             "name": "com.Komastar.TileTraveler",
             "processId": 18864,
             "exited": false
+        },
+        {
+            "deviceId": "ce021712cd25243403",
+            "name": "com.Komastar.TileTraveler",
+            "processId": 8922,
+            "exited": true
         }
     ],
     "m_Tags": {

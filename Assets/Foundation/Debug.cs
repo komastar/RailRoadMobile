@@ -35,6 +35,16 @@ public static class Log
     }
     #endregion
 
+    public static void Info(object message)
+    {
+        UnityEngine.Debug.Log(message);
+    }
+
+    public static void Info(object message, Object context)
+    {
+        UnityEngine.Debug.Log(message, context);
+    }
+
     #region Notice
     public static void Warn(object message)
     {
