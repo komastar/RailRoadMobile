@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Tests
 {
-    public class SampleMapTest
+    public class PlayTest
     {
         [SetUp]
         public void Setup()
@@ -18,22 +17,33 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator SampleMapTestWithEnumeratorPasses()
+        public IEnumerator MapTestSimple()
         {
-            var mainGame = FindObject<MainGameScene>();
             var stageJsonText = Resources.Load<TextAsset>("Data/Stage/Stage01");
+            Assert.IsNotNull(stageJsonText);
+            Assert.IsFalse(string.IsNullOrEmpty(stageJsonText.text));
             var stage = JObject.Parse(stageJsonText.text).ToObject<StageModel>();
-            mainGame.SetStage(stage);
-            mainGame.MakeStage();
+            Assert.IsNotNull(stage);
 
-            yield return null;
+            var mapJsonText = Resources.Load<TextAsset>($"Data/Map/{stage.MapName}");
+            Assert.IsNotNull(mapJsonText);
+            Assert.IsFalse(string.IsNullOrEmpty(mapJsonText.text));
 
             var rotateButton = FindObject<Button>("Canvas/CommandPanel/RotateButton");
             var flipButton = FindObject<Button>("Canvas/CommandPanel/FlipButton");
             var fixButton = FindObject<Button>("Canvas/CommandPanel/FixButton");
+            var mapObject = FindObject<MapObject>();
+            var handObject = FindObject<HandObject>();
 
-            var mapObj = Object.FindObjectOfType<MapObject>();
-            var handObject = Object.FindObjectOfType<HandObject>();
+            MapModel map = JObject.Parse(mapJsonText.text).ToObject<MapModel>();
+            mapObject.MakeMap(map);
+            mapObject.OpenMap();
+
+            handObject.stage = stage;
+            handObject.Ready();
+            handObject.Roll();
+            Assert.AreEqual(3, handObject.dices.Count);
+
             Vector2Int[] position1 = new Vector2Int[3]
             {
                 new Vector2Int(1, 2),
@@ -64,13 +74,14 @@ namespace Tests
 
             for (int i = 0; i < 2; i++)
             {
-                var dices = handObject.GetComponentsInChildren<DiceObject>();
-                for (int j = 0; j < dices.Length; j++)
+                var dices = handObject.dices;
+
+                for (int j = 0; j < dices.Count; j++)
                 {
                     handObject.Dice = dices[j];
 
-                    var node = mapObj.GetNode(positions[i][j]);
-                    mapObj.OnClickNode(node);
+                    var node = mapObject.GetNode(positions[i][j]);
+                    mapObject.OnClickNode(node);
                     for (int flip = 0; flip < flips[i][j]; flip++)
                     {
                         flipButton.onClick.Invoke();
@@ -91,7 +102,8 @@ namespace Tests
 
             yield return new WaitForSecondsRealtime(.5f);
 
-            Assert.AreEqual(12, mainGame.scoreObject.scoreViewModel.TotalScore);
+            var score = mapObject.GetScore();
+            Assert.AreEqual(12, score.TotalScore);
         }
 
         private T FindObject<T>(string name = null) where T : Component

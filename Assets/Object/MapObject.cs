@@ -134,6 +134,7 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public ScoreViewModel GetScore()
     {
+        connExits.Clear();
         ScoreViewModel scoreViewModel = new ScoreViewModel();
         foreach (var node in entireNodes)
         {

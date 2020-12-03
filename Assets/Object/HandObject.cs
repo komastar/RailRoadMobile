@@ -15,7 +15,7 @@ public class HandObject : MonoBehaviour, IGameActor
 
     public Action onChangeHand;
 
-    private List<DiceObject> dices;
+    public List<DiceObject> dices;
 
 #if UNITY_EDITOR
     //private void OnGUI()

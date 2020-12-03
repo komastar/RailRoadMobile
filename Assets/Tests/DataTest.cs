@@ -9,7 +9,7 @@ namespace Tests
     public class DataTest
     {
         [UnityTest]
-        public IEnumerator ChapterAndStageDataTest()
+        public IEnumerator DataTestChapterStage()
         {
             var dataManager = DataManager.Get();
             var chapter = dataManager.GetFirstChapter();
