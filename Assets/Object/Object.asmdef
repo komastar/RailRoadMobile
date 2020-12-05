@@ -2,7 +2,8 @@
     "name": "Object",
     "references": [
         "GUID:ac50885630ceb9e4f953731b40cd571c",
-        "GUID:dcc3093914076ae47b8b6c01bf8607a7"
+        "GUID:dcc3093914076ae47b8b6c01bf8607a7",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

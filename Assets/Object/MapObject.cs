@@ -332,6 +332,7 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public void Clear()
     {
+        selectedNode = null;
         connExits?.Clear();
         entireNodes?.Clear();
         //openNodes?.Clear();
@@ -583,11 +584,16 @@ public class MapObject : MonoBehaviour, IGameActor
     //    return closedNodes.Contains(node);
     //}
 
-    public void OnClickNode(NodeObject node)
+    public int OnClickNode(NodeObject node)
     {
         if (node.NodeType != ENodeType.Normal)
         {
-            return;
+            return -1;
+        }
+
+        if (selectedNode == node)
+        {
+            return 1;
         }
 
         candidateId = hand.GetDice();
@@ -614,6 +620,8 @@ public class MapObject : MonoBehaviour, IGameActor
         }
 
         FixNode();
+
+        return 0;
     }
 
     private void SelectNode(NodeObject node)

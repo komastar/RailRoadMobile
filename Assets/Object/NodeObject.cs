@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 [SelectionBase]
-public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparable<NodeObject>
+public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<NodeObject>
 {
     private readonly static Vector3 flipScale = new Vector3(-1f, 1f, 1f);
 
@@ -26,7 +29,7 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     public EDirection Direction { get => (EDirection)direction; set => direction = (int)value; }
     public SpriteRenderer TileRenderer;
     public SpriteRenderer RouteRenderer;
-    public Action<NodeObject> onClick;
+    public Func<NodeObject, int> onClick;
     public NodeObject[] Neighbors;
 
     public RouteModel RouteData;
@@ -34,6 +37,31 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
     public bool IsRailRoute = false;
     public bool IsRoadRoute = false;
 
+    private void Awake()
+    {
+        var clickObserver = OnPointerClickAsObservable();
+        clickObserver
+            .Buffer(clickObserver.Throttle(TimeSpan.FromMilliseconds(250)))
+            .Where(xs => xs.Count > 0)
+            .Subscribe(
+            xs =>
+            {
+                int? result = onClick?.Invoke(this);
+                if (result == 1)
+                {
+                    if (xs.Count == 1)
+                    {
+                        Rotate();
+                    }
+                    else if (xs.Count == 2)
+                    {
+                        Flip();
+                    }
+                }
+            });
+    }
+
+    #region GIZMOS
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -63,11 +91,7 @@ public class NodeObject : MonoBehaviour, INode, IPointerClickHandler, IComparabl
         Gizmos.color = Color.green;
         Gizmos.DrawCube(transform.position, Vector3.one * .25f);
     }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        onClick?.Invoke(this);
-    }
+    #endregion
 
     public void Init(int id)
     {
