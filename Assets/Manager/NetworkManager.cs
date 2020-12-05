@@ -24,7 +24,7 @@ namespace Manager
             {
                 var client = new ClientWebSocket();
                 Log.Info("Open");
-                await client.ConnectAsync(new Uri("ws://localhost:5000/ws"), CancellationToken.None);
+                await client.ConnectAsync(new Uri("ws://rpi.komastar.kr/ws"), CancellationToken.None);
 
                 Log.Info("Send");
                 byte[] bufferSend = Encoding.UTF8.GetBytes("test");
