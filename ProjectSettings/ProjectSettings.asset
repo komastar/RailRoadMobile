@@ -168,7 +168,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Komastar.RailRoadMobile
+    Android: com.Komastar.TileTraveler
   buildNumber: {}
   AndroidBundleVersionCode: 6
   AndroidMinSdkVersion: 19
