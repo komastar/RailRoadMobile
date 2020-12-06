@@ -165,18 +165,15 @@ public class MainGameScene : MonoBehaviour
     {
         if (mapObject.Fix())
         {
-            if (0 == handObject.GetDiceCount())
+            if (RoundCount + 1 > currentStage.Round)
             {
-                if (RoundCount + 1 > currentStage.Round)
-                {
-                    OnGameOver();
-                }
-                else
-                {
-                    RoundCount++;
-                    mapObject.NewRound(RoundCount);
-                    handObject.Roll();
-                }
+                OnGameOver();
+            }
+            else
+            {
+                RoundCount++;
+                mapObject.NewRound(RoundCount);
+                handObject.Roll();
             }
         }
     }

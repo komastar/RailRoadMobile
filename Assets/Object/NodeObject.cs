@@ -36,7 +36,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public bool IsRailRoute = false;
     public bool IsRoadRoute = false;
-
+    private int clickResult = 0;
     private void Awake()
     {
         var clickObserver = OnPointerClickAsObservable();
@@ -46,8 +46,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
             .Subscribe(
             xs =>
             {
-                int? result = onClick?.Invoke(this);
-                if (result == 1)
+                if (clickResult == 1)
                 {
                     if (xs.Count == 1)
                     {
@@ -91,10 +90,17 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         Gizmos.color = Color.green;
         Gizmos.DrawCube(transform.position, Vector3.one * .25f);
     }
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        clickResult = onClick.Invoke(this);
+        base.OnPointerClick(eventData);
+    }
     #endregion
 
     public void Init(int id)
     {
+        NodeState = ENodeState.None;
         Id = id;
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
@@ -159,6 +165,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         name = RouteData.Name;
         IsRailRoute = false;
         IsRoadRoute = false;
+        NodeState = ENodeState.Open;
         Joints = new EJointType[4];
         RouteData.Joints.CopyTo(Joints, 0);
         for (int i = 0; i < 4; i++)
@@ -191,6 +198,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public void ResetNode()
     {
+        NodeState = ENodeState.None;
         name = "EmptyNode";
         Id = 0;
         Round = 0;

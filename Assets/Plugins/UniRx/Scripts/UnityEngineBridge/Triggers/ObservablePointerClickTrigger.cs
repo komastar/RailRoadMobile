@@ -12,7 +12,7 @@ namespace UniRx.Triggers
     {
         Subject<PointerEventData> onPointerClick;
 
-        void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+        public virtual void OnPointerClick(PointerEventData eventData)
         {
             if (onPointerClick != null) onPointerClick.OnNext(eventData);
         }

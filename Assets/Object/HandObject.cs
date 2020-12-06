@@ -80,7 +80,6 @@ public class HandObject : MonoBehaviour, IGameActor
     public void DisposeNode()
     {
         Dice.TurnOff();
-        Dice = null;
     }
 
     public int GetDiceCount()
@@ -88,9 +87,9 @@ public class HandObject : MonoBehaviour, IGameActor
         return dices.FindAll(d => d.diceButton.interactable == true).Count;
     }
 
-    public int GetDice()
+    public DiceObject GetDice()
     {
-        return ReferenceEquals(null, Dice) ? -1 : Dice.DiceId;
+        return Dice;
     }
 
     public void Cancel()
