@@ -22,11 +22,6 @@ public class MapObject : MonoBehaviour, IGameActor
     private SpriteManager spriteManager;
 
     private Dictionary<Vector2Int, NodeObject> entireNodes;
-    //private HashSet<NodeObject> openNodes;
-    //private HashSet<NodeObject> openNodesBuffer;
-    //private HashSet<NodeObject> closedNodes;
-    //private HashSet<NodeObject> closedNodesBuffer;
-
     private Dictionary<NodeObject, HashSet<Vector2Int>> connExits;
     private Dictionary<int, List<NodeObject>> roundNodes;
 
@@ -44,10 +39,6 @@ public class MapObject : MonoBehaviour, IGameActor
         onFixPhaseExit = null;
 
         entireNodes = new Dictionary<Vector2Int, NodeObject>();
-        //openNodes = new HashSet<NodeObject>();
-        //closedNodes = new HashSet<NodeObject>();
-        //openNodesBuffer = new HashSet<NodeObject>();
-        //closedNodesBuffer = new HashSet<NodeObject>();
         connExits = new Dictionary<NodeObject, HashSet<Vector2Int>>();
         roundNodes = new Dictionary<int, List<NodeObject>>();
 
@@ -322,23 +313,11 @@ public class MapObject : MonoBehaviour, IGameActor
         return 1 + highestScore;
     }
 
-    //public void Close()
-    //{
-    //    foreach (var node in entireNodes)
-    //    {
-    //        CloseNode(node.Value);
-    //    }
-    //}
-
     public void Clear()
     {
         selectedNode = null;
         connExits?.Clear();
         entireNodes?.Clear();
-        //openNodes?.Clear();
-        //closedNodes?.Clear();
-        //openNodesBuffer?.Clear();
-        //closedNodesBuffer?.Clear();
         roundNodes?.Clear();
 
         var children = GetComponentsInChildren<NodeObject>();
@@ -351,31 +330,8 @@ public class MapObject : MonoBehaviour, IGameActor
     public void OpenMap()
     {
         NewRound(0);
-        //OpenEntrances();
-        //ExpandNodes();
         round = 1;
     }
-
-    //private void OpenEntrances()
-    //{
-    //    foreach (var node in entireNodes)
-    //    {
-    //        ENodeType nodeType = node.Value.NodeType;
-    //        switch (nodeType)
-    //        {
-    //            case ENodeType.Normal:
-    //                break;
-    //            case ENodeType.Entrance:
-    //                OpenNode(node.Value);
-    //                AddRoundNode(node.Value);
-    //                break;
-    //            case ENodeType.None:
-    //            case ENodeType.Wall:
-    //                CloseNode(node.Value);
-    //                break;
-    //        }
-    //    }
-    //}
 
 #if UNITY_EDITOR
     public void SetCandidate(int id)
@@ -389,82 +345,6 @@ public class MapObject : MonoBehaviour, IGameActor
     {
         entireNodes?.Add(node.Position, node);
     }
-
-    //private void OpenNode(NodeObject node)
-    //{
-    //    openNodes.Add(node);
-    //    node.Open();
-    //}
-
-    //private void CloseNode(NodeObject node)
-    //{
-    //    openNodes.Remove(node);
-    //    node.Close();
-    //    closedNodes.Add(node);
-    //}
-
-    //private void ExpandNodes()
-    //{
-    //    foreach (var node in openNodes)
-    //    {
-    //        Debug.Log($"Expand : {node.name}");
-    //        ExpandNode(node);
-    //    }
-
-    //    CommitOpenNode();
-    //    CommitCloseNode();
-    //}
-
-    //private void CommitOpenNode()
-    //{
-    //    foreach (var node in openNodesBuffer)
-    //    {
-    //        Debug.Log($"Open : {node.name}");
-    //        OpenNode(node);
-    //    }
-    //    openNodesBuffer.Clear();
-    //}
-
-    //private void CommitCloseNode()
-    //{
-    //    foreach (var node in closedNodesBuffer)
-    //    {
-    //        Debug.Log($"Close : {node.name}");
-    //        CloseNode(node);
-    //    }
-    //    closedNodesBuffer.Clear();
-    //}
-
-    //private void ExpandNode(NodeObject node)
-    //{
-    //    if (IsCloseNode(node) || node.IsEmpty())
-    //    {
-    //        return;
-    //    }
-
-    //    for (int i = 0; i < Direction.Length; i++)
-    //    {
-    //        EJointType currentDirJoint = node.GetJoint(i);
-    //        if (currentDirJoint != EJointType.None)
-    //        {
-    //            Vector2Int neighborPosition = node.Position + Direction[i];
-    //            if (entireNodes.ContainsKey(neighborPosition))
-    //            {
-    //                var neighbor = entireNodes[neighborPosition];
-    //                if (IsOpenNode(neighbor) || IsCloseNode(neighbor))
-    //                {
-    //                    continue;
-    //                }
-    //                else
-    //                {
-    //                    openNodesBuffer.Add(neighbor);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    closedNodesBuffer.Add(node);
-    //}
 
     private void AddRoundNode(NodeObject node)
     {
@@ -564,7 +444,7 @@ public class MapObject : MonoBehaviour, IGameActor
         }
 
         DeselectNode();
-        //ExpandNodes();
+
         return true;
     }
 
@@ -588,16 +468,6 @@ public class MapObject : MonoBehaviour, IGameActor
         hand.Cancel();
         DeselectNode();
     }
-
-    //private bool IsOpenNode(NodeObject node)
-    //{
-    //    return openNodes.Contains(node);
-    //}
-
-    //private bool IsCloseNode(NodeObject node)
-    //{
-    //    return closedNodes.Contains(node);
-    //}
 
     public int OnClickNode(NodeObject node)
     {
@@ -723,11 +593,6 @@ public class MapObject : MonoBehaviour, IGameActor
 
     private void OnChangeHand()
     {
-        //if (!ReferenceEquals(null, selectedNode))
-        //{
-        //    selectedNode.ResetNode();
-        //    selectedNode = null;
-        //}
     }
 
 #if UNITY_EDITOR
