@@ -9,6 +9,7 @@ public class NodeModel
     public ENodeType NodeType;
     [JsonIgnore]
     public EJointType[] Joints;
+    public string Floor;
 
     public void Convert(INode node)
     {
@@ -16,5 +17,6 @@ public class NodeModel
         Position = node.Position;
         Direction = node.Direction;
         NodeType = node.NodeType;
+        Floor = node.Floor;
     }
 }

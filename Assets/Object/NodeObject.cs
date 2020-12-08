@@ -24,6 +24,9 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     private ENodeType nodeType;
     public ENodeType NodeType { get => nodeType; set => nodeType = value; }
     public ENodeState NodeState { get; set; }
+    [SerializeField]
+    private string floor;
+    public string Floor { get => floor; set => floor = value; }
     public EJointType[] Joints;
     public Vector2Int Position { get; set; }
     public EDirection Direction { get => (EDirection)direction; set => direction = (int)value; }
@@ -37,6 +40,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     public bool IsRailRoute = false;
     public bool IsRoadRoute = false;
     private int clickResult = 0;
+
     private void Awake()
     {
         var clickObserver = OnPointerClickAsObservable();
@@ -158,7 +162,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         RouteRenderer.transform.rotation = Quaternion.Euler(rotation);
     }
 
-    public void SetupNode(RouteModel route, Sprite sprite)
+    public void SetupNode(RouteModel route, Sprite routeSprite, Sprite floorSprite = null)
     {
         Id = route.Id;
         RouteData = route;
@@ -180,16 +184,26 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
                 IsRoadRoute = true;
             }
         }
-        RouteRenderer.sprite = sprite;
+        RouteRenderer.sprite = routeSprite;
+        if (null != floorSprite)
+        {
+            TileRenderer.sprite = floorSprite;
+        }
         if (Id == 0)
         {
             ResetNode();
         }
     }
 
-    public void SetupNode(NodeModel nodeData, RouteModel routeData, Sprite sprite)
+    public void SetupFloor(Sprite sprite)
     {
-        SetupNode(routeData, sprite);
+        Floor = sprite.name;
+        TileRenderer.sprite = sprite;
+    }
+
+    public void SetupNode(NodeModel nodeData, RouteModel routeData, Sprite routeSprite, Sprite floorSprite = null)
+    {
+        SetupNode(routeData, routeSprite, floorSprite);
         NodeType = nodeData.NodeType;
         Position = nodeData.Position;
         Rotate((int)nodeData.Direction);

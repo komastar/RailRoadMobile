@@ -14,8 +14,13 @@ public class DiceObject : MonoBehaviour, IGameActor
     public DiceModel diceData;
     public Action<DiceObject> onClick;
 
-    public int Id { get; set; }
-    public int DiceId { get; set; }
+    [SerializeField]
+    private int id;
+    public int Id { get => id; set => id = value; }
+
+    [SerializeField]
+    private int diceId;
+    public int DiceId { get => diceId; set => diceId = value; }
 
     public void Roll()
     {

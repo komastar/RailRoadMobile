@@ -18,7 +18,8 @@
         "sqrMagnitude": 0
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -29,7 +30,8 @@
         "sqrMagnitude": 1
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1001,
@@ -40,7 +42,8 @@
         "sqrMagnitude": 4
       },
       "Direction": 0,
-      "NodeType": 1
+      "NodeType": 1,
+      "Floor": "Grass"
     },
     {
       "Id": 1000,
@@ -51,7 +54,8 @@
         "sqrMagnitude": 9
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -62,7 +66,8 @@
         "sqrMagnitude": 16
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -73,7 +78,8 @@
         "sqrMagnitude": 1
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 0,
@@ -84,7 +90,8 @@
         "sqrMagnitude": 2
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -95,7 +102,8 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -106,7 +114,8 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 1000,
@@ -117,7 +126,8 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1002,
@@ -128,7 +138,8 @@
         "sqrMagnitude": 4
       },
       "Direction": 3,
-      "NodeType": 1
+      "NodeType": 1,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -139,7 +150,8 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -150,7 +162,8 @@
         "sqrMagnitude": 8
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -161,7 +174,8 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 1002,
@@ -172,7 +186,8 @@
         "sqrMagnitude": 20
       },
       "Direction": 1,
-      "NodeType": 1
+      "NodeType": 1,
+      "Floor": "Grass"
     },
     {
       "Id": 1000,
@@ -183,7 +198,8 @@
         "sqrMagnitude": 9
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 0,
@@ -194,7 +210,8 @@
         "sqrMagnitude": 10
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -205,7 +222,8 @@
         "sqrMagnitude": 13
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 0,
@@ -216,7 +234,8 @@
         "sqrMagnitude": 18
       },
       "Direction": 0,
-      "NodeType": 2
+      "NodeType": 2,
+      "Floor": "Grass"
     },
     {
       "Id": 1000,
@@ -227,7 +246,8 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -238,7 +258,8 @@
         "sqrMagnitude": 16
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -249,7 +270,8 @@
         "sqrMagnitude": 17
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1001,
@@ -260,7 +282,8 @@
         "sqrMagnitude": 20
       },
       "Direction": 2,
-      "NodeType": 1
+      "NodeType": 1,
+      "Floor": "Grass"
     },
     {
       "Id": 1000,
@@ -271,7 +294,8 @@
         "sqrMagnitude": 25
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 1000,
@@ -282,7 +306,8 @@
         "sqrMagnitude": 32
       },
       "Direction": 0,
-      "NodeType": 3
+      "NodeType": 3,
+      "Floor": "Wall"
     }
   ]
 }

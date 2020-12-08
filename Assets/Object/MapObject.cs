@@ -69,7 +69,14 @@ public class MapObject : MonoBehaviour, IGameActor
             }
         }
 
+        SetCamera(mapSize, nodeSize);
+    }
+
+    private static void SetCamera(Vector2Int mapSize, float nodeSize)
+    {
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
+        float ratio = Screen.height / (float)Screen.width;
+        orthoSize *= 1f + Mathf.Abs(ratio - 1.7f);
         Camera.main.orthographicSize = orthoSize;
     }
 
@@ -101,20 +108,27 @@ public class MapObject : MonoBehaviour, IGameActor
             Sprite sprite = null;
             if (spriteData.ContainsKey(routeData[node.Id].Name))
             {
-                sprite = spriteData[routeData[node.Id].Name];
+                if ("Wall" != routeData[node.Id].Name)
+                {
+                    sprite = spriteData[routeData[node.Id].Name];
+                }
             }
 
-            newNode.SetupNode(node, routeData[node.Id], sprite);
+            Sprite sprite2 = null;
+            if (!string.IsNullOrEmpty(node.Floor)
+                && spriteData.ContainsKey(node.Floor))
+            {
+                sprite2 = spriteData[node.Floor];
+            }
+
+            newNode.SetupNode(node, routeData[node.Id], sprite, sprite2);
             newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
             newNode.transform.localScale = Vector3.one * nodeSize;
             newNode.onClick += OnClickNode;
             NewNode(newNode);
         }
 
-        var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
-        float ratio = Screen.height / (float)Screen.width;
-        orthoSize *= 1f + (ratio - 1.7f);
-        Camera.main.orthographicSize = orthoSize;
+        SetCamera(mapSize, nodeSize);
     }
 
     public void NewRound(int roundCount)

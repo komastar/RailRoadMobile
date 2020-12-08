@@ -96,8 +96,11 @@ public class HandObject : MonoBehaviour, IGameActor
     {
         for (int i = 0; i < dices.Count; i++)
         {
+            dices[i].OnDeselect();
             dices[i].TurnOn();
         }
+
+        Dice = null;
     }
 
     public void Return(NodeObject node)

@@ -27,6 +27,7 @@ public class MapEditorWindow : EditorWindow
 
     private string[] nodeTypes;
     private int selectedNodeTypeIndex;
+    private string floorName;
 
     [MenuItem("DevAssist/Map Editor")]
     public static void OpenWindow()
@@ -197,6 +198,16 @@ public class MapEditorWindow : EditorWindow
                 }
             }
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            {
+                EditorGUILayout.LabelField("Floor", labelOption);
+                floorName = EditorGUILayout.TextField(floorName);
+                if (GUILayout.Button("Set"))
+                {
+                    SetFloor(floorName);
+                }
+            }
+            EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndVertical();
         #endregion
@@ -273,7 +284,7 @@ public class MapEditorWindow : EditorWindow
         if (null == spriteData || isForce)
         {
             spriteData = new Dictionary<string, Sprite>();
-            var sprites = AssetDatabase.LoadAllAssetsAtPath($"Assets/Resources/Sprites/RailRoadSprites.psd");
+            var sprites = Resources.LoadAll<Sprite>($"Sprites/RailRoadSprites");
             for (int i = 0; i < sprites.Length; i++)
             {
                 var sprite = sprites[i] as Sprite;
@@ -347,6 +358,18 @@ public class MapEditorWindow : EditorWindow
             if (!ReferenceEquals(null, nodes[i]))
             {
                 nodes[i].NodeType = nodeType;
+            }
+        }
+    }
+
+    private void SetFloor(string floor)
+    {
+        var nodes = GetAllSelected();
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (!ReferenceEquals(null, nodes[i]))
+            {
+                nodes[i].SetupFloor(spriteData[floor]);
             }
         }
     }
