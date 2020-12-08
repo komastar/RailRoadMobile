@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 [SelectionBase]
 public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<NodeObject>
@@ -15,8 +15,25 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     [SerializeField]
     private int id;
-
-    public int Round;
+    [SerializeField]
+    private int round;
+    public int Round
+    {
+        get => round;
+        set
+        {
+            round = value;
+            if (0 == round)
+            {
+                RoundText.gameObject.SetActive(false);
+            }
+            else
+            {
+                RoundText.gameObject.SetActive(true);
+            }
+            RoundText.text = round.ToString();
+        }
+    }
     public int Id { get => id; set => id = value; }
     public int direction = 0;
     public bool isFlip = false;
@@ -30,19 +47,24 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     public EJointType[] Joints;
     public Vector2Int Position { get; set; }
     public EDirection Direction { get => (EDirection)direction; set => direction = (int)value; }
+
+    public TextMeshPro RoundText;
     public SpriteRenderer TileRenderer;
     public SpriteRenderer RouteRenderer;
-    public Func<NodeObject, int> onClick;
-    public NodeObject[] Neighbors;
 
+    public Func<NodeObject, int> onClick;
+    public Action<NodeObject> onResetBefore;
+    public Action onResetAfter;
+
+    public NodeObject[] Neighbors;
     public RouteModel RouteData;
 
     public bool IsRailRoute = false;
     public bool IsRoadRoute = false;
-    private int clickResult = 0;
 
     private void Awake()
     {
+        round = 0;
         var clickObserver = OnPointerClickAsObservable();
         clickObserver
             .Buffer(clickObserver.Throttle(TimeSpan.FromMilliseconds(250)))
@@ -50,16 +72,9 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
             .Subscribe(
             xs =>
             {
-                if (clickResult == 1)
+                if (xs.Count == 2)
                 {
-                    if (xs.Count == 1)
-                    {
-                        Rotate();
-                    }
-                    else if (xs.Count == 2)
-                    {
-                        Flip();
-                    }
+                    ResetNode();
                 }
             });
     }
@@ -97,7 +112,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        clickResult = onClick.Invoke(this);
+        onClick.Invoke(this);
         base.OnPointerClick(eventData);
     }
     #endregion
@@ -125,11 +140,11 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         isFlip = !isFlip;
         if (isFlip)
         {
-            transform.localScale = flipScale;
+            RouteRenderer.transform.localScale = flipScale;
         }
         else
         {
-            transform.localScale = Vector3.one;
+            RouteRenderer.transform.localScale = Vector3.one;
         }
 
         var tempJoint = Joints[1];
@@ -171,6 +186,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         IsRoadRoute = false;
         NodeState = ENodeState.Open;
         Joints = new EJointType[4];
+        onResetBefore = null;
         RouteData.Joints.CopyTo(Joints, 0);
         for (int i = 0; i < 4; i++)
         {
@@ -189,6 +205,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         {
             TileRenderer.sprite = floorSprite;
         }
+
         if (Id == 0)
         {
             ResetNode();
@@ -212,6 +229,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public void ResetNode()
     {
+        onResetBefore?.Invoke(this);
         NodeState = ENodeState.None;
         name = "EmptyNode";
         Id = 0;
@@ -220,8 +238,19 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         RouteRenderer.sprite = null;
         Joints = new EJointType[4];
         UpdateRotation();
+        RouteRenderer.transform.localScale = Vector3.one;
         IsRailRoute = false;
         IsRoadRoute = false;
+        onResetAfter?.Invoke();
+
+        onResetBefore = null;
+        onResetAfter = null;
+    }
+
+    public void ReadyToTransfer()
+    {
+        onResetBefore = null;
+        onResetAfter = null;
     }
 
     public EJointType GetJoint(int index)

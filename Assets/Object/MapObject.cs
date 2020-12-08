@@ -23,7 +23,6 @@ public class MapObject : MonoBehaviour, IGameActor
 
     private Dictionary<Vector2Int, NodeObject> entireNodes;
     private Dictionary<NodeObject, HashSet<Vector2Int>> connExits;
-    private Dictionary<int, List<NodeObject>> roundNodes;
 
     public int round;
     public DiceObject selectDice;
@@ -40,7 +39,6 @@ public class MapObject : MonoBehaviour, IGameActor
 
         entireNodes = new Dictionary<Vector2Int, NodeObject>();
         connExits = new Dictionary<NodeObject, HashSet<Vector2Int>>();
-        roundNodes = new Dictionary<int, List<NodeObject>>();
 
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
@@ -134,7 +132,6 @@ public class MapObject : MonoBehaviour, IGameActor
     public void NewRound(int roundCount)
     {
         round = roundCount;
-        roundNodes.Add(round, new List<NodeObject>());
     }
 
     public ScoreViewModel GetScore()
@@ -332,7 +329,6 @@ public class MapObject : MonoBehaviour, IGameActor
         selectedNode = null;
         connExits?.Clear();
         entireNodes?.Clear();
-        roundNodes?.Clear();
 
         var children = GetComponentsInChildren<NodeObject>();
         for (int i = 0; i < children.Length; i++)
@@ -362,17 +358,12 @@ public class MapObject : MonoBehaviour, IGameActor
 
     private void AddRoundNode(NodeObject node)
     {
-        if (!roundNodes.ContainsKey(round))
-        {
-            NewRound(round);
-        }
-        roundNodes[round].Add(node);
         node.Round = round;
     }
 
     private void RemoveRoundNode(NodeObject node)
     {
-        roundNodes[round].Remove(node);
+        node.Round = 0;
     }
 
     public void Rotate()
@@ -443,18 +434,23 @@ public class MapObject : MonoBehaviour, IGameActor
             return false;
         }
 
-        var currentRound = roundNodes[round];
-        foreach (var node in currentRound)
+        foreach (var node in entireNodes)
         {
-            if (!IsConstructable(node))
+            if (round == node.Value.Round)
             {
-                return false;
+                if (!IsConstructable(node.Value))
+                {
+                    return false;
+                }
             }
         }
 
-        foreach (var node in currentRound)
+        foreach (var node in entireNodes)
         {
-            node.NodeState = ENodeState.Close;
+            if (round == node.Value.Round)
+            {
+                node.Value.NodeState = ENodeState.Close;
+            }
         }
 
         DeselectNode();
@@ -464,21 +460,14 @@ public class MapObject : MonoBehaviour, IGameActor
 
     public void CancelNode()
     {
-        List<NodeObject> delete = new List<NodeObject>();
-        var currentRoundNodes = roundNodes[round];
-        if (currentRoundNodes.Count > 0)
+        foreach (var node in entireNodes)
         {
-            foreach (var node in currentRoundNodes)
+            if (node.Value.Round == round)
             {
-                delete.Add(node);
-                node.ResetNode();
+                node.Value.ResetNode();
             }
         }
 
-        for (int i = 0; i < delete.Count; i++)
-        {
-            currentRoundNodes.Remove(delete[i]);
-        }
         hand.Cancel();
         DeselectNode();
     }
@@ -491,34 +480,34 @@ public class MapObject : MonoBehaviour, IGameActor
         }
 
         if (node.NodeState == ENodeState.Close
-            || node.NodeState == ENodeState.Open)
+            || node.NodeState == ENodeState.Open
+            || node.NodeType != ENodeType.Normal)
         {
             return -1;
         }
 
-        if (node.NodeType != ENodeType.Normal)
+        var diceFromHand = hand.GetDice();
+        if (ReferenceEquals(null, diceFromHand))
         {
             return -1;
         }
 
-        if (selectDice == hand.GetDice())
+        if (selectDice == diceFromHand)
         {
-            if (!ReferenceEquals(null, selectedNode))
-            {
-                selectedNode.ResetNode();
-                RemoveRoundNode(selectedNode);
-            }
+            selectedNode.ReadyToTransfer();
+            selectedNode.ResetNode();
             var route = dataManager.RouteData[selectDice.DiceId];
             var sprite = spriteManager.RouteSprites[route.Name];
             node.SetupNode(route, sprite);
             AddRoundNode(node);
+            LinkNodeAction(node);
             SelectNode(node);
             FixNode();
 
             return 0;
         }
 
-        selectDice = hand.GetDice();
+        selectDice = diceFromHand;
         if (ReferenceEquals(null, selectDice))
         {
             if (node.Round == round)
@@ -536,6 +525,7 @@ public class MapObject : MonoBehaviour, IGameActor
             var sprite = spriteManager.RouteSprites[route.Name];
             node.SetupNode(route, sprite);
             AddRoundNode(node);
+            LinkNodeAction(node);
             Log.Debug($"Build : {route.Name} / {node.Position}");
             hand.DisposeNode();
             SelectNode(node);
@@ -544,6 +534,20 @@ public class MapObject : MonoBehaviour, IGameActor
         FixNode();
 
         return 0;
+    }
+
+    private void LinkNodeAction(NodeObject node)
+    {
+        node.onResetBefore += hand.Return;
+        node.onResetBefore += RemoveRoundNode;
+        node.onResetAfter += DeselectNode;
+        node.onResetAfter += hand.ResetHand;
+        node.onResetAfter += ResetDice;
+    }
+
+    private void ResetDice()
+    {
+        selectDice = null;
     }
 
     private void SelectNode(NodeObject node)

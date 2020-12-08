@@ -92,6 +92,15 @@ public class HandObject : MonoBehaviour, IGameActor
         return Dice;
     }
 
+    public void ResetHand()
+    {
+        if (!ReferenceEquals(null, Dice))
+        {
+            Dice.OnDeselect();
+            Dice = null;
+        }
+    }
+
     public void Cancel()
     {
         for (int i = 0; i < dices.Count; i++)
