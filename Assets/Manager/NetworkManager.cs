@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
+using Assets.Foundation.Model;
 
 namespace Manager
 {
@@ -24,10 +23,12 @@ namespace Manager
             {
                 var client = new ClientWebSocket();
                 Log.Info("Open");
+                //await client.ConnectAsync(new Uri("ws://localhost:7001/ws"), CancellationToken.None);
                 await client.ConnectAsync(new Uri("ws://rpi.komastar.kr/ws"), CancellationToken.None);
 
                 Log.Info("Send");
-                byte[] bufferSend = Encoding.UTF8.GetBytes("test");
+                CommModel data = new CommModel();
+                byte[] bufferSend = data.GetBytes();
                 await client.SendAsync(new ArraySegment<byte>(bufferSend), WebSocketMessageType.Text, true, CancellationToken.None);
 
                 Log.Info("Receive");
@@ -37,7 +38,7 @@ namespace Manager
                     var r = await client.ReceiveAsync(new ArraySegment<byte>(bufferReceive), CancellationToken.None);
                     await client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                 }
-                Log.Info($"{Encoding.UTF8.GetString(bufferReceive)}");
+                Log.Info($"{Encoding.ASCII.GetString(bufferReceive)}");
             }
             catch (Exception e)
             {
