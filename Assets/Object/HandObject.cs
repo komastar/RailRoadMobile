@@ -69,10 +69,6 @@ public class HandObject : MonoBehaviour, IGameActor
 
     public void OnClickDice(DiceObject dice)
     {
-        if (!ReferenceEquals(null, Dice))
-        {
-            Dice.OnDeselect();
-        }
         Dice = dice;
         onChangeHand?.Invoke();
     }
@@ -96,7 +92,6 @@ public class HandObject : MonoBehaviour, IGameActor
     {
         if (!ReferenceEquals(null, Dice))
         {
-            Dice.OnDeselect();
             Dice = null;
         }
     }
@@ -105,7 +100,6 @@ public class HandObject : MonoBehaviour, IGameActor
     {
         for (int i = 0; i < dices.Count; i++)
         {
-            dices[i].OnDeselect();
             dices[i].TurnOn();
         }
 

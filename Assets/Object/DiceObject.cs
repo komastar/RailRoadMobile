@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class DiceObject : MonoBehaviour, IGameActor
 {
-    public Button diceButton;
+    public Toggle diceButton;
     public Image buttonRenderer;
     public Image routeRenderer;
 
@@ -38,20 +38,12 @@ public class DiceObject : MonoBehaviour, IGameActor
         onClick = null;
     }
 
-    public void OnClickDice()
+    public void OnClickDice(bool value)
     {
-        onClick?.Invoke(this);
-        OnSelect();
-    }
-
-    public void OnSelect()
-    {
-        buttonRenderer.color = Color.green;
-    }
-
-    public void OnDeselect()
-    {
-        buttonRenderer.color = Color.white;
+        if (value)
+        {
+            onClick?.Invoke(this);
+        }
     }
 
     public void TurnOn()
@@ -62,6 +54,5 @@ public class DiceObject : MonoBehaviour, IGameActor
     public void TurnOff()
     {
         diceButton.interactable = false;
-        OnDeselect();
     }
 }

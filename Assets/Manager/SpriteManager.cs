@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class SpriteManager : Singleton<SpriteManager>
 {
-    public Dictionary<string, Sprite> RouteSprites { get; private set; }
+    public Dictionary<string, Sprite> Sprites { get; private set; }
 
     private void Awake()
     {
-        RouteSprites = new Dictionary<string, Sprite>();
-        var railRoadSprites = Resources.LoadAll<Sprite>("Sprites/RailRoadSprites").ToList();
+        Sprites = new Dictionary<string, Sprite>();
+        var railRoadSprites = Resources.LoadAll<Sprite>("Sprites/Routes").ToList();
         for (int i = 0; i < railRoadSprites.Count; i++)
         {
-            RouteSprites.Add(railRoadSprites[i].name, railRoadSprites[i]);
+            Sprites.Add(railRoadSprites[i].name, railRoadSprites[i]);
+        }
+
+        var terrainSprites = Resources.LoadAll<Sprite>("Sprites/Terrain").ToList();
+        for (int i = 0; i < terrainSprites.Count; i++)
+        {
+            Sprites.Add(terrainSprites[i].name, terrainSprites[i]);
         }
     }
 
     public Sprite GetSprite(string key)
     {
-        if (RouteSprites.ContainsKey(key))
+        if (Sprites.ContainsKey(key))
         {
-            return RouteSprites[key];
+            return Sprites[key];
         }
         else
         {

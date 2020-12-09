@@ -90,7 +90,7 @@ public class MapObject : MonoBehaviour, IGameActor
 
         if (spriteData == null)
         {
-            spriteData = spriteManager.RouteSprites;
+            spriteData = spriteManager.Sprites;
         }
 
         Vector2Int mapSize = mapData.MapSize;
@@ -497,7 +497,7 @@ public class MapObject : MonoBehaviour, IGameActor
             selectedNode.ReadyToTransfer();
             selectedNode.ResetNode();
             var route = dataManager.RouteData[selectDice.DiceId];
-            var sprite = spriteManager.RouteSprites[route.Name];
+            var sprite = spriteManager.Sprites[route.Name];
             node.SetupNode(route, sprite);
             AddRoundNode(node);
             LinkNodeAction(node);
@@ -522,7 +522,7 @@ public class MapObject : MonoBehaviour, IGameActor
                 hand.Return(node);
             }
             var route = dataManager.RouteData[selectDice.DiceId];
-            var sprite = spriteManager.RouteSprites[route.Name];
+            var sprite = spriteManager.Sprites[route.Name];
             node.SetupNode(route, sprite);
             AddRoundNode(node);
             LinkNodeAction(node);
