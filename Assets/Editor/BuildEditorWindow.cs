@@ -16,6 +16,7 @@ namespace Assets.Editor
         private void Awake()
         {
             bundleVerCode = PlayerSettings.Android.bundleVersionCode;
+            bundleVerCode++;
             appVersion = PlayerSettings.bundleVersion;
         }
 
@@ -58,8 +59,6 @@ namespace Assets.Editor
                 "Assets/Scenes/GameScene.unity"
             };
 
-            bundleVerCode = PlayerSettings.Android.bundleVersionCode;
-            bundleVerCode++;
             var buildResult = BuildPipeline.BuildPlayer(new BuildPlayerOptions()
             {
                 scenes = levels,

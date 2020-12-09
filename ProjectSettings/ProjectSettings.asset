@@ -170,7 +170,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.Komastar.TileTraveler
   buildNumber: {}
-  AndroidBundleVersionCode: 9
+  AndroidBundleVersionCode: 10
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
