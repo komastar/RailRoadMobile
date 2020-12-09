@@ -285,7 +285,15 @@ public class MapObject : MonoBehaviour, IGameActor
                     {
                         continue;
                     }
-                    CollectNeighborRecursive(root, neighbor.Neighbors[i], i);
+
+                    var newNeighbor = neighbor.Neighbors[i];
+                    if (!ReferenceEquals(null, newNeighbor))
+                    {
+                        if (neighbor.GetJoint(i) == newNeighbor.GetJoint2(i))
+                        {
+                            CollectNeighborRecursive(root, newNeighbor, i);
+                        }
+                    }
                 }
             }
         }
@@ -494,8 +502,11 @@ public class MapObject : MonoBehaviour, IGameActor
 
         if (selectDice == diceFromHand)
         {
-            selectedNode.ReadyToTransfer();
-            selectedNode.ResetNode();
+            if (!ReferenceEquals(null, selectedNode))
+            {
+                selectedNode.ReadyToTransfer();
+                selectedNode.ResetNode();
+            }
             var route = dataManager.RouteData[selectDice.DiceId];
             var sprite = spriteManager.Sprites[route.Name];
             node.SetupNode(route, sprite);

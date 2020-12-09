@@ -17,6 +17,14 @@ public class HandObject : MonoBehaviour, IGameActor
 
     public List<DiceObject> dices;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Roll();
+        }
+    }
+
 #if UNITY_EDITOR
     //private void OnGUI()
     //{
