@@ -17,6 +17,8 @@ namespace Manager
 
         private void Init()
         {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
                 .Builder()
                 .EnableSavedGames()
@@ -48,9 +50,13 @@ namespace Manager
             this.authCode = authCode;
         }
 
-        public void ReportScore(int score)
+        public void ReportScore(ScoreViewModel score)
         {
-            gpgs.ReportScore(score, StringTable.HighestScoreLB, OnReportScore);
+            gpgs.ReportScore(score.TotalScore, StringTable.HighestScoreLB, OnReportScore);
+            gpgs.ReportScore(score.NetworkScore, StringTable.HighestScoreLBTest, (bool result) =>
+            {
+                gpgs.ShowLeaderboardUI(StringTable.HighestScoreLBTest, OnShowLeaderBoardUI);
+            });
         }
 
         private void OnReportScore(bool value)
@@ -58,11 +64,17 @@ namespace Manager
             if (value)
             {
                 Log.Info("Report SUC");
+                //gpgs.ShowLeaderboardUI(StringTable.HighestScoreLB, LeaderboardTimeSpan.AllTime, OnShowLeaderBoardUI);
             }
             else
             {
                 Log.Info("Report FAIL");
             }
+        }
+
+        private void OnShowLeaderBoardUI(UIStatus obj)
+        {
+            Log.Info(obj);
         }
     }
 }

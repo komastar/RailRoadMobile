@@ -189,7 +189,7 @@ public class MainGameScene : MonoBehaviour
     public void OnGameOver()
     {
         var score = mapObject.GetScore();
-        gameManager.ReportScore(score.TotalScore);
+        gameManager.ReportScore(score);
         scoreObject.SetScore(score);
         scoreObject.Open();
     }
