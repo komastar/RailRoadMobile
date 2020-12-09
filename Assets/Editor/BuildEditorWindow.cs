@@ -16,7 +16,6 @@ namespace Assets.Editor
         private void Awake()
         {
             bundleVerCode = PlayerSettings.Android.bundleVersionCode;
-            bundleVerCode++;
             appVersion = PlayerSettings.bundleVersion;
         }
 
@@ -50,6 +49,9 @@ namespace Assets.Editor
 
         private bool Build()
         {
+            PlayerSettings.bundleVersion = appVersion;
+            bundleVerCode = PlayerSettings.Android.bundleVersionCode++;
+
             PlayerSettings.keystorePass = "b86tcmDW";
             PlayerSettings.keyaliasPass = "Tile2020!";
 
@@ -68,13 +70,11 @@ namespace Assets.Editor
 
             if (0 == buildResult.summary.totalErrors)
             {
-                PlayerSettings.bundleVersion = appVersion;
-                PlayerSettings.Android.bundleVersionCode = bundleVerCode;
-
                 return true;
             }
             else
             {
+                PlayerSettings.Android.bundleVersionCode = bundleVerCode;
                 return false;
             }
         }
