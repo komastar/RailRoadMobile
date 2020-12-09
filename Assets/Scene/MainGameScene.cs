@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Manager;
+using Newtonsoft.Json.Linq;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainGameScene : MonoBehaviour
 {
+    private GameManager gameManager;
     private DataManager dataManager;
 
     public TextAsset mapJson;
@@ -57,6 +59,7 @@ public class MainGameScene : MonoBehaviour
     private void Init()
     {
         SpriteManager.Get();
+        gameManager = GameManager.Get();
         dataManager = DataManager.Get();
 
         if (ReferenceEquals(null, scoreObject))
@@ -186,6 +189,7 @@ public class MainGameScene : MonoBehaviour
     public void OnGameOver()
     {
         var score = mapObject.GetScore();
+        gameManager.ReportScore(score.TotalScore);
         scoreObject.SetScore(score);
         scoreObject.Open();
     }

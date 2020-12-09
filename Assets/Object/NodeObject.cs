@@ -4,6 +4,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Manager;
 
 [SelectionBase]
 public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<NodeObject>

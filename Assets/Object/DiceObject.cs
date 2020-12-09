@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Manager;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
