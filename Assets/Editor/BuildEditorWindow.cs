@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Assets.Foundation.Model;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,8 +55,10 @@ namespace Assets.Editor
             PlayerSettings.bundleVersion = appVersion;
             bundleVerCode = PlayerSettings.Android.bundleVersionCode++;
 
-            PlayerSettings.keystorePass = "b86tcmDW";
-            PlayerSettings.keyaliasPass = "Tile2020!";
+            var devEnvString = File.ReadAllText($"{Application.dataPath}/Foundation/DevEnv.json");
+            var devEnv = JObject.Parse(devEnvString).ToObject<DevEnv>();
+            PlayerSettings.keystorePass = devEnv.KeyStorePass;
+            PlayerSettings.keyaliasPass = devEnv.KeyAliasPass;
 
             string[] levels = new string[]
             {

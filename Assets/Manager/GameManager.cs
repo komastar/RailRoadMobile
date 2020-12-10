@@ -52,11 +52,24 @@ namespace Manager
 
         public void ReportScore(ScoreViewModel score)
         {
-            gpgs.ReportScore(score.TotalScore, StringTable.HighestScoreLB, OnReportScore);
-            gpgs.ReportScore(score.NetworkScore, StringTable.HighestScoreLBTest, (bool result) =>
+            gpgs.ReportScore(score.TotalScore, GPGSIds.leaderboard_highestscore, OnReportScore);
+            gpgs.ReportScore(score.NetworkScore, GPGSIds.leaderboard_highesttotalscoretest, (bool result) =>
             {
-                gpgs.ShowLeaderboardUI(StringTable.HighestScoreLBTest, OnShowLeaderBoardUI);
+                gpgs.ShowLeaderboardUI(GPGSIds.leaderboard_highesttotalscoretest, OnShowLeaderBoardUI);
             });
+            gpgs.ReportProgress(GPGSIds.achievement_stageclear, 1.0f, OnReportProgress);
+        }
+
+        private void OnReportProgress(bool isDone)
+        {
+            if (isDone)
+            {
+                Log.Info("Achievement Report SUC");
+            }
+            else
+            {
+                Log.Info("Achievement Report FAIL");
+            }
         }
 
         private void OnReportScore(bool value)

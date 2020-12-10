@@ -25,6 +25,8 @@
 public static class GPGSIds
 {
         public const string leaderboard_highestscore = "CgkIrt3mkZ0ZEAIQAQ"; // <GPGSID>
+        public const string leaderboard_highesttotalscoretest = "CgkIrt3mkZ0ZEAIQAg"; // <GPGSID>
+        public const string achievement_stageclear = "CgkIrt3mkZ0ZEAIQAw"; // <GPGSID>
 
 }
 

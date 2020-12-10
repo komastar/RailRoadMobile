@@ -63,3 +63,4 @@ crashlytics-build.properties
 /Assets/AssetBundles.bin
 /GooglePlayDeployCert/tiletraveler.keystore
 /ProjectSettings/AndroidLogcatSettings.asset
+/Assets/.DevEnv/DevEnv.json
