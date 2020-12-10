@@ -1,6 +1,7 @@
 ﻿using Assets.Foundation.Constant;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using System;
 using UnityEngine;
 
 namespace Manager
@@ -9,6 +10,8 @@ namespace Manager
     {
         private PlayGamesPlatform gpgs;
         private string authCode;
+
+        public Action<bool> onAfterAuth;
 
         private void Awake()
         {
@@ -43,6 +46,7 @@ namespace Manager
             {
                 Log.Info($"Auth Fail");
             }
+            onAfterAuth?.Invoke(suc);
         }
 
         public void SetAuthCode(string authCode)
