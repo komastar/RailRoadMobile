@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainGameScene : MonoBehaviour
+public class GameScene : MonoBehaviour
 {
     private GameManager gameManager;
     private DataManager dataManager;

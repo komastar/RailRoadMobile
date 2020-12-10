@@ -170,7 +170,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.Komastar.TileTraveler
   buildNumber: {}
-  AndroidBundleVersionCode: 20
+  AndroidBundleVersionCode: 21
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -268,7 +268,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 7a174786f50878d49a5792057626e6d8, type: 3}
+      m_Icon: {fileID: 2800000, guid: 593aac1d1530a68438009018fcd97dbd, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

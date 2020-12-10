@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
 using Assets.Foundation.Model;
+using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
 
 namespace Manager
 {
@@ -16,6 +18,52 @@ namespace Manager
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private static String response = String.Empty;
+
+        public static string CreateGame(int maxUserCount)
+        {
+            //string url = $"http://rpi.komastar.kr/api/Game/Create/{maxUserCount}";
+            string url = $"https://localhost:44377/api/ApiGame/Create/{maxUserCount}";
+            using (UnityWebRequest createRequest = UnityWebRequest.Get(url))
+            {
+                var send = createRequest.SendWebRequest();
+                while (!send.isDone) { }
+                var data = send.webRequest.downloadHandler.text;
+                var result = JObject.Parse(data);
+                string gameCode = result["GameCode"].ToString();
+
+                return gameCode;
+            }
+        }
+
+        public static bool JoinGame(string game)
+        {
+            string url = $"https://localhost:44377/api/ApiGame/Join/{game}";
+            using (UnityWebRequest joinRequest = UnityWebRequest.Get(url))
+            {
+                var send = joinRequest.SendWebRequest();
+                while (!send.isDone) { }
+                var data = send.webRequest.downloadHandler.text;
+                var result = bool.Parse(data);
+                joinRequest.Dispose();
+
+                return result;
+            }
+        }
+
+        public static bool DeleteGame(string game)
+        {
+            string url = $"https://localhost:44377/api/ApiGame/Exit/{game}";
+            using (UnityWebRequest deleteRequest = UnityWebRequest.Get(url))
+            {
+                var send = deleteRequest.SendWebRequest();
+                while (!send.isDone) { }
+                var data = send.webRequest.downloadHandler.text;
+                var result = bool.Parse(data);
+                deleteRequest.Dispose();
+
+                return result;
+            }
+        }
 
         public async static Task StartWebSocket()
         {

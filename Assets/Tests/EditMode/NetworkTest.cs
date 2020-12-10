@@ -27,5 +27,45 @@ namespace Tests
         {
             await NetworkManager.StartWebSocket();
         }
+
+        static string gameCode = "";
+
+        [Test]
+        public void CreateGameTest()
+        {
+            Log.Info($"CREATE 4 user");
+            gameCode = NetworkManager.CreateGame(4);
+            Assert.AreNotEqual(null, gameCode);
+            Assert.AreEqual(4, gameCode.Length);
+            Log.Info(gameCode);
+            Log.Info("Create SUC PASS");
+        }
+
+        [Test]
+        public void JoinGameTest()
+        {
+            Log.Info($"JOIN TO : {gameCode}");
+            var isJoin = NetworkManager.JoinGame(gameCode);
+            Assert.AreEqual(true, isJoin);
+            Log.Info("Join SUC PASS");
+            Thread.Sleep(100);
+        }
+
+        [Test]
+        public void DeleteGameTest()
+        {
+            Log.Info($"DELETE {gameCode}");
+            var isDelete = NetworkManager.DeleteGame(gameCode);
+            Assert.AreEqual(true, isDelete);
+            Log.Info("Delete SUC PASS");
+        }
+
+        [Test]
+        public void CRUDGameTest()
+        {
+            CreateGameTest();
+            JoinGameTest();
+            DeleteGameTest();
+        }
     }
 }
