@@ -55,7 +55,7 @@ namespace Assets.Editor
             PlayerSettings.bundleVersion = appVersion;
             bundleVerCode = PlayerSettings.Android.bundleVersionCode++;
 
-            var devEnvString = File.ReadAllText($"{Application.dataPath}/Foundation/DevEnv.json");
+            var devEnvString = File.ReadAllText($"{Application.dataPath}/.DevEnv/DevEnv.json");
             var devEnv = JObject.Parse(devEnvString).ToObject<DevEnv>();
             PlayerSettings.keystorePass = devEnv.KeyStorePass;
             PlayerSettings.keyaliasPass = devEnv.KeyAliasPass;
