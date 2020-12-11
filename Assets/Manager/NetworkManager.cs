@@ -8,6 +8,7 @@ using System.Net.WebSockets;
 using Assets.Foundation.Model;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
+using Assets.Foundation.Constant;
 
 namespace Manager
 {
@@ -17,51 +18,51 @@ namespace Manager
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
-        private static String response = String.Empty;
+        private static String responseString = String.Empty;
 
         public static string CreateGame(int maxUserCount)
         {
-            //string url = $"http://rpi.komastar.kr/api/Game/Create/{maxUserCount}";
-            string url = $"https://localhost:44377/api/ApiGame/Create/{maxUserCount}";
-            using (UnityWebRequest createRequest = UnityWebRequest.Get(url))
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Create/{maxUserCount}";
+            var response = GetRequest(url);
+            if (null == response)
             {
-                var send = createRequest.SendWebRequest();
-                while (!send.isDone) { }
-                var data = send.webRequest.downloadHandler.text;
-                var result = JObject.Parse(data);
-                string gameCode = result["GameCode"].ToString();
-
-                return gameCode;
+                return "FAIL";
             }
+            var game = GameModel.Parse(response.Data);
+
+            return game.GameCode;
         }
 
         public static bool JoinGame(string game)
         {
-            string url = $"https://localhost:44377/api/ApiGame/Join/{game}";
-            using (UnityWebRequest joinRequest = UnityWebRequest.Get(url))
-            {
-                var send = joinRequest.SendWebRequest();
-                while (!send.isDone) { }
-                var data = send.webRequest.downloadHandler.text;
-                var result = bool.Parse(data);
-                joinRequest.Dispose();
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Join/{game}";
+            var response = GetRequest(url);
 
-                return result;
-            }
+            return response != null ? response.ProcessResult : false;
         }
 
         public static bool DeleteGame(string game)
         {
-            string url = $"https://localhost:44377/api/ApiGame/Exit/{game}";
-            using (UnityWebRequest deleteRequest = UnityWebRequest.Get(url))
-            {
-                var send = deleteRequest.SendWebRequest();
-                while (!send.isDone) { }
-                var data = send.webRequest.downloadHandler.text;
-                var result = bool.Parse(data);
-                deleteRequest.Dispose();
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}";
+            var response = GetRequest(url);
 
-                return result;
+            return response != null ? response.ProcessResult : false;
+        }
+
+        public static ResponseModel GetRequest(string url)
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                var send = request.SendWebRequest();
+                while (!send.isDone) { }
+                if (null == send.webRequest.downloadHandler
+                    || string.IsNullOrEmpty(send.webRequest.downloadHandler.text))
+                {
+                    Log.Error("GetRequest FAIL. downloadHandler is null / text is null or empty");
+                    return null;
+                }
+
+                return ResponseModel.Parse(send.webRequest.downloadHandler.text);
             }
         }
 
@@ -98,7 +99,7 @@ namespace Manager
         {
             try
             {
-                response = String.Empty;
+                responseString = String.Empty;
                 connectDone.Reset();
                 sendDone.Reset();
                 receiveDone.Reset();
@@ -118,7 +119,7 @@ namespace Manager
                 Receive(client);
                 receiveDone.WaitOne();
 
-                Log.Info($"Response received : {response}");
+                Log.Info($"Response received : {responseString}");
 
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();
@@ -182,7 +183,7 @@ namespace Manager
                 {
                     if (state.sb.Length > 1)
                     {
-                        response = state.sb.ToString();
+                        responseString = state.sb.ToString();
                     }
                     receiveDone.Set();
                 }

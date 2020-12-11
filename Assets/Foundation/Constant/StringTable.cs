@@ -1,8 +1,8 @@
 ﻿namespace Assets.Foundation.Constant
 {
-    public static class StringTable
+    public static class UrlTable
     {
-        public static string HighestScoreLB => "CgkIrt3mkZ0ZEAIQAQ";
-        public static string HighestScoreLBTest => "CgkIrt3mkZ0ZEAIQAg";
+        public static string GameServer => "http://rpi.komastar.kr";
+        public static string GameServerLocal => "https://localhost:44377";
     }
 }
