@@ -31,6 +31,7 @@ namespace Manager
             Log.Info("Auth Start");
             gpgs = PlayGamesPlatform.Instance;
             gpgs.Authenticate(suc => OnAuthenticate(suc), false);
+            gpgs.SetGravityForPopups(Gravity.CENTER_HORIZONTAL);
         }
 
         private void OnAuthenticate(bool suc)
@@ -57,10 +58,6 @@ namespace Manager
         public void ReportScore(ScoreViewModel score)
         {
             gpgs.ReportScore(score.TotalScore, GPGSIds.leaderboard_highestscore, OnReportScore);
-            gpgs.ReportScore(score.NetworkScore, GPGSIds.leaderboard_highesttotalscoretest, (bool result) =>
-            {
-                gpgs.ShowLeaderboardUI(GPGSIds.leaderboard_highesttotalscoretest, OnShowLeaderBoardUI);
-            });
             gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
         }
 
@@ -81,7 +78,6 @@ namespace Manager
             if (value)
             {
                 Log.Info("Report SUC");
-                //gpgs.ShowLeaderboardUI(StringTable.HighestScoreLB, LeaderboardTimeSpan.AllTime, OnShowLeaderBoardUI);
             }
             else
             {

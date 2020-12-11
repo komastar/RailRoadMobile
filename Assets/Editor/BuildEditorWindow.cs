@@ -13,13 +13,16 @@ namespace Assets.Editor
 {
     public class BuildEditorWindow : EditorWindow
     {
+        private int prevBundleVerCode;
         private int bundleVerCode;
         private string appVersion;
 
         private void Awake()
         {
-            bundleVerCode = PlayerSettings.Android.bundleVersionCode;
             appVersion = PlayerSettings.bundleVersion;
+            prevBundleVerCode = PlayerSettings.Android.bundleVersionCode;
+            bundleVerCode = prevBundleVerCode;
+            bundleVerCode++;
         }
 
         private void OnGUI()
@@ -52,8 +55,8 @@ namespace Assets.Editor
 
         private bool Build()
         {
+            PlayerSettings.Android.bundleVersionCode = bundleVerCode;
             PlayerSettings.bundleVersion = appVersion;
-            bundleVerCode = PlayerSettings.Android.bundleVersionCode++;
 
             var devEnvString = File.ReadAllText($"{Application.dataPath}/.DevEnv/DevEnv.json");
             var devEnv = JObject.Parse(devEnvString).ToObject<DevEnv>();

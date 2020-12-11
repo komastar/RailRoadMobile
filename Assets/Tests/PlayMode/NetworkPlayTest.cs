@@ -1,12 +1,11 @@
 ﻿using Manager;
 using NUnit.Framework;
 using System.Collections;
-using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Tests
+namespace Tests.RESTAPI
 {
-    public class NetworkPlayTest
+    public class CRUDGame
     {
         [UnityTest]
         public IEnumerator CRUDTest()

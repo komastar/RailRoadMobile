@@ -8,31 +8,31 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tests.Content
+namespace Tests.RESTAPI.ContentLock
 {
     public class ContentLockTest
     {
         private static string url = $"{UrlTable.GameServerRemote}/api/ApiContentLock/Check/TestProject";
         [Test]
-        public void Lock()
+        public void T_001_Lock()
         {
             Request("1.0.0", "LockedUp", false);
         }
 
         [Test]
-        public void Unlock()
+        public void T_002_Unlock()
         {
             Request("1.0.0", "Unlock", true);
         }
 
         [Test]
-        public void VersionLock()
+        public void T_011_VersionLock()
         {
             Request("0.1.0", "Version1", false);
         }
 
         [Test]
-        public void VersionUnlock()
+        public void T_012_VersionUnlock()
         {
             Request("1.0.0", "Version1", true);
         }
