@@ -61,7 +61,7 @@ namespace Manager
             {
                 gpgs.ShowLeaderboardUI(GPGSIds.leaderboard_highesttotalscoretest, OnShowLeaderBoardUI);
             });
-            gpgs.ReportProgress(GPGSIds.achievement_stageclear, 1.0f, OnReportProgress);
+            gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
         }
 
         private void OnReportProgress(bool isDone)

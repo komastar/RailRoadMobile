@@ -2,7 +2,12 @@
 {
     public static class UrlTable
     {
-        public static string GameServer => "http://rpi.komastar.kr";
+#if UNITY_EDITOR
+        public static string GameServer => GameServerLocal;
+#else
+        public static string GameServer => GameServerRemote;
+#endif
+        public static string GameServerRemote => "http://rpi.komastar.kr";
         public static string GameServerLocal => "https://localhost:44377";
     }
 }
