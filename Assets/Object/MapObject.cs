@@ -463,6 +463,7 @@ public class MapObject : MonoBehaviour, IGameActor
         }
 
         DeselectNode();
+        ResetDice();
 
         return true;
     }
