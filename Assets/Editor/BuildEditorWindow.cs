@@ -63,6 +63,7 @@ namespace Assets.Editor
             string[] levels = new string[]
             {
                 "Assets/Scenes/TitleScene.unity",
+                "Assets/Scenes/LobbyScene.unity",
                 "Assets/Scenes/GameScene.unity"
             };
 

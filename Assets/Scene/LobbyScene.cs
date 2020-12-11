@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyScene : MonoBehaviour
 {
+    public Button soloPlayButton;
     public InputField inputGameCode;
     public Button joinGameButton;
     public Button createGameButton;
@@ -15,6 +17,7 @@ public class LobbyScene : MonoBehaviour
 
     private void Awake()
     {
+        soloPlayButton.onClick.AddListener(OnClickSoloPlayGameButton);
         joinGameButton.onClick.AddListener(OnClickJoinGameButton);
         createGameButton.onClick.AddListener(OnClickCreateGameButton);
         maxUserCountSlider.onValueChanged.AddListener(OnMaxUserCountChange);
@@ -42,5 +45,10 @@ public class LobbyScene : MonoBehaviour
     public void OnMaxUserCountChange(float value)
     {
         maxUserCountText.text = $"{value:0}";
+    }
+
+    public void OnClickSoloPlayGameButton()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }

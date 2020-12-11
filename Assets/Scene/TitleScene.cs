@@ -28,6 +28,6 @@ public class TitleScene : MonoBehaviour
 
     public void TouchToStart()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("LobbyScene");
     }
 }
