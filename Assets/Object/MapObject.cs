@@ -135,10 +135,9 @@ public class MapObject : MonoBehaviour, IGameActor
         round = roundCount;
     }
 
-    public ScoreViewModel GetScore()
+    public void GetScore(ScoreViewModel scoreViewModel)
     {
         connExits.Clear();
-        ScoreViewModel scoreViewModel = new ScoreViewModel();
         foreach (var node in entireNodes)
         {
             if (node.Value.NodeType == ENodeType.Entrance)
@@ -268,8 +267,6 @@ public class MapObject : MonoBehaviour, IGameActor
         Log.Debug($"TotalFaultScore : {penaltyScore}");
         scoreViewModel.PenaltyScore = penaltyScore;
         scoreViewModel.Calculate();
-
-        return scoreViewModel;
     }
 
     private void CollectNeighborRecursive(NodeObject root, NodeObject neighbor, int direction)
@@ -436,20 +433,17 @@ public class MapObject : MonoBehaviour, IGameActor
         }
     }
 
-    public bool Fix()
+    public int Fix()
     {
-        if (0 < hand.GetDiceCount())
-        {
-            return false;
-        }
-
+        int constructFailCount = hand.GetDiceCount();
         foreach (var node in entireNodes)
         {
             if (round == node.Value.Round)
             {
                 if (!IsConstructable(node.Value))
                 {
-                    return false;
+                    node.Value.ResetNode();
+                    constructFailCount++;
                 }
             }
         }
@@ -465,7 +459,7 @@ public class MapObject : MonoBehaviour, IGameActor
         DeselectNode();
         ResetDice();
 
-        return true;
+        return constructFailCount;
     }
 
     public void CancelNode()

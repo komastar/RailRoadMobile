@@ -17,4 +17,5 @@ public class StageModel
     public int MapId { get; set; }
     public string MapName { get; set; }
     public int[] Dice { get; set; }
+    public int TimePerRound { get; set; }
 }

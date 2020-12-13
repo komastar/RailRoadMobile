@@ -15,6 +15,7 @@ public class ScoreObject : MonoBehaviour, IPointerClickHandler
     public Action onClose;
 
     public ScoreViewModel scoreViewModel;
+
     public void Init()
     {
         onClose = null;
@@ -34,7 +35,7 @@ public class ScoreObject : MonoBehaviour, IPointerClickHandler
         railScoreText.text = scoreViewModel.RailScore.ToString();
         roadScoreText.text = scoreViewModel.RoadScore.ToString();
         string minus = scoreViewModel.PenaltyScore > 0 ? "-" : "";
-        penaltyScoreText.text = $"{minus}{scoreViewModel.PenaltyScore}";
+        penaltyScoreText.text = $"{minus}{scoreViewModel.PenaltyScore + scoreViewModel.ConstructFailScore}";
     }
 
     public void Close()
@@ -46,5 +47,10 @@ public class ScoreObject : MonoBehaviour, IPointerClickHandler
     {
         Close();
         onClose?.Invoke();
+    }
+
+    public void AddContructFailCount(int contructFailCount)
+    {
+        scoreViewModel.ConstructFailScore += contructFailCount;
     }
 }

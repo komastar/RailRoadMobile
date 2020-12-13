@@ -1,6 +1,8 @@
-﻿using Manager;
+﻿using Assets.Foundation.Constant;
+using Manager;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +17,7 @@ public class GameScene : MonoBehaviour
     public Text chapterNameText;
     public Text stageNameText;
     public Text mapNameText;
+    public Text timerText;
 
     public MapObject mapObject;
     public HandObject handObject;
@@ -22,6 +25,19 @@ public class GameScene : MonoBehaviour
 
     public ChapterModel currentChapter;
     public StageModel currentStage;
+    public ScoreViewModel score;
+
+    [SerializeField]
+    private int timerCount;
+    public int TimerCount
+    {
+        get => timerCount;
+        set
+        {
+            timerCount = value;
+            timerText.text = timerCount.ToString();
+        }
+    }
 
     private int roundCount;
     public int RoundCount
@@ -39,6 +55,9 @@ public class GameScene : MonoBehaviour
     }
 
     public Action<int> onRoundCountChanged;
+    private Action onTimeOver;
+
+    private IEnumerator timerCoroutine;
 
     private void Awake()
     {
@@ -58,6 +77,8 @@ public class GameScene : MonoBehaviour
 
     private void Init()
     {
+        score = new ScoreViewModel();
+
         SpriteManager.Get();
         gameManager = GameManager.Get();
         dataManager = DataManager.Get();
@@ -86,6 +107,9 @@ public class GameScene : MonoBehaviour
 
         onRoundCountChanged = null;
         onRoundCountChanged += OnRoundCountChanged;
+
+        onTimeOver += OnClickFix;
+        timerCoroutine = StartTimer();
     }
 
     private void InitChapter()
@@ -134,9 +158,8 @@ public class GameScene : MonoBehaviour
         mapObject.MakeMap(map);
         mapObject.OpenMap();
 
-        handObject.Roll();
-
-        RoundCount = 1;
+        RoundCount = 0;
+        GoNextRound();
     }
 
     public void OnClickCancel()
@@ -166,19 +189,37 @@ public class GameScene : MonoBehaviour
 
     public void OnFixPhaseExit()
     {
-        if (mapObject.Fix())
+        int contructFailCount = mapObject.Fix();
+        score.ConstructFailScore += contructFailCount;
+        if (RoundCount + 1 > currentStage.Round)
         {
-            if (RoundCount + 1 > currentStage.Round)
-            {
-                OnGameOver();
-            }
-            else
-            {
-                RoundCount++;
-                mapObject.NewRound(RoundCount);
-                handObject.Roll();
-            }
+            OnGameOver();
         }
+        else
+        {
+            GoNextRound();
+        }
+    }
+
+    private void GoNextRound()
+    {
+        RoundCount++;
+        mapObject.NewRound(RoundCount);
+        handObject.Roll();
+        StartCoroutine(StartTimer());
+    }
+
+    private IEnumerator StartTimer()
+    {
+        TimerCount = currentStage.TimePerRound == 0 ? NumTable.DefaultRoundTime : currentStage.TimePerRound;
+        while (0 < TimerCount)
+        {
+            yield return new WaitForSeconds(1f);
+
+            TimerCount--;
+        }
+
+        onTimeOver?.Invoke();
     }
 
     public void OnRoundCountChanged(int round)
@@ -188,7 +229,8 @@ public class GameScene : MonoBehaviour
 
     public void OnGameOver()
     {
-        var score = mapObject.GetScore();
+        TimerCount = 0;
+        mapObject.GetScore(score);
         gameManager.ReportScore(score);
         scoreObject.SetScore(score);
         scoreObject.Open();

@@ -102,7 +102,8 @@ namespace Tests.Play
 
             yield return new WaitForSecondsRealtime(.5f);
 
-            var score = mapObject.GetScore();
+            ScoreViewModel score = new ScoreViewModel();
+            mapObject.GetScore(score);
             Assert.AreEqual(12, score.TotalScore);
         }
 
