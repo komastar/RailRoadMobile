@@ -1,4 +1,5 @@
 ﻿using Assets.Foundation.Constant;
+using Assets.Object;
 using Manager;
 using Newtonsoft.Json.Linq;
 using System;
@@ -22,6 +23,7 @@ public class GameScene : MonoBehaviour
     public MapObject mapObject;
     public HandObject handObject;
     public ScoreObject scoreObject;
+    public GameRoomObject gameRoomObject;
 
     public ChapterModel currentChapter;
     public StageModel currentStage;
@@ -61,9 +63,9 @@ public class GameScene : MonoBehaviour
 
     private void Awake()
     {
+        gameRoomObject.Open();
         Init();
-        InitChapter();
-        MakeStage();
+        gameRoomObject.SetGameRoom(gameManager.GameRoom);
     }
 
     private void Update()
@@ -109,11 +111,19 @@ public class GameScene : MonoBehaviour
         onRoundCountChanged += OnRoundCountChanged;
 
         onTimeOver += OnClickFix;
+
+        gameRoomObject.onDisable += StartGame;
+    }
+
+    private void StartGame()
+    {
+        InitChapter();
+        MakeStage();
     }
 
     private void InitChapter()
     {
-        if (GameCode.SoloPlay == gameManager.GameCode)
+        if (GameCode.SoloPlay == gameManager.GameRoom.GameCode)
         {
             currentChapter = dataManager.GetFirstChapter();
             currentStage = dataManager.GetFirstStage(currentChapter);

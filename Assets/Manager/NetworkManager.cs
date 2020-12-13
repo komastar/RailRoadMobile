@@ -20,21 +20,20 @@ namespace Manager
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private static String responseString = String.Empty;
 
-        public static string CreateGame(int maxUserCount)
+        public static GameModel CreateGame(int maxUserCount)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Create/{maxUserCount}";
             var response = GetRequest(url);
-            var game = GameModel.Parse(response.Data);
 
-            return game.GameCode;
+            return GameModel.Parse(response.Data);
         }
 
-        public static bool JoinGame(string game)
+        public static GameModel JoinGame(string game)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Join/{game}";
             var response = GetRequest(url);
 
-            return response != null ? response.ProcessResult : false;
+            return response.ProcessResult ? GameModel.Parse(response.Data) : null;
         }
 
         public static bool DeleteGame(string game)
@@ -45,12 +44,33 @@ namespace Manager
             return response != null ? response.ProcessResult : false;
         }
 
+        public static GameModel GetGame(string game)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Get/{game}";
+            var response = GetRequest(url);
+
+            return GameModel.Parse(response.Data);
+        }
+
         public static bool ReadyGame(string game, int time)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{game}/{time}";
             var response = GetRequest(url);
 
             return response != null ? response.ProcessResult : false;
+        }
+
+        public static GameModel ExitGame(string game)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}";
+            var response = GetRequest(url);
+            if (null == response
+                || null == response.Data)
+            {
+                return null;
+            }
+
+            return response.ProcessResult ? GameModel.Parse(response.Data) : null;
         }
 
         public static ResponseModel GetRequest(string url)

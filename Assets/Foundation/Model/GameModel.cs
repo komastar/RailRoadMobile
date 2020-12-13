@@ -31,6 +31,14 @@ namespace Assets.Foundation.Model
             CreationTime = DateTime.Now;
             UserCount = 0;
         }
+
+        public static GameModel GetSoloPlay()
+        {
+            return new GameModel()
+            {
+                GameCode = Constant.GameCode.SoloPlay
+            };
+        }
     }
 
     public partial class GameModel

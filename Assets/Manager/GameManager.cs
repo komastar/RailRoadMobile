@@ -14,7 +14,7 @@ namespace Manager
 
         public Action<bool> onAfterAuth;
 
-        public string GameCode { get; set; } = Assets.Foundation.Constant.GameCode.SoloPlay;
+        public GameModel GameRoom { get; set; }
 
         private void Awake()
         {

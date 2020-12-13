@@ -1,4 +1,5 @@
 ﻿using Assets.Foundation.Constant;
+using Assets.Foundation.Model;
 using Manager;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,9 +33,10 @@ public class LobbyScene : MonoBehaviour
     {
         string gameCode = inputGameCode.text;
         Log.Info(gameCode);
-        if (NetworkManager.JoinGame(gameCode))
+        var game = NetworkManager.JoinGame(gameCode);
+        if (null != game)
         {
-            gameManager.GameCode = gameCode;
+            gameManager.GameRoom = game;
             joinGameButton.GetComponentInChildren<Text>().color = Color.green;
 
             StartCoroutine(StartGame());
@@ -47,10 +49,11 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickCreateGameButton()
     {
-        string gameCode = NetworkManager.CreateGame(int.Parse(maxUserCountText.text));
-        gameManager.GameCode = gameCode;
-        gameCodeText.text = gameCode;
-        if (NetworkManager.JoinGame(gameCode))
+        var game = NetworkManager.CreateGame(int.Parse(maxUserCountText.text));
+        gameManager.GameRoom = game;
+        gameCodeText.text = game.GameCode;
+        game = NetworkManager.JoinGame(game.GameCode);
+        if (null != game)
         {
             StartCoroutine(StartGame());
         }
@@ -63,7 +66,7 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickSoloPlayGameButton()
     {
-        gameManager.GameCode = GameCode.SoloPlay;
+        gameManager.GameRoom = GameModel.GetSoloPlay();
         SceneManager.LoadScene("GameScene");
     }
 
