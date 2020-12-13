@@ -43,6 +43,17 @@ namespace Assets.Object
             }
         }
 
+        private void OnDisable()
+        {
+            StopCoroutine(updateGameRoomCoroutine);
+            onDisable?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            StopCoroutine(updateGameRoomCoroutine);
+        }
+
         private IEnumerator UpdateGameRoomCoroutine()
         {
             while (true)
@@ -52,12 +63,6 @@ namespace Assets.Object
 
                 yield return new WaitForSecondsRealtime(.5f);
             }
-        }
-
-        private void OnDisable()
-        {
-            StopCoroutine(updateGameRoomCoroutine);
-            onDisable?.Invoke();
         }
 
         public void SetGameRoom(GameModel game)

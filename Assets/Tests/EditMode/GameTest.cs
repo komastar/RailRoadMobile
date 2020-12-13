@@ -17,7 +17,7 @@ namespace Tests.RESTAPI.Game
             Assert.AreNotEqual(null, game.GameCode);
             Assert.AreEqual(4, game.GameCode.Length);
             Assert.AreNotEqual(null, JoinGameTest(game.GameCode));
-            Assert.AreEqual(true, DeleteGameTest(game.GameCode));
+            Assert.AreEqual(null, ExitGameTest(game.GameCode));
         }
 
         [Test]
@@ -27,9 +27,9 @@ namespace Tests.RESTAPI.Game
         }
 
         [Test]
-        public void T_003_DeleteFail()
+        public void T_003_ExitFail()
         {
-            Assert.AreEqual(false, DeleteGameTest("****"));
+            Assert.AreEqual(null, ExitGameTest("****"));
         }
 
         [Test]
@@ -43,13 +43,12 @@ namespace Tests.RESTAPI.Game
                 Assert.AreNotEqual(null, JoinGameTest(game.GameCode));
             }
             Assert.AreEqual(null, JoinGameTest(game.GameCode));
-            Assert.AreEqual(true, DeleteGameTest(game.GameCode));
+            Assert.AreNotEqual(null, ExitGameTest(game.GameCode));
         }
 
         [Test]
         public void T_005_Ready()
         {
-            UrlTable.IsRemote = false;
             var game = CreateGameTest(2);
             Log.Info("Ready begin 1");
             NetworkManager.ReadyGame(game.GameCode, 1000);
@@ -71,10 +70,10 @@ namespace Tests.RESTAPI.Game
             return NetworkManager.JoinGame(gameCode);
         }
 
-        private bool DeleteGameTest(string gameCode)
+        private GameModel ExitGameTest(string gameCode)
         {
             Log.Info($"DELETE {gameCode}");
-            return NetworkManager.DeleteGame(gameCode);
+            return NetworkManager.ExitGame(gameCode);
         }
     }
 }

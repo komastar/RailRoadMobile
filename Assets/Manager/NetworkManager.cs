@@ -36,14 +36,6 @@ namespace Manager
             return response.ProcessResult ? GameModel.Parse(response.Data) : null;
         }
 
-        public static bool DeleteGame(string game)
-        {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}";
-            var response = GetRequest(url);
-
-            return response != null ? response.ProcessResult : false;
-        }
-
         public static GameModel GetGame(string game)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Get/{game}";
