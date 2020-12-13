@@ -93,6 +93,7 @@ namespace Assets.Object
 
         private void OnClickCancelButton()
         {
+            onDisable = null;
             NetworkManager.ExitGame(GameManager.Get().GameRoom.GameCode);
             SceneManager.LoadScene("LobbyScene");
         }
