@@ -14,7 +14,6 @@ namespace Assets.Tests.EditMode
         [Test]
         public void T_001_Create()
         {
-            UrlTable.IsRemote = false;
             var userId = NetworkManager.CreateUser();
             Assert.AreNotEqual(true, string.IsNullOrEmpty(userId));
             Log.Info(userId);
@@ -23,7 +22,6 @@ namespace Assets.Tests.EditMode
         [Test]
         public void T_999_Clear()
         {
-            UrlTable.IsRemote = false;
             var result = NetworkManager.ClearUser();
             Assert.Greater(result, 0);
         }
