@@ -1,11 +1,4 @@
-﻿using Assets.Foundation.Constant;
-using Manager;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Object
 {
@@ -13,8 +6,12 @@ namespace Assets.Object
     {
         private void Awake()
         {
+#if UNITY_EDITOR
+            gameObject.SetActive(false);
+#else
             var response = NetworkManager.GetRequest($"{UrlTable.GameServer}/api/ApiContentLock/Check/{Application.productName}/{Application.version}/{name}");
             gameObject.SetActive(!response.ProcessResult);
+#endif
         }
     }
 }
