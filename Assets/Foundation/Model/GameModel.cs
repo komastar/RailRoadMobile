@@ -12,6 +12,7 @@ namespace Assets.Foundation.Model
         public int MaxUserCount { get; set; }
         public bool IsOpen { get; set; }
         public DateTime CreationTime { get; set; }
+        public string UserId { get; set; }
 
         public GameModel() { }
 

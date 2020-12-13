@@ -65,7 +65,28 @@ namespace Manager
             return response.ProcessResult ? GameModel.Parse(response.Data) : null;
         }
 
+        public static string CreateUser()
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGameUser/Create";
+            var response = GetRequest2(url);
+
+            return response;
+        }
+
+        public static int ClearUser()
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGameUser/Clear";
+            var response = GetRequest2(url);
+
+            return int.Parse(response);
+        }
+
         public static ResponseModel GetRequest(string url)
+        {
+            return ResponseModel.Parse(GetRequest2(url));
+        }
+
+        public static string GetRequest2(string url)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -78,7 +99,7 @@ namespace Manager
                     return null;
                 }
 
-                return ResponseModel.Parse(send.webRequest.downloadHandler.text);
+                return send.webRequest.downloadHandler.text;
             }
         }
 
