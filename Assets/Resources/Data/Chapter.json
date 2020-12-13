@@ -26,6 +26,13 @@
                 10005
             ],
             "NextChapterId": 1
+        },
+        {
+            "Id": 3,
+            "Name": "PvP1",
+            "Stages": [
+                11001
+            ]
         }
     ]
 }

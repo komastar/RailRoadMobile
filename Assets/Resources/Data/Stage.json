@@ -30,6 +30,10 @@
         {
             "Id": 10007,
             "Name": "Stage07"
+        },
+        {
+            "Id": 11001,
+            "Name": "StagePvp1"
         }
     ]
 }

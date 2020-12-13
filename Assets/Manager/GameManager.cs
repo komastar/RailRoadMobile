@@ -1,4 +1,5 @@
 ﻿using Assets.Foundation.Constant;
+using Assets.Foundation.Model;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using System;
@@ -12,6 +13,8 @@ namespace Manager
         private string authCode;
 
         public Action<bool> onAfterAuth;
+
+        public string GameCode { get; set; } = Assets.Foundation.Constant.GameCode.SoloPlay;
 
         private void Awake()
         {

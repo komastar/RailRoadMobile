@@ -44,6 +44,19 @@ namespace Tests.RESTAPI.Game
             Assert.AreEqual(true, DeleteGameTest(code));
         }
 
+        [Test]
+        public void T_005_Ready()
+        {
+            UrlTable.IsRemote = false;
+            var code = CreateGameTest(2);
+            Log.Info("Ready begin 1");
+            NetworkManager.ReadyGame(code, 1000);
+            Log.Info("Ready end 1");
+            Log.Info("Ready begin 2");
+            NetworkManager.ReadyGame(code, 5000);
+            Log.Info("Ready end 2");
+        }
+
         private string CreateGameTest(int userCount)
         {
             Log.Info($"CREATE {userCount}");

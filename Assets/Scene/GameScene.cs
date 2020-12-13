@@ -27,6 +27,8 @@ public class GameScene : MonoBehaviour
     public StageModel currentStage;
     public ScoreViewModel score;
 
+    private Coroutine timerCoroutine;
+
     [SerializeField]
     private int timerCount;
     public int TimerCount
@@ -56,8 +58,6 @@ public class GameScene : MonoBehaviour
 
     public Action<int> onRoundCountChanged;
     private Action onTimeOver;
-
-    private IEnumerator timerCoroutine;
 
     private void Awake()
     {
@@ -109,13 +109,20 @@ public class GameScene : MonoBehaviour
         onRoundCountChanged += OnRoundCountChanged;
 
         onTimeOver += OnClickFix;
-        timerCoroutine = StartTimer();
     }
 
     private void InitChapter()
     {
-        currentChapter = dataManager.GetFirstChapter();
-        currentStage = dataManager.GetFirstStage(currentChapter);
+        if (GameCode.SoloPlay == gameManager.GameCode)
+        {
+            currentChapter = dataManager.GetFirstChapter();
+            currentStage = dataManager.GetFirstStage(currentChapter);
+        }
+        else
+        {
+            currentChapter = dataManager.GetPvpChapter();
+            currentStage = dataManager.GetPvpStage(currentChapter);
+        }
     }
 
     public void SetStage(StageModel stage)
@@ -206,7 +213,11 @@ public class GameScene : MonoBehaviour
         RoundCount++;
         mapObject.NewRound(RoundCount);
         handObject.Roll();
-        StartCoroutine(StartTimer());
+        if (null != timerCoroutine)
+        {
+            StopCoroutine(timerCoroutine);
+        }
+        timerCoroutine = StartCoroutine(StartTimer());
     }
 
     private IEnumerator StartTimer()

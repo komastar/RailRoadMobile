@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Assets.Foundation.Constant;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -96,6 +97,16 @@ namespace Manager
             }
 
             return null;
+        }
+
+        public StageModel GetPvpStage(ChapterModel currentChapter)
+        {
+            return StageListData[currentChapter.Stages.First()].Stage;
+        }
+
+        public ChapterModel GetPvpChapter()
+        {
+            return ChapterData[IdTable.PvpChaterId];
         }
 
         public string Localize(string category, string name)

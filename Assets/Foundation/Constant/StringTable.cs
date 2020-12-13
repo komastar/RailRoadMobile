@@ -7,4 +7,9 @@
         public static string GameServerLocal => "https://localhost:44377";
         public static bool IsRemote { get; set; } = true;
     }
+
+    public static class GameCode
+    {
+        public static string SoloPlay => "****";
+    }
 }

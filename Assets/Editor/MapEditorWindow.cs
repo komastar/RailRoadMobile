@@ -104,7 +104,7 @@ public class MapEditorWindow : EditorWindow
             {
                 if (GUILayout.Button("Generate"))
                 {
-                    var emptyRoute = routeData[1000];
+                    var emptyRoute = routeData[0];
                     map.MakeEmptyMap(mapData, emptyRoute);
                 }
                 else if (GUILayout.Button("Clear"))
@@ -284,13 +284,23 @@ public class MapEditorWindow : EditorWindow
         if (null == spriteData || isForce)
         {
             spriteData = new Dictionary<string, Sprite>();
-            var sprites = Resources.LoadAll<Sprite>($"Sprites/RailRoadSprites");
-            for (int i = 0; i < sprites.Length; i++)
+            var routeSprites = Resources.LoadAll<Sprite>($"Sprites/Routes");
+            for (int i = 0; i < routeSprites.Length; i++)
             {
-                var sprite = sprites[i] as Sprite;
+                var sprite = routeSprites[i];
                 if (sprite != null)
                 {
-                    spriteData.Add(sprites[i].name, sprite);
+                    spriteData.Add(routeSprites[i].name, sprite);
+                }
+            }
+
+            var terrainSprites = Resources.LoadAll<Sprite>($"Sprites/Terrain");
+            for (int i = 0; i < terrainSprites.Length; i++)
+            {
+                var sprite = terrainSprites[i];
+                if (sprite != null)
+                {
+                    spriteData.Add(terrainSprites[i].name, sprite);
                 }
             }
         }

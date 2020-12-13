@@ -24,10 +24,6 @@ namespace Manager
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Create/{maxUserCount}";
             var response = GetRequest(url);
-            if (null == response)
-            {
-                return "FAIL";
-            }
             var game = GameModel.Parse(response.Data);
 
             return game.GameCode;
@@ -44,6 +40,14 @@ namespace Manager
         public static bool DeleteGame(string game)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}";
+            var response = GetRequest(url);
+
+            return response != null ? response.ProcessResult : false;
+        }
+
+        public static bool ReadyGame(string game, int time)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{game}/{time}";
             var response = GetRequest(url);
 
             return response != null ? response.ProcessResult : false;

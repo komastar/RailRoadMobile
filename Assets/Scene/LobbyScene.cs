@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using Assets.Foundation.Constant;
+using Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 
 public class LobbyScene : MonoBehaviour
 {
+    private GameManager gameManager;
+
     public Button soloPlayButton;
     public InputField inputGameCode;
     public Button joinGameButton;
@@ -17,6 +20,8 @@ public class LobbyScene : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = GameManager.Get();
+
         soloPlayButton.onClick.AddListener(OnClickSoloPlayGameButton);
         joinGameButton.onClick.AddListener(OnClickJoinGameButton);
         createGameButton.onClick.AddListener(OnClickCreateGameButton);
@@ -29,7 +34,10 @@ public class LobbyScene : MonoBehaviour
         Log.Info(gameCode);
         if (NetworkManager.JoinGame(gameCode))
         {
+            gameManager.GameCode = gameCode;
             joinGameButton.GetComponentInChildren<Text>().color = Color.green;
+
+            StartCoroutine(StartGame());
         }
         else
         {
@@ -39,7 +47,13 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickCreateGameButton()
     {
-        gameCodeText.text = NetworkManager.CreateGame(int.Parse(maxUserCountText.text));
+        string gameCode = NetworkManager.CreateGame(int.Parse(maxUserCountText.text));
+        gameManager.GameCode = gameCode;
+        gameCodeText.text = gameCode;
+        if (NetworkManager.JoinGame(gameCode))
+        {
+            StartCoroutine(StartGame());
+        }
     }
 
     public void OnMaxUserCountChange(float value)
@@ -49,6 +63,14 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickSoloPlayGameButton()
     {
+        gameManager.GameCode = GameCode.SoloPlay;
+        SceneManager.LoadScene("GameScene");
+    }
+
+    private IEnumerator StartGame()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
         SceneManager.LoadScene("GameScene");
     }
 }
