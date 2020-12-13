@@ -1,4 +1,9 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
+#else
+using Manager;
+using Assets.Foundation.Constant;
+#endif
 
 namespace Assets.Object
 {
