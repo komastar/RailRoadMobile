@@ -45,7 +45,10 @@ namespace Assets.Object
 
         private void OnDisable()
         {
-            StopCoroutine(updateGameRoomCoroutine);
+            if (!ReferenceEquals(null, updateGameRoomCoroutine))
+            {
+                StopCoroutine(updateGameRoomCoroutine);
+            }
             onDisable?.Invoke();
         }
 
@@ -65,13 +68,13 @@ namespace Assets.Object
             }
         }
 
-        public void SetGameRoom(GameModel game)
+        public void SetGameRoom(GameRoomModel game)
         {
             gameCodeText.text = game.GameCode;
             SetReadyInfo(game);
         }
 
-        public void SetReadyInfo(GameModel game)
+        public void SetReadyInfo(GameRoomModel game)
         {
             readyInfoText.text = $"{game.UserCount} / {game.MaxUserCount}";
         }
@@ -94,7 +97,7 @@ namespace Assets.Object
         private void OnClickCancelButton()
         {
             onDisable = null;
-            NetworkManager.ExitGame(GameManager.Get().GameRoom.GameCode);
+            NetworkManager.ExitGame(GameManager.Get().GameRoom.GameCode, GameManager.Get().GameRoom.UserId);
             SceneManager.LoadScene("LobbyScene");
         }
     }

@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Assets.Foundation.Constant;
+using Assets.Foundation.Model;
+using Manager;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -13,6 +16,7 @@ namespace Tests.Play
         [SetUp]
         public void Setup()
         {
+            GameManager.Get().GameRoom = GameRoomModel.GetSoloPlay();
             SceneManager.LoadScene("GameScene");
         }
 

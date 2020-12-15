@@ -20,28 +20,28 @@ namespace Manager
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private static String responseString = String.Empty;
 
-        public static GameModel CreateGame(int maxUserCount)
+        public static GameRoomModel CreateGame(int maxUserCount)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Create/{maxUserCount}";
             var response = GetRequest(url);
 
-            return GameModel.Parse(response.Data);
+            return GameRoomModel.Parse(response.Data);
         }
 
-        public static GameModel JoinGame(string game)
+        public static GameRoomModel JoinGame(string game)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Join/{game}";
             var response = GetRequest(url);
 
-            return response.ProcessResult ? GameModel.Parse(response.Data) : null;
+            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
         }
 
-        public static GameModel GetGame(string game)
+        public static GameRoomModel GetGame(string game)
         {
             string url = $"{UrlTable.GameServer}/api/ApiGame/Get/{game}";
             var response = GetRequest(url);
 
-            return GameModel.Parse(response.Data);
+            return GameRoomModel.Parse(response.Data);
         }
 
         public static bool ReadyGame(string game, int time)
@@ -52,9 +52,9 @@ namespace Manager
             return response != null ? response.ProcessResult : false;
         }
 
-        public static GameModel ExitGame(string game)
+        public static GameRoomModel ExitGame(string game, string userId)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}";
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}/{userId}";
             var response = GetRequest(url);
             if (null == response
                 || null == response.Data)
@@ -62,7 +62,7 @@ namespace Manager
                 return null;
             }
 
-            return response.ProcessResult ? GameModel.Parse(response.Data) : null;
+            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
         }
 
         public static string CreateUser()
@@ -71,6 +71,14 @@ namespace Manager
             var response = GetRequest2(url);
 
             return response;
+        }
+
+        public static bool DeleteGame(string gameCode)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Delete/{gameCode}";
+            var response = GetRequest2(url);
+
+            return bool.Parse(response);
         }
 
         public static int ClearUser()

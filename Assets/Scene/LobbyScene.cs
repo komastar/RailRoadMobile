@@ -66,7 +66,7 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickSoloPlayGameButton()
     {
-        gameManager.GameRoom = GameModel.GetSoloPlay();
+        gameManager.GameRoom = GameRoomModel.GetSoloPlay();
         SceneManager.LoadScene("GameScene");
     }
 

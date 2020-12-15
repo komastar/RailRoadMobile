@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Foundation.Model
 {
-    public partial class GameModel
+    public partial class GameRoomModel
     {
         public int Id { get; set; }
         public string GameCode { get; set; }
@@ -12,11 +12,18 @@ namespace Assets.Foundation.Model
         public int MaxUserCount { get; set; }
         public bool IsOpen { get; set; }
         public DateTime CreationTime { get; set; }
+        public string OwnerUserId { get; set; }
         public string UserId { get; set; }
 
-        public GameModel() { }
+        public GameRoomModel() { }
 
-        public GameModel(string gamecode, int maxUserCount, bool isOpen = false)
+        public GameRoomModel(string gameCode, string userId)
+        {
+            GameCode = gameCode;
+            UserId = userId;
+        }
+
+        public GameRoomModel(string gamecode, int maxUserCount, bool isOpen = false)
         {
             maxUserCount = maxUserCount > 6 ? 6 : maxUserCount;
             GameCode = gamecode;
@@ -33,20 +40,20 @@ namespace Assets.Foundation.Model
             UserCount = 0;
         }
 
-        public static GameModel GetSoloPlay()
+        public static GameRoomModel GetSoloPlay()
         {
-            return new GameModel()
+            return new GameRoomModel()
             {
                 GameCode = Constant.GameCode.SoloPlay
             };
         }
     }
 
-    public partial class GameModel
+    public partial class GameRoomModel
     {
-        public static GameModel Parse(string json)
+        public static GameRoomModel Parse(string json)
         {
-            return JObject.Parse(json).ToObject<GameModel>();
+            return JObject.Parse(json).ToObject<GameRoomModel>();
         }
     }
 }

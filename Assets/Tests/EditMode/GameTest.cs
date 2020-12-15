@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Assets.Foundation.Constant;
 using Assets.Foundation.Model;
 using Manager;
@@ -11,30 +12,32 @@ namespace Tests.RESTAPI.Game
         [Test]
         public void T_001_FullSuc()
         {
-            UrlTable.IsRemote = true;
-            var game = CreateGameTest(4);
+            UrlTable.IsRemote = false;
+            GameRoomModel game = CreateGameTest(4);
             Assert.AreNotEqual(null, game);
-            Assert.AreNotEqual(null, game.GameCode);
+            Assert.AreEqual(false, string.IsNullOrEmpty(game.GameCode));
             Assert.AreEqual(4, game.GameCode.Length);
-            Assert.AreNotEqual(null, JoinGameTest(game.GameCode));
-            Assert.AreEqual(null, ExitGameTest(game.GameCode));
+            Assert.AreEqual(null, ExitGameTest(game));
         }
 
         [Test]
         public void T_002_JoinFail()
         {
+            UrlTable.IsRemote = false;
             Assert.AreEqual(null, JoinGameTest("****"));
         }
 
         [Test]
         public void T_003_ExitFail()
         {
-            Assert.AreEqual(null, ExitGameTest("****"));
+            UrlTable.IsRemote = false;
+            Assert.AreEqual(null, ExitGameTest(new GameRoomModel("****", Guid.NewGuid().ToString())));
         }
 
         [Test]
         public void T_004_JoinOverCap()
         {
+            UrlTable.IsRemote = false;
             var game = CreateGameTest(4);
             Assert.AreNotEqual(null, game);
             Assert.AreEqual(4, game.GameCode.Length);
@@ -43,37 +46,34 @@ namespace Tests.RESTAPI.Game
                 Assert.AreNotEqual(null, JoinGameTest(game.GameCode));
             }
             Assert.AreEqual(null, JoinGameTest(game.GameCode));
-            Assert.AreNotEqual(null, ExitGameTest(game.GameCode));
+            Assert.AreEqual(true, DeleteGameTest(game));
         }
 
-        [Test]
-        public void T_005_Ready()
-        {
-            var game = CreateGameTest(2);
-            Log.Info("Ready begin 1");
-            NetworkManager.ReadyGame(game.GameCode, 1000);
-            Log.Info("Ready end 1");
-            Log.Info("Ready begin 2");
-            NetworkManager.ReadyGame(game.GameCode, 5000);
-            Log.Info("Ready end 2");
-        }
-
-        private GameModel CreateGameTest(int userCount)
+        private GameRoomModel CreateGameTest(int userCount)
         {
             Log.Info($"CREATE {userCount}");
-            return NetworkManager.CreateGame(userCount);
+            var newGame = NetworkManager.CreateGame(userCount);
+            Log.Info($"CREATED {newGame.GameCode}");
+
+            return newGame;
         }
 
-        private GameModel JoinGameTest(string gameCode)
+        private GameRoomModel JoinGameTest(string gameCode)
         {
             Log.Info($"JOIN {gameCode}");
             return NetworkManager.JoinGame(gameCode);
         }
 
-        private GameModel ExitGameTest(string gameCode)
+        private GameRoomModel ExitGameTest(GameRoomModel gameRoom)
         {
-            Log.Info($"DELETE {gameCode}");
-            return NetworkManager.ExitGame(gameCode);
+            Log.Info($"EXIT {gameRoom.GameCode}");
+            return NetworkManager.ExitGame(gameRoom.GameCode, gameRoom.UserId);
+        }
+
+        private bool DeleteGameTest(GameRoomModel gameRoom)
+        {
+            Log.Info($"DELETE {gameRoom.GameCode}");
+            return NetworkManager.DeleteGame(gameRoom.GameCode);
         }
     }
 }
