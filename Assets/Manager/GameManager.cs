@@ -15,6 +15,7 @@ namespace Manager
         public Action<bool> onAfterAuth;
 
         public GameRoomModel GameRoom { get; set; }
+        public string GameUserId { get; set; }
 
         private void Awake()
         {

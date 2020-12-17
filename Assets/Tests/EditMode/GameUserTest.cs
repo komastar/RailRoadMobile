@@ -1,11 +1,5 @@
-﻿using Assets.Foundation.Constant;
-using Manager;
+﻿using Manager;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Tests.EditMode
 {
