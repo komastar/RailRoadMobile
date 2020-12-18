@@ -14,7 +14,23 @@ namespace Manager
 
         public Action<bool> onAfterAuth;
 
-        public GameRoomModel GameRoom { get; set; }
+        private GameRoomModel gameRoom;
+        public GameRoomModel GameRoom
+        {
+            get
+            {
+                if (null == gameRoom)
+                {
+                    gameRoom = GameRoomModel.GetSoloPlay();
+                }
+
+                return gameRoom;
+            }
+            set
+            {
+                gameRoom = value;
+            }
+        }
         public string GameUserId { get; set; }
 
         private void Awake()
