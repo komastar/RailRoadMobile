@@ -65,6 +65,19 @@ namespace Manager
             return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
         }
 
+        public static GameRoomModel StartGame(string gameCode)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Start/{gameCode}";
+            var response = GetRequest(url);
+            if (null == response
+                || null == response.Data)
+            {
+                return null;
+            }
+
+            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
+        }
+
         public static string CreateUser()
         {
             string url = $"{UrlTable.GameServer}/api/ApiGameUser/Create";

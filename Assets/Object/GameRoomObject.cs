@@ -15,6 +15,8 @@ namespace Assets.Object
 {
     public class GameRoomObject : MonoBehaviour
     {
+        private GameManager gameManager;
+
         public Button confirmButton;
         public Button cancelButton;
         public Text gameCodeText;
@@ -26,13 +28,14 @@ namespace Assets.Object
 
         private void Awake()
         {
+            gameManager = GameManager.Get();
             confirmButton.onClick.AddListener(OnClickConfirmButton);
             cancelButton.onClick.AddListener(OnClickCancelButton);
         }
 
         private void Start()
         {
-            var game = GameManager.Get().GameRoom;
+            var game = gameManager.GameRoom;
             if (GameCode.SoloPlay == game.GameCode)
             {
                 Close();
@@ -66,7 +69,7 @@ namespace Assets.Object
         {
             while (true)
             {
-                var game = NetworkManager.GetGame(GameManager.Get().GameRoom.GameCode);
+                var game = NetworkManager.GetGame(gameManager.GameRoom.GameCode);
                 SetGameRoom(game);
 
                 yield return new WaitForSecondsRealtime(.5f);
@@ -75,8 +78,11 @@ namespace Assets.Object
 
         public void SetGameRoom(GameRoomModel game)
         {
-            gameCodeText.text = game.GameCode;
-            SetReadyInfo(game);
+            if (null != game)
+            {
+                gameCodeText.text = game.GameCode;
+                SetReadyInfo(game);
+            }
         }
 
         public void SetReadyInfo(GameRoomModel game)
@@ -96,13 +102,21 @@ namespace Assets.Object
 
         public void OnClickConfirmButton()
         {
-            Close();
+            var gameRoom = NetworkManager.StartGame(gameManager.GameRoom.GameCode);
+            if (true == gameRoom.IsOpen)
+            {
+                Log.Info("NOT READY");
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void OnClickCancelButton()
         {
             onDisable = null;
-            NetworkManager.ExitGame(GameManager.Get().GameRoom.GameCode, GameManager.Get().GameRoom.UserId);
+            NetworkManager.ExitGame(gameManager.GameRoom.GameCode, gameManager.GameRoom.UserId);
             SceneManager.LoadScene("LobbyScene");
         }
     }

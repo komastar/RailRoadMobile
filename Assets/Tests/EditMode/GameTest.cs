@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Assets.Foundation.Constant;
 using Assets.Foundation.Model;
 using Manager;
@@ -9,10 +8,15 @@ namespace Tests.RESTAPI.Game
 {
     public class GameTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            UrlTable.IsRemote = false;
+        }
+
         [Test]
         public void T_001_FullSuc()
         {
-            UrlTable.IsRemote = false;
             GameRoomModel game = CreateGameTest(4);
             Assert.AreNotEqual(null, game);
             Assert.AreEqual(false, string.IsNullOrEmpty(game.GameCode));
@@ -23,21 +27,18 @@ namespace Tests.RESTAPI.Game
         [Test]
         public void T_002_JoinFail()
         {
-            UrlTable.IsRemote = false;
             Assert.AreEqual(null, JoinGameTest("****"));
         }
 
         [Test]
         public void T_003_ExitFail()
         {
-            UrlTable.IsRemote = false;
             Assert.AreEqual(null, ExitGameTest(new GameRoomModel("****", Guid.NewGuid().ToString())));
         }
 
         [Test]
         public void T_004_JoinOverCap()
         {
-            UrlTable.IsRemote = false;
             var game = CreateGameTest(4);
             Assert.AreNotEqual(null, game);
             Assert.AreEqual(4, game.GameCode.Length);
@@ -47,6 +48,21 @@ namespace Tests.RESTAPI.Game
             }
             Assert.AreEqual(null, JoinGameTest(game.GameCode));
             Assert.AreEqual(true, DeleteGameTest(game));
+        }
+
+        [Test]
+        public void T_005_Start()
+        {
+            var game = CreateGameTest(3);
+            Assert.AreEqual(3, game.MaxUserCount);
+            Assert.AreEqual(1, game.UserCount);
+            game = JoinGameTest(game.GameCode);
+            Assert.AreEqual(2, game.UserCount);
+            game = JoinGameTest(game.GameCode);
+            Assert.AreEqual(3, game.UserCount);
+            game = StartGameTest(game.GameCode);
+            Assert.AreEqual(false, game.IsOpen);
+            DeleteGameTest(game);
         }
 
         private GameRoomModel CreateGameTest(int userCount)
@@ -62,6 +78,11 @@ namespace Tests.RESTAPI.Game
         {
             Log.Info($"JOIN {gameCode}");
             return NetworkManager.JoinGame(gameCode);
+        }
+
+        private GameRoomModel StartGameTest(string gameCode)
+        {
+            return NetworkManager.StartGame(gameCode);
         }
 
         private GameRoomModel ExitGameTest(GameRoomModel gameRoom)

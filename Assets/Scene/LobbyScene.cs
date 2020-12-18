@@ -52,7 +52,6 @@ public class LobbyScene : MonoBehaviour
         var game = NetworkManager.CreateGame(int.Parse(maxUserCountText.text));
         gameManager.GameRoom = game;
         gameCodeText.text = game.GameCode;
-        game = NetworkManager.JoinGame(game.GameCode);
         if (null != game)
         {
             StartCoroutine(StartGame());

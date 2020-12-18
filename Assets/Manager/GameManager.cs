@@ -35,6 +35,7 @@ namespace Manager
 
         private void Awake()
         {
+            UrlTable.IsRemote = false;
             Init();
         }
 
