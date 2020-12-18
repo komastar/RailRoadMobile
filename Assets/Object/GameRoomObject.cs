@@ -45,16 +45,21 @@ namespace Assets.Object
 
         private void OnDisable()
         {
+            StopUpdateGameRoom();
+            onDisable?.Invoke();
+        }
+
+        private void StopUpdateGameRoom()
+        {
             if (!ReferenceEquals(null, updateGameRoomCoroutine))
             {
                 StopCoroutine(updateGameRoomCoroutine);
             }
-            onDisable?.Invoke();
         }
 
         private void OnDestroy()
         {
-            StopCoroutine(updateGameRoomCoroutine);
+            StopUpdateGameRoom();
         }
 
         private IEnumerator UpdateGameRoomCoroutine()
