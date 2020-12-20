@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using Assets.Foundation.Constant;
+using Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -31,43 +32,50 @@ public class GameEditorWindow : EditorWindow
 
     private void OnGUI()
     {
+        EditorGUILayout.BeginHorizontal();
+        {
+            EditorGUILayout.LabelField("IsRemote");
+            UrlTable.IsRemote = EditorGUILayout.Toggle(UrlTable.IsRemote);
+        }
+        EditorGUILayout.EndHorizontal();
+
         if (EditorApplication.isPlaying)
         {
-            EditorGUILayout.BeginHorizontal();
-            {
-                if (routes != null)
-                {
-                    selectRouteIndex = EditorGUILayout.Popup("NodeType", selectRouteIndex, routes, GUILayout.Width(200f), GUILayout.ExpandWidth(true), GUILayout.MaxWidth(300f));
-                    if (GUILayout.Button("Set"))
-                    {
-                        var route = routeData.Values.First(r => r.Name == routes[selectRouteIndex]);
-                        mapObj.SetCandidate(route.Id);
-                    }
-                }
-            }
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            {
-                if (spriteData != null)
-                {
-                    string spriteName = routes[selectRouteIndex];
-                    if (spriteData.ContainsKey(spriteName))
-                    {
-                        var sprite = spriteData[routes[selectRouteIndex]];
-                        EditorGUILayout.ObjectField(sprite
-                            , typeof(Texture2D)
-                            , false
-                            , GUILayout.Width(100)
-                            , GUILayout.Height(100));
-                    }
-                }
-            }
-            EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //{
+            //    if (routes != null)
+            //    {
+            //        selectRouteIndex = EditorGUILayout.Popup("NodeType", selectRouteIndex, routes, GUILayout.Width(200f), GUILayout.ExpandWidth(true), GUILayout.MaxWidth(300f));
+            //        if (GUILayout.Button("Set"))
+            //        {
+            //            var route = routeData.Values.First(r => r.Name == routes[selectRouteIndex]);
+            //            mapObj.SetCandidate(route.Id);
+            //        }
+            //    }
+            //}
+            //EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //{
+            //    if (spriteData != null)
+            //    {
+            //        string spriteName = routes[selectRouteIndex];
+            //        if (spriteData.ContainsKey(spriteName))
+            //        {
+            //            var sprite = spriteData[routes[selectRouteIndex]];
+            //            EditorGUILayout.ObjectField(sprite
+            //                , typeof(Texture2D)
+            //                , false
+            //                , GUILayout.Width(100)
+            //                , GUILayout.Height(100));
+            //        }
+            //    }
+            //}
+            //EditorGUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Refresh"))
-            {
-                Init();
-            }
+            //if (GUILayout.Button("Refresh"))
+            //{
+            //    Init();
+            //}
         }
     }
 
@@ -75,18 +83,18 @@ public class GameEditorWindow : EditorWindow
     {
         if (EditorApplication.isPlaying)
         {
-            mapObj = FindObjectOfType<MapObject>();
+            //mapObj = FindObjectOfType<MapObject>();
 
-            routeData = DataManager.Get().RouteData;
-            spriteData = new Dictionary<string, Sprite>();
+            //routeData = DataManager.Get().RouteData;
+            //spriteData = new Dictionary<string, Sprite>();
 
-            routes = new string[routeData.Values.Count];
-            int i = 0;
-            foreach (var route in routeData)
-            {
-                routes[i++] = route.Value.Name;
-                spriteData.Add(route.Value.Name, SpriteManager.Get().GetSprite(route.Value.Name));
-            }
+            //routes = new string[routeData.Values.Count];
+            //int i = 0;
+            //foreach (var route in routeData)
+            //{
+            //    routes[i++] = route.Value.Name;
+            //    spriteData.Add(route.Value.Name, SpriteManager.Get().GetSprite(route.Value.Name));
+            //}
         }
     }
 }

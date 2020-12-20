@@ -12,7 +12,7 @@ namespace Tests.RESTAPI.ContentLock
 {
     public class ContentLockTest
     {
-        private static string url = $"{UrlTable.GameServerRemote}/api/ApiContentLock/Check/TestProject";
+        private static string url = $"{UrlTable.GameServer}/api/ApiContentLock/Check/TestProject";
         [Test]
         public void T_001_Lock()
         {

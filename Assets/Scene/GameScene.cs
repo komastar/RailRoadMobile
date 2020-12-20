@@ -19,6 +19,7 @@ public class GameScene : MonoBehaviour
     public Text stageNameText;
     public Text mapNameText;
     public Text timerText;
+    public Text gameCodeText;
 
     public MapObject mapObject;
     public HandObject handObject;
@@ -133,6 +134,8 @@ public class GameScene : MonoBehaviour
             currentChapter = dataManager.GetPvpChapter();
             currentStage = dataManager.GetPvpStage(currentChapter);
         }
+
+        gameCodeText.text = gameManager.GameRoom.GameCode;
     }
 
     public void SetStage(StageModel stage)
@@ -220,13 +223,24 @@ public class GameScene : MonoBehaviour
 
     private void GoNextRound()
     {
-        RoundCount++;
-        mapObject.NewRound(RoundCount);
-        handObject.Roll();
+        if (GameCode.SoloPlay != gameManager.GameRoom.GameCode)
+        {
+            string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{gameManager.GameRoom.GameCode}/{RoundCount}";
+            StartCoroutine(NetworkManager.GetRequestAsync(url, OnRoundComplete));
+            timerText.text = "Waiting...";
+        }
         if (null != timerCoroutine)
         {
             StopCoroutine(timerCoroutine);
         }
+    }
+
+    private void OnRoundComplete(string p)
+    {
+        RoundCount++;
+        mapObject.NewRound(RoundCount);
+        handObject.Roll();
+
         timerCoroutine = StartCoroutine(StartTimer());
     }
 

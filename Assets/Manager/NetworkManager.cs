@@ -9,6 +9,7 @@ using Assets.Foundation.Model;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using Assets.Foundation.Constant;
+using System.Collections;
 
 namespace Manager
 {
@@ -78,6 +79,14 @@ namespace Manager
             return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
         }
 
+        //public static bool RoundGame(string gameCode, int round)
+        //{
+        //    string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{gameCode}/{round}";
+        //    var response = GetRequestAsync(url);
+
+        //    return bool.Parse(response);
+        //}
+
         public static string CreateUser()
         {
             string url = $"{UrlTable.GameServer}/api/ApiGameUser/Create";
@@ -121,6 +130,29 @@ namespace Manager
                 }
 
                 return send.webRequest.downloadHandler.text;
+            }
+        }
+
+        public static IEnumerator GetRequestAsync(string url, Action<string> onComplete)
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                var send = request.SendWebRequest();
+                while (!send.isDone)
+                {
+                    yield return null;
+                }
+
+                if (null == send.webRequest.downloadHandler
+                    || string.IsNullOrEmpty(send.webRequest.downloadHandler.text))
+                {
+                    Log.Error("GetRequest FAIL. downloadHandler is null / text is null or empty");
+                    onComplete?.Invoke(null);
+                }
+                else
+                {
+                    onComplete?.Invoke(send.webRequest.downloadHandler.text);
+                }
             }
         }
 
