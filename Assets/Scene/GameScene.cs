@@ -225,7 +225,7 @@ public class GameScene : MonoBehaviour
     {
         if (GameCode.SoloPlay != gameManager.GameRoom.GameCode)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{gameManager.GameRoom.GameCode}/{RoundCount}";
+            string url = UrlTable.GetRoundGameUrl(gameManager.GameRoom.GameCode, RoundCount);
             StartCoroutine(NetworkManager.GetRequestAsync(url, OnRoundComplete));
             timerText.text = "Waiting...";
         }

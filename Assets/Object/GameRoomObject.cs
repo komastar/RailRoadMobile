@@ -69,7 +69,7 @@ namespace Assets.Object
         {
             while (true)
             {
-                var game = NetworkManager.GetGame(gameManager.GameRoom.GameCode);
+                var game = NetworkManager.FindGame(gameManager.GameRoom.GameCode);
                 SetGameRoom(game);
 
                 yield return new WaitForSecondsRealtime(.5f);

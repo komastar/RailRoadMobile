@@ -23,7 +23,7 @@ namespace Manager
 
         public static GameRoomModel CreateGame(int maxUserCount)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Create/{maxUserCount}";
+            string url = UrlTable.GetCreateGameUrl(maxUserCount);
             var response = GetRequest(url);
 
             return GameRoomModel.Parse(response.Data);
@@ -31,31 +31,23 @@ namespace Manager
 
         public static GameRoomModel JoinGame(string game)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Join/{game}";
+            string url = UrlTable.GetJoinGameUrl(game);
             var response = GetRequest(url);
 
             return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
         }
 
-        public static GameRoomModel GetGame(string game)
+        public static GameRoomModel FindGame(string game)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Get/{game}";
+            string url = UrlTable.GetFindGameUrl(game);
             var response = GetRequest(url);
 
             return GameRoomModel.Parse(response.Data);
         }
 
-        public static bool ReadyGame(string game, int time)
-        {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{game}/{time}";
-            var response = GetRequest(url);
-
-            return response != null ? response.ProcessResult : false;
-        }
-
         public static GameRoomModel ExitGame(string game, string userId)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Exit/{game}/{userId}";
+            string url = UrlTable.GetExitGameUrl(game, userId);
             var response = GetRequest(url);
             if (null == response
                 || null == response.Data)
@@ -68,7 +60,7 @@ namespace Manager
 
         public static GameRoomModel StartGame(string gameCode)
         {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Start/{gameCode}";
+            string url = UrlTable.GetStartGameUrl(gameCode);
             var response = GetRequest(url);
             if (null == response
                 || null == response.Data)
