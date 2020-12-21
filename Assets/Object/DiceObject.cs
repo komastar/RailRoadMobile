@@ -23,9 +23,16 @@ public class DiceObject : MonoBehaviour, IGameActor
     private int diceId;
     public int DiceId { get => diceId; set => diceId = value; }
 
-    public void Roll()
+    public void Roll(int dice = -1)
     {
-        DiceId = diceData.Routes[Random.Range(0, diceData.Routes.Length)];
+        if (-1 == dice)
+        {
+            DiceId = diceData.Routes[Random.Range(0, diceData.Routes.Length)];
+        }
+        else
+        {
+            DiceId = dice;
+        }
         var routeData = dataManager.RouteData[DiceId];
         routeRenderer.sprite = SpriteManager.Get().GetSprite(routeData.Name);
         TurnOn();

@@ -1,4 +1,5 @@
 ﻿using Assets.Foundation.Constant;
+using Assets.Foundation.Model;
 using Assets.Object;
 using Manager;
 using Newtonsoft.Json.Linq;
@@ -238,11 +239,12 @@ public class GameScene : MonoBehaviour
         }
     }
 
-    private void OnRoundComplete(string p)
+    private void OnRoundComplete(string roundData)
     {
-        RoundCount++;
+        RoundModel round = RoundModel.Parse(roundData);
+        RoundCount = round.Round;
         mapObject.NewRound(RoundCount);
-        handObject.Roll();
+        handObject.Roll(round.Dices);
 
         timerCoroutine = StartCoroutine(StartTimer());
     }

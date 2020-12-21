@@ -75,6 +75,14 @@ public class HandObject : MonoBehaviour, IGameActor
         }
     }
 
+    public void Roll(List<int> diceList)
+    {
+        for (int i = 0; i < dices.Count; i++)
+        {
+            dices[i].Roll(diceList[i]);
+        }
+    }
+
     public void OnClickDice(DiceObject dice)
     {
         Dice = dice;
