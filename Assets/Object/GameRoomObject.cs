@@ -16,6 +16,7 @@ namespace Assets.Object
     public class GameRoomObject : MonoBehaviour
     {
         private GameManager gameManager;
+        private NetworkManager netManager;
 
         public Button confirmButton;
         public Button cancelButton;
@@ -29,6 +30,7 @@ namespace Assets.Object
         private void Awake()
         {
             gameManager = GameManager.Get();
+            netManager = NetworkManager.Get();
             confirmButton.onClick.AddListener(OnClickConfirmButton);
             cancelButton.onClick.AddListener(OnClickCancelButton);
         }
@@ -67,11 +69,15 @@ namespace Assets.Object
 
         private IEnumerator UpdateGameRoomCoroutine()
         {
+            string gameCode = gameManager.GameRoom.GameCode;
             while (true)
             {
-                var game = NetworkManager.FindGame(gameManager.GameRoom.GameCode);
-                SetGameRoom(game);
-
+                netManager.GetRequest(UrlTable.GetFindGameUrl(gameCode)
+                    , (response) =>
+                    {
+                        var game = GameRoomModel.Parse(response);
+                        SetGameRoom(game);
+                    });
                 yield return new WaitForSecondsRealtime(.5f);
             }
         }
@@ -102,22 +108,31 @@ namespace Assets.Object
 
         public void OnClickConfirmButton()
         {
-            var gameRoom = NetworkManager.StartGame(gameManager.GameRoom.GameCode);
-            if (true == gameRoom.IsOpen)
-            {
-                Log.Info("NOT READY");
-            }
-            else
-            {
-                Close();
-            }
+            string gameCode = gameManager.GameRoom.GameCode;
+            netManager.GetRequest(UrlTable.GetStartGameUrl(gameCode)
+                , (response) =>
+                {
+                    var gameRoom = GameRoomModel.Parse(response);
+                    if (true == gameRoom.IsOpen)
+                    {
+                        Log.Info("NOT READY");
+                    }
+                    else
+                    {
+                        Close();
+                    }
+                });
         }
 
         private void OnClickCancelButton()
         {
             onDisable = null;
-            NetworkManager.ExitGame(gameManager.GameRoom.GameCode, gameManager.GameRoom.UserId);
-            SceneManager.LoadScene("LobbyScene");
+            var gameRoom = gameManager.GameRoom;
+            netManager.GetRequest(UrlTable.GetExitGameUrl(gameRoom.GameCode, gameRoom.UserId)
+                , (response) =>
+                {
+                    SceneManager.LoadScene("LobbyScene");
+                });
         }
     }
 }

@@ -11,6 +11,7 @@ public class GameScene : MonoBehaviour
 {
     private GameManager gameManager;
     private DataManager dataManager;
+    private NetworkManager netManager;
 
     public TextAsset mapJson;
     public TextAsset stageJson;
@@ -85,6 +86,7 @@ public class GameScene : MonoBehaviour
         SpriteManager.Get();
         gameManager = GameManager.Get();
         dataManager = DataManager.Get();
+        netManager = NetworkManager.Get();
 
         if (ReferenceEquals(null, scoreObject))
         {
@@ -226,9 +228,10 @@ public class GameScene : MonoBehaviour
         if (GameCode.SoloPlay != gameManager.GameRoom.GameCode)
         {
             string url = UrlTable.GetRoundGameUrl(gameManager.GameRoom.GameCode, RoundCount);
-            StartCoroutine(NetworkManager.GetRequestAsync(url, OnRoundComplete));
+            StartCoroutine(netManager.GetRequestAsync(url, OnRoundComplete));
             timerText.text = "Waiting...";
         }
+
         if (null != timerCoroutine)
         {
             StopCoroutine(timerCoroutine);

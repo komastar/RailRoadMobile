@@ -14,8 +14,12 @@ namespace Assets.Object
 #if UNITY_EDITOR
             gameObject.SetActive(false);
 #else
-            var response = NetworkManager.GetRequest($"{UrlTable.GameServer}/api/ApiContentLock/Check/{Application.productName}/{Application.version}/{name}");
-            gameObject.SetActive(!response.ProcessResult);
+            NetworkManager.Get().GetRequest(UrlTable.GetContentLockCheckUrl(Application.productName, Application.version, name)
+                , (response) =>
+                {
+                    bool isLock = bool.Parse(response);
+                    gameObject.SetActive(!isLock);
+                });
 #endif
         }
     }

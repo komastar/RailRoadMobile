@@ -15,117 +15,41 @@ namespace Manager
 {
     public class NetworkManager : Singleton<NetworkManager>
     {
+        private CancellationTokenSource tokenSrc;
+        private CancellationToken token;
+
         private const int port = 11000;
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private static String responseString = String.Empty;
 
-        public static GameRoomModel CreateGame(int maxUserCount)
+        private void Awake()
         {
-            string url = UrlTable.GetCreateGameUrl(maxUserCount);
-            var response = GetRequest(url);
-
-            return GameRoomModel.Parse(response.Data);
+            tokenSrc = new CancellationTokenSource();
+            token = tokenSrc.Token;
         }
 
-        public static GameRoomModel JoinGame(string game)
+        public void Cancel()
         {
-            string url = UrlTable.GetJoinGameUrl(game);
-            var response = GetRequest(url);
-
-            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
+            tokenSrc.Cancel();
         }
 
-        public static GameRoomModel FindGame(string game)
+        private void OnApplicationQuit()
         {
-            string url = UrlTable.GetFindGameUrl(game);
-            var response = GetRequest(url);
-
-            return GameRoomModel.Parse(response.Data);
+            Cancel();
         }
 
-        public static GameRoomModel ExitGame(string game, string userId)
+        public void GetRequest(string url, Action<string> onComplete = null)
         {
-            string url = UrlTable.GetExitGameUrl(game, userId);
-            var response = GetRequest(url);
-            if (null == response
-                || null == response.Data)
-            {
-                return null;
-            }
-
-            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
-        }
-
-        public static GameRoomModel StartGame(string gameCode)
-        {
-            string url = UrlTable.GetStartGameUrl(gameCode);
-            var response = GetRequest(url);
-            if (null == response
-                || null == response.Data)
-            {
-                return null;
-            }
-
-            return response.ProcessResult ? GameRoomModel.Parse(response.Data) : null;
-        }
-
-        //public static bool RoundGame(string gameCode, int round)
-        //{
-        //    string url = $"{UrlTable.GameServer}/api/ApiGame/Round/{gameCode}/{round}";
-        //    var response = GetRequestAsync(url);
-
-        //    return bool.Parse(response);
-        //}
-
-        public static string CreateUser()
-        {
-            string url = $"{UrlTable.GameServer}/api/ApiGameUser/Create";
-            var response = GetRequest2(url);
-
-            return response;
-        }
-
-        public static bool DeleteGame(string gameCode)
-        {
-            string url = $"{UrlTable.GameServer}/api/ApiGame/Delete/{gameCode}";
-            var response = GetRequest2(url);
-
-            return bool.Parse(response);
-        }
-
-        public static int ClearUser()
-        {
-            string url = $"{UrlTable.GameServer}/api/ApiGameUser/Clear";
-            var response = GetRequest2(url);
-
-            return int.Parse(response);
-        }
-
-        public static ResponseModel GetRequest(string url)
-        {
-            return ResponseModel.Parse(GetRequest2(url));
-        }
-
-        public static string GetRequest2(string url)
-        {
-            using (UnityWebRequest request = UnityWebRequest.Get(url))
-            {
-                var send = request.SendWebRequest();
-                while (!send.isDone) { }
-                if (null == send.webRequest.downloadHandler
-                    || string.IsNullOrEmpty(send.webRequest.downloadHandler.text))
+            StartCoroutine(GetRequestAsync(url
+                , (response) =>
                 {
-                    Log.Error("GetRequest FAIL. downloadHandler is null / text is null or empty");
-                    return null;
-                }
-
-                return send.webRequest.downloadHandler.text;
-            }
+                    onComplete?.Invoke(response);
+                }));
         }
 
-        public static IEnumerator GetRequestAsync(string url, Action<string> onComplete)
+        public IEnumerator GetRequestAsync(string url, Action<string> onComplete)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -144,6 +68,33 @@ namespace Manager
                 else
                 {
                     onComplete?.Invoke(send.webRequest.downloadHandler.text);
+                }
+            }
+        }
+
+        public async Task<string> GetRequestAsync(string url)
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                var send = request.SendWebRequest();
+                while (!send.isDone)
+                {
+                    await Task.Yield();
+                    if (true == token.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                }
+
+                if (null == send.webRequest.downloadHandler
+                    || string.IsNullOrEmpty(send.webRequest.downloadHandler.text))
+                {
+                    Log.Error("GetRequest FAIL. downloadHandler is null / text is null or empty");
+                    return null;
+                }
+                else
+                {
+                    return send.webRequest.downloadHandler.text;
                 }
             }
         }

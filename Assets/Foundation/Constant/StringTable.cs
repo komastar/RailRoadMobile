@@ -10,14 +10,16 @@
 #endif
         public static string GameServerRemote => "http://rpi.komastar.kr";
         public static string GameServerLocal => "https://localhost:44377";
-        private static string ApiUrl => $"{GameServer}/api/ApiGame";
+        private static string ApiGameUrl => $"{GameServer}/api/ApiGame";
+        private static string ApiContentUrl => $"{GameServer}/api/ApiContentLock";
 
-        public static string GetCreateGameUrl(int maxUserCount) => $"{ApiUrl}/Create/{maxUserCount}";
-        public static string GetJoinGameUrl(string gameCode) => $"{ApiUrl}/Join/{gameCode}";
-        public static string GetFindGameUrl(string gameCode) => $"{ApiUrl}/Find/{gameCode}";
-        public static string GetExitGameUrl(string game, string userId) => $"{ApiUrl}/Exit/{game}/{userId}";
-        public static string GetStartGameUrl(string gameCode) => $"{ApiUrl}/Start/{gameCode}";
-        public static string GetRoundGameUrl(string gameCode, int round) => $"{ApiUrl}/Round/{gameCode}/{round}";
+        public static string GetCreateGameUrl(int maxUserCount) => $"{ApiGameUrl}/Create/{maxUserCount}";
+        public static string GetJoinGameUrl(string gameCode) => $"{ApiGameUrl}/Join/{gameCode}";
+        public static string GetFindGameUrl(string gameCode) => $"{ApiGameUrl}/Find/{gameCode}";
+        public static string GetExitGameUrl(string game, string userId) => $"{ApiGameUrl}/Exit/{game}/{userId}";
+        public static string GetStartGameUrl(string gameCode) => $"{ApiGameUrl}/Start/{gameCode}";
+        public static string GetRoundGameUrl(string gameCode, int round) => $"{ApiGameUrl}/Round/{gameCode}/{round}";
+        public static string GetContentLockCheckUrl(string appName, string version, string contentName) => $"{ApiContentUrl}/Check/{appName}/{version}/{contentName}";
     }
 
     public static class GameCode
