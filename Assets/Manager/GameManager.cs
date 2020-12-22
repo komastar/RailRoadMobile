@@ -78,7 +78,7 @@ namespace Manager
 
         public void ReportScore(ScoreViewModel score)
         {
-            gpgs.ReportScore(score.TotalScore, GPGSIds.leaderboard_highestscore, OnReportScore);
+            gpgs.ReportScore(Math.Abs(score.TotalScore), GPGSIds.leaderboard_highestscore, OnReportScore);
             gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
         }
 

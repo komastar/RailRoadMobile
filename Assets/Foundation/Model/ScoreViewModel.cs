@@ -22,6 +22,5 @@ public class ScoreViewModel
     public void Calculate()
     {
         TotalScore = NetworkScore + RailScore + RoadScore - PenaltyScore - ConstructFailScore;
-        TotalScore = TotalScore < 0 ? 0 : TotalScore;
     }
 }
