@@ -41,8 +41,9 @@ public class ScoreObject : MonoBehaviour, IPointerClickHandler
         networkScoreText.text = scoreViewModel.NetworkScore.ToString();
         railScoreText.text = scoreViewModel.RailScore.ToString();
         roadScoreText.text = scoreViewModel.RoadScore.ToString();
-        string minus = scoreViewModel.PenaltyScore > 0 ? "-" : "";
-        penaltyScoreText.text = $"{minus}{scoreViewModel.PenaltyScore + scoreViewModel.ConstructFailScore}";
+        int penaltyScore = scoreViewModel.PenaltyScore + scoreViewModel.ConstructFailScore;
+        string minus = penaltyScore > 0 ? "-" : "";
+        penaltyScoreText.text = $"{minus}{penaltyScore}";
     }
 
     public void Close()
