@@ -104,10 +104,7 @@ public class GameScene : MonoBehaviour
         }
         else
         {
-            scoreObject.onClose += () =>
-            {
-                SceneManager.LoadScene("LobbyScene");
-            };
+            scoreObject.onClose += GoLobbyScene;
         }
 
         if (ReferenceEquals(null, handObject))
@@ -297,14 +294,8 @@ public class GameScene : MonoBehaviour
             {
                 var results = JArray.Parse(response).ToObject<List<GameResultModel>>();
                 results = results.OrderByDescending(r => r.Score).ToList();
-                if (gameManager.GameUserId == results.First().UserId)
-                {
-                    scoreObject.SetPvpResult("승리");
-                }
-                else
-                {
-                    scoreObject.SetPvpResult("패배");
-                }
+                var rank = results.FindIndex(r => r.UserId == gameManager.GameUserId);
+                scoreObject.SetPvpResult($"{rank + 1} 위");
             }));
         }
         else
@@ -313,5 +304,15 @@ public class GameScene : MonoBehaviour
         }
 
         scoreObject.Open();
+    }
+
+    public void GoLobbyScene()
+    {
+        if (false == gameManager.IsSoloPlay())
+        {
+            string url = UrlTable.GetExitGameUrl(gameManager.GameRoom.GameCode, gameManager.GameUserId);
+            netManager.GetRequest(url);
+        }
+        SceneManager.LoadScene("LobbyScene");
     }
 }
