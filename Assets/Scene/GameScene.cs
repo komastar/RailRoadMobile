@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameScene : MonoBehaviour
@@ -96,8 +97,18 @@ public class GameScene : MonoBehaviour
             scoreObject = FindObjectOfType<ScoreObject>();
         }
         scoreObject.Init();
-        scoreObject.onClose += SetNextStage;
-        scoreObject.onClose += MakeStage;
+        if (true == gameManager.IsSoloPlay())
+        {
+            scoreObject.onClose += SetNextStage;
+            scoreObject.onClose += MakeStage;
+        }
+        else
+        {
+            scoreObject.onClose += () =>
+            {
+                SceneManager.LoadScene("LobbyScene");
+            };
+        }
 
         if (ReferenceEquals(null, handObject))
         {
