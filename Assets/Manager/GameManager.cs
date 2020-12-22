@@ -110,5 +110,10 @@ namespace Manager
         {
             Log.Info(obj);
         }
+
+        public bool IsSoloPlay()
+        {
+            return (GameCode.SoloPlay == GameRoom.GameCode);
+        }
     }
 }

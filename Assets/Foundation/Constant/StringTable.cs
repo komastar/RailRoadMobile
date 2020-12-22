@@ -17,6 +17,7 @@
         public static string GetJoinGameUrl(string gameCode) => $"{ApiGameUrl}/Join/{gameCode}";
         public static string GetFindGameUrl(string gameCode) => $"{ApiGameUrl}/Find/{gameCode}";
         public static string GetExitGameUrl(string game, string userId) => $"{ApiGameUrl}/Exit/{game}/{userId}";
+        public static string GetEndGameUrl(string gamecode, string userid, int score) => $"{ApiGameUrl}/End/{gamecode}/{userid}/{score}";
         public static string GetStartGameUrl(string gameCode) => $"{ApiGameUrl}/Start/{gameCode}";
         public static string GetRoundGameUrl(string gameCode, int round) => $"{ApiGameUrl}/Round/{gameCode}/{round}";
         public static string GetContentLockCheckUrl(string appName, string version, string contentName) => $"{ApiContentUrl}/Check/{appName}/{version}/{contentName}";

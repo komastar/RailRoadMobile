@@ -5,6 +5,8 @@ using Manager;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -127,7 +129,7 @@ public class GameScene : MonoBehaviour
 
     private void InitChapter()
     {
-        if (GameCode.SoloPlay == gameManager.GameRoom.GameCode)
+        if (true == gameManager.IsSoloPlay())
         {
             currentChapter = dataManager.GetFirstChapter();
             currentStage = dataManager.GetFirstStage(currentChapter);
@@ -226,10 +228,10 @@ public class GameScene : MonoBehaviour
 
     private void GoNextRound()
     {
-        if (GameCode.SoloPlay != gameManager.GameRoom.GameCode)
+        if (false == gameManager.IsSoloPlay())
         {
             string url = UrlTable.GetRoundGameUrl(gameManager.GameRoom.GameCode, RoundCount);
-            StartCoroutine(netManager.GetRequestAsync(url, OnRoundComplete));
+            StartCoroutine(netManager.GetRequestCo(url, OnRoundComplete));
             timerText.text = "Waiting...";
         }
 
@@ -269,10 +271,36 @@ public class GameScene : MonoBehaviour
 
     public void OnGameOver()
     {
+        onTimeOver = null;
+        StopCoroutine(timerCoroutine);
         TimerCount = 0;
         mapObject.GetScore(score);
         gameManager.ReportScore(score);
         scoreObject.SetScore(score);
+        if (false == gameManager.IsSoloPlay())
+        {
+            scoreObject.SetPvpResult("기다리는 중");
+            var game = gameManager.GameRoom;
+            string url = UrlTable.GetEndGameUrl(game.GameCode, gameManager.GameUserId, score.TotalScore);
+            StartCoroutine(netManager.GetRequestCo(url, (response) =>
+            {
+                var results = JArray.Parse(response).ToObject<List<GameResultModel>>();
+                results = results.OrderByDescending(r => r.Score).ToList();
+                if (gameManager.GameUserId == results.First().UserId)
+                {
+                    scoreObject.SetPvpResult("승리");
+                }
+                else
+                {
+                    scoreObject.SetPvpResult("패배");
+                }
+            }));
+        }
+        else
+        {
+            scoreObject.SetPvpResult(string.Empty);
+        }
+
         scoreObject.Open();
     }
 }

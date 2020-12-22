@@ -42,6 +42,7 @@ public class LobbyScene : MonoBehaviour
                 if (null != game)
                 {
                     gameManager.GameRoom = game;
+                    gameManager.GameUserId = game.UserId;
                     joinGameButton.GetComponentInChildren<Text>().color = Color.green;
 
                     StartCoroutine(StartGame());
@@ -63,6 +64,7 @@ public class LobbyScene : MonoBehaviour
                 if (null != game)
                 {
                     gameManager.GameRoom = game;
+                    gameManager.GameUserId = game.OwnerUserId;
                     gameCodeText.text = game.GameCode;
                     StartCoroutine(StartGame());
                 }

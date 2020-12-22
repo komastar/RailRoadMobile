@@ -3,10 +3,6 @@ using Assets.Foundation.Model;
 using Manager;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,14 +14,14 @@ namespace Assets.Object
         private GameManager gameManager;
         private NetworkManager netManager;
 
+        private Coroutine updateGameRoomCoroutine;
+
         public Button confirmButton;
         public Button cancelButton;
         public Text gameCodeText;
         public Text readyInfoText;
 
         public Action onDisable;
-
-        private Coroutine updateGameRoomCoroutine;
 
         private void Awake()
         {
@@ -37,8 +33,7 @@ namespace Assets.Object
 
         private void Start()
         {
-            var game = gameManager.GameRoom;
-            if (GameCode.SoloPlay == game.GameCode)
+            if (true == gameManager.IsSoloPlay())
             {
                 Close();
             }

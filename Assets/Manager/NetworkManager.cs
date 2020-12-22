@@ -15,41 +15,22 @@ namespace Manager
 {
     public class NetworkManager : Singleton<NetworkManager>
     {
-        private CancellationTokenSource tokenSrc;
-        private CancellationToken token;
-
         private const int port = 11000;
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private static String responseString = String.Empty;
 
-        private void Awake()
-        {
-            tokenSrc = new CancellationTokenSource();
-            token = tokenSrc.Token;
-        }
-
-        public void Cancel()
-        {
-            tokenSrc.Cancel();
-        }
-
-        private void OnApplicationQuit()
-        {
-            Cancel();
-        }
-
         public void GetRequest(string url, Action<string> onComplete = null)
         {
-            StartCoroutine(GetRequestAsync(url
+            StartCoroutine(GetRequestCo(url
                 , (response) =>
                 {
                     onComplete?.Invoke(response);
                 }));
         }
 
-        public IEnumerator GetRequestAsync(string url, Action<string> onComplete)
+        public IEnumerator GetRequestCo(string url, Action<string> onComplete)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -72,7 +53,7 @@ namespace Manager
             }
         }
 
-        public async Task<string> GetRequestAsync(string url)
+        public async Task<string> GetRequestAsync(string url, CancellationToken token)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -82,7 +63,7 @@ namespace Manager
                     await Task.Yield();
                     if (true == token.IsCancellationRequested)
                     {
-                        break;
+                        return null;
                     }
                 }
 

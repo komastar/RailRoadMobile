@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class ScoreObject : MonoBehaviour, IPointerClickHandler
 {
+    public Text pvpResultText;
     public Text totalScoreText;
     public Text networkScoreText;
     public Text railScoreText;
@@ -20,6 +21,12 @@ public class ScoreObject : MonoBehaviour, IPointerClickHandler
     {
         onClose = null;
         Close();
+    }
+
+    public void SetPvpResult(string result)
+    {
+        pvpResultText.gameObject.SetActive(!string.IsNullOrEmpty(result));
+        pvpResultText.text = result;
     }
 
     public void SetScore(ScoreViewModel score)
