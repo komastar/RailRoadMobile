@@ -70,15 +70,18 @@ namespace Assets.Editor
                 "Assets/Scenes/GameScene.unity"
             };
 
+            string path = $"AOS/{PlayerSettings.productName}-{appVersion}.{bundleVerCode}.apk";
             var buildResult = BuildPipeline.BuildPlayer(new BuildPlayerOptions()
             {
                 scenes = levels,
                 target = BuildTarget.Android,
-                locationPathName = $"AOS/{PlayerSettings.productName}-{appVersion}.{bundleVerCode}.apk"
+                locationPathName = path
             });
 
             if (0 == buildResult.summary.totalErrors)
             {
+                EditorUtility.RevealInFinder(path);
+
                 return true;
             }
             else
