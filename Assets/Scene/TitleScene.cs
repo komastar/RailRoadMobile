@@ -11,11 +11,15 @@ public class TitleScene : MonoBehaviour
     private void Awake()
     {
         NetworkManager.Get();
+#if UNITY_ANDROID
         GameManager.Get().onAfterAuth +=
             (bool result) =>
             {
                 startButton.interactable = result;
             };
+#else
+        startButton.interactable = true;
+#endif
         versionText.text = $"{Application.version}";
     }
 

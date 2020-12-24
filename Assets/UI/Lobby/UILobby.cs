@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.UI.Common;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -18,13 +19,14 @@ namespace Assets.UI.Lobby
         private void Awake()
         {
             panelOpenStack = new Stack<UIPanel>();
+            uiSoloPlayPanel.Setup();
         }
 
         private async void Start()
         {
             while (true)
             {
-                Button select = await SelectButton();
+                Button select = await UIButtonAsync.SelectButton<Button>(lobbyButtons);
                 if ("SoloPlayButton" == select.name)
                 {
                     OpenPanel(uiSoloPlayPanel);
@@ -47,26 +49,6 @@ namespace Assets.UI.Lobby
             }
             panel.Open();
             panelOpenStack.Push(panel);
-        }
-
-        private async Task<Button> SelectButton()
-        {
-            var tasks = lobbyButtons.Select(PressButton);
-            Task<Button> finish = await Task.WhenAny(tasks);
-
-            return finish.Result;
-        }
-
-        private async Task<Button> PressButton(Button button)
-        {
-            bool isPressed = false;
-            button.onClick.AddListener(() => isPressed = true);
-            while (!isPressed)
-            {
-                await Task.Yield();
-            }
-
-            return button;
         }
     }
 }

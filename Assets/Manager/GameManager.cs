@@ -9,10 +9,12 @@ namespace Manager
 {
     public class GameManager : Singleton<GameManager>
     {
+#if UNITY_ANDROID
         private PlayGamesPlatform gpgs;
         private string authCode;
 
         public Action<bool> onAfterAuth;
+#endif
 
         private GameRoomModel gameRoom;
         public GameRoomModel GameRoom
@@ -33,6 +35,9 @@ namespace Manager
         }
         public string GameUserId { get; set; }
 
+        public ChapterModel CurrentChapter { get; set; }
+        public StageModel CurrentStage { get; set; }
+
         private void Awake()
         {
             UrlTable.IsRemote = false;
@@ -42,7 +47,7 @@ namespace Manager
         private void Init()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
+#if UNITY_ANDROID
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
                 .Builder()
                 .EnableSavedGames()
@@ -53,8 +58,10 @@ namespace Manager
             gpgs = PlayGamesPlatform.Instance;
             gpgs.Authenticate(suc => OnAuthenticate(suc), false);
             gpgs.SetGravityForPopups(Gravity.CENTER_HORIZONTAL);
+#endif
         }
 
+#if UNITY_ANDROID
         private void OnAuthenticate(bool suc)
         {
             if (suc)
@@ -75,11 +82,14 @@ namespace Manager
         {
             this.authCode = authCode;
         }
+#endif
 
         public void ReportScore(ScoreViewModel score)
         {
+#if UNITY_ANDROID
             gpgs.ReportScore(Math.Abs(score.TotalScore), GPGSIds.leaderboard_highestscore, OnReportScore);
             gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
+#endif
         }
 
         private void OnReportProgress(bool isDone)

@@ -139,8 +139,16 @@ public class GameScene : MonoBehaviour
     {
         if (true == gameManager.IsSoloPlay())
         {
-            currentChapter = dataManager.GetFirstChapter();
-            currentStage = dataManager.GetFirstStage(currentChapter);
+            if (null == gameManager.CurrentStage)
+            {
+                currentChapter = dataManager.GetFirstChapter();
+                currentStage = dataManager.GetFirstStage(currentChapter);
+            }
+            else
+            {
+                currentChapter = gameManager.CurrentChapter;
+                currentStage = gameManager.CurrentStage;
+            }
         }
         else
         {
@@ -236,16 +244,24 @@ public class GameScene : MonoBehaviour
 
     private void GoNextRound()
     {
-        if (false == gameManager.IsSoloPlay())
+        if (null != timerCoroutine)
+        {
+            StopCoroutine(timerCoroutine);
+        }
+
+        if (true == gameManager.IsSoloPlay())
+        {
+            RoundCount++;
+            mapObject.NewRound(RoundCount);
+            handObject.Roll();
+
+            timerCoroutine = StartCoroutine(StartTimer());
+        }
+        else
         {
             string url = UrlTable.GetRoundGameUrl(gameManager.GameRoom.GameCode, RoundCount);
             StartCoroutine(netManager.GetRequestCo(url, OnRoundComplete));
             timerText.text = "Waiting...";
-        }
-
-        if (null != timerCoroutine)
-        {
-            StopCoroutine(timerCoroutine);
         }
     }
 
