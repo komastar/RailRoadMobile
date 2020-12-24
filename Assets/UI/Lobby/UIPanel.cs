@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Assets.UI.Lobby
 {
-    public abstract class UIPanel : MonoBehaviour, IPointerClickHandler
+    public class UIPanel : MonoBehaviour, IPointerClickHandler
     {
         public Button[] buttons;
 
@@ -21,7 +21,7 @@ namespace Assets.UI.Lobby
             }
         }
 
-        public abstract void Setup();
+        public virtual void Setup() { }
 
         public void Open()
         {

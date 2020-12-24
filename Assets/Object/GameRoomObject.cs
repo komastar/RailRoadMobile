@@ -15,6 +15,7 @@ namespace Assets.Object
         private NetworkManager netManager;
 
         private Coroutine updateGameRoomCoroutine;
+        private bool isRunning;
 
         public Button confirmButton;
         public Button cancelButton;
@@ -39,6 +40,7 @@ namespace Assets.Object
             }
             else
             {
+                isRunning = true;
                 updateGameRoomCoroutine = StartCoroutine(UpdateGameRoomCoroutine());
             }
         }
@@ -65,7 +67,7 @@ namespace Assets.Object
         private IEnumerator UpdateGameRoomCoroutine()
         {
             string gameCode = gameManager.GameRoom.GameCode;
-            while (true)
+            while (isRunning)
             {
                 netManager.GetRequest(UrlTable.GetFindGameUrl(gameCode)
                     , (response) =>
@@ -98,6 +100,7 @@ namespace Assets.Object
 
         private void Close()
         {
+            isRunning = false;
             gameObject.SetActive(false);
         }
 

@@ -1,6 +1,5 @@
 ﻿using Assets.UI.Common;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +19,7 @@ namespace Assets.UI.Lobby
         {
             panelOpenStack = new Stack<UIPanel>();
             uiSoloPlayPanel.Setup();
+            uiMultiPlayPanel.Setup();
         }
 
         private async void Start()
