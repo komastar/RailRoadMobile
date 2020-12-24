@@ -33,17 +33,14 @@ namespace Manager
                     yield return null;
                 }
 
-                if (null == send.webRequest.downloadHandler
-                    || string.IsNullOrEmpty(send.webRequest.downloadHandler.text))
+                if (null == send.webRequest.downloadHandler)
                 {
                     Log.Error(url);
-                    Log.Error("GetRequest FAIL. downloadHandler is null / text is null or empty");
-                    onComplete?.Invoke(null);
+                    Log.Error("GetRequest FAIL. downloadHandler is null");
+
+                    yield break;
                 }
-                else
-                {
-                    onComplete?.Invoke(send.webRequest.downloadHandler.text);
-                }
+                onComplete?.Invoke(send.webRequest.downloadHandler.text);
             }
         }
 

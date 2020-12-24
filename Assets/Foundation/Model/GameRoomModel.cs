@@ -53,7 +53,14 @@ namespace Assets.Foundation.Model
     {
         public static GameRoomModel Parse(string json)
         {
-            return JObject.Parse(json).ToObject<GameRoomModel>();
+            if (true == string.IsNullOrEmpty(json))
+            {
+                return null;
+            }
+            else
+            {
+                return JObject.Parse(json).ToObject<GameRoomModel>();
+            }
         }
     }
 }

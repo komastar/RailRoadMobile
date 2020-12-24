@@ -86,6 +86,11 @@ namespace Assets.Object
                 gameCodeText.text = game.GameCode;
                 SetReadyInfo(game);
             }
+            else
+            {
+                gameCodeText.text = "****";
+                readyInfoText.text = "0 / 0";
+            }
         }
 
         public void SetReadyInfo(GameRoomModel game)
