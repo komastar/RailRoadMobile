@@ -1,24 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class UIScreenMaskObject : MonoBehaviour
 {
     public Material material;
+    public Image image;
 
     private void Awake()
     {
         Init();
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SetRect(Input.mousePosition, new Vector2(100, 100));
-        }
-    }
-
     public void Init()
     {
+        image.material = Instantiate(material);
         SetRect(Vector2.zero, Vector2.zero);
         SetColor(Color.black);
         SetAlpha(.5f);
@@ -32,17 +27,17 @@ public class UIScreenMaskObject : MonoBehaviour
             , position.y + size.y * .5f
             , position.x + size.x * .5f
             , position.y - size.y * .5f);
-        material.SetVector("_Rect", rectVector);
+        image.material.SetVector("_Rect", rectVector);
     }
 
     public void SetColor(Color color)
     {
-        material.SetColor("_Color", color);
+        image.material.SetColor("_Color", color);
     }
 
     public void SetAlpha(float alpha)
     {
-        material.SetFloat("_Alpha", alpha);
+        image.material.SetFloat("_Alpha", alpha);
     }
 
     public void TurnOn()
@@ -53,5 +48,10 @@ public class UIScreenMaskObject : MonoBehaviour
     public void TurnOff()
     {
         gameObject.SetActive(false);
+    }
+
+    public void Toggle()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 }

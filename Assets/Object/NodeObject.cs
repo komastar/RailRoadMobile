@@ -14,6 +14,9 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     private DataManager dataManager;
     private SpriteManager spriteManager;
 
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+
     [SerializeField]
     private int id;
     [SerializeField]
@@ -65,6 +68,9 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+
         round = 0;
         var clickObserver = OnPointerClickAsObservable();
         clickObserver
