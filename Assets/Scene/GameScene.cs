@@ -26,6 +26,7 @@ public class GameScene : MonoBehaviour
     public Text timerText;
     public Text gameCodeText;
 
+    public UIScreenMaskObject screenMask;
     public MapObject mapObject;
     public HandObject handObject;
     public ScoreObject scoreObject;
@@ -76,10 +77,21 @@ public class GameScene : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SetNextStage();
             MakeStage();
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            screenMask.Toggle();
+        }
+#endif
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GoLobbyScene();
         }
     }
 

@@ -7,6 +7,9 @@ public class HandObject : MonoBehaviour, IGameActor
 {
     public int Id { get; set; }
 
+    public ContentSizeFitter sizeFitter;
+    public GridLayoutGroup gridGroup;
+
     public GameObject dicePanel;
     public StageModel stage;
     public DiceObject dicePrefab;
