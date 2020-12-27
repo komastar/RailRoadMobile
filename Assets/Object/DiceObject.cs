@@ -14,6 +14,7 @@ public class DiceObject : MonoBehaviour, IGameActor
 
     public DiceModel diceData;
     public Action<DiceObject> onClick;
+    public Action<IActor> onClickObject;
 
     [SerializeField]
     private int id;
@@ -42,6 +43,7 @@ public class DiceObject : MonoBehaviour, IGameActor
     {
         dataManager = DataManager.Get();
         Id = id;
+        DiceId = Id;
         diceData = dataManager.DiceData[id];
         onClick = null;
     }
@@ -51,6 +53,7 @@ public class DiceObject : MonoBehaviour, IGameActor
         if (value)
         {
             onClick?.Invoke(this);
+            onClickObject?.Invoke(this);
         }
     }
 

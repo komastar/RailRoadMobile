@@ -4,6 +4,14 @@
     },
     "Chapter": [
         {
+            "Id": 0,
+            "Name": "Tutorial",
+            "Stages": [
+                10000
+            ],
+            "NextChapterId": 1
+        },
+        {
             "Id": 1,
             "Name": "EastDale",
             "Stages": [

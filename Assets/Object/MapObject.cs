@@ -1,4 +1,6 @@
-﻿using Manager;
+﻿using Assets.Foundation.Constant;
+using Assets.Object;
+using Manager;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -29,6 +31,7 @@ public class MapObject : MonoBehaviour, IGameActor
     public DiceObject selectDice;
     public NodeObject selectedNode;
     public Action onFixPhaseExit;
+    public Action<IActor> onClickObject;
 
     public int Id { get; set; }
 
@@ -56,6 +59,7 @@ public class MapObject : MonoBehaviour, IGameActor
         float offsetX = (nodeSize * 0.5f) * (mapData.MapSize.x - 1);
         float offsetY = (nodeSize * 0.5f) * (mapData.MapSize.y - 1);
 
+        int nodeId = NumTable.TileIdOffset;
         for (int y = 0; y < mapSize.y; y++)
         {
             for (int x = 0; x < mapSize.x; x++)
@@ -65,6 +69,7 @@ public class MapObject : MonoBehaviour, IGameActor
                 newNode.transform.localPosition = new Vector3(x * nodeSize - offsetX, y * nodeSize - offsetY, 0);
                 newNode.transform.localScale = Vector3.one * nodeSize;
                 newNode.Position = new Vector2Int(x, y);
+                newNode.Id = nodeId++;
             }
         }
 
@@ -74,8 +79,8 @@ public class MapObject : MonoBehaviour, IGameActor
     private static void SetCamera(Vector2Int mapSize, float nodeSize)
     {
         var orthoSize = Math.Max(mapSize.x * nodeSize, mapSize.y * nodeSize);
-        float ratio = Screen.height / (float)Screen.width;
-        orthoSize *= 1f + Mathf.Abs(ratio - 1.7f);
+        //float ratio = Screen.height / (float)Screen.width;
+        //orthoSize *= 1f + Mathf.Abs(ratio - 1.7f);
         Camera.main.orthographicSize = orthoSize;
     }
 
@@ -105,11 +110,11 @@ public class MapObject : MonoBehaviour, IGameActor
             var node = nodes[i];
             var newNode = Instantiate(nodePrefab, transform);
             Sprite sprite = null;
-            if (spriteData.ContainsKey(routeData[node.Id].Name))
+            if (spriteData.ContainsKey(routeData[node.RouteId].Name))
             {
-                if ("Wall" != routeData[node.Id].Name)
+                if ("Wall" != routeData[node.RouteId].Name)
                 {
-                    sprite = spriteData[routeData[node.Id].Name];
+                    sprite = spriteData[routeData[node.RouteId].Name];
                 }
             }
 
@@ -120,10 +125,12 @@ public class MapObject : MonoBehaviour, IGameActor
                 sprite2 = spriteData[node.Floor];
             }
 
-            newNode.SetupNode(node, routeData[node.Id], sprite, sprite2);
+            newNode.SetupNode(node, routeData[node.RouteId], sprite, sprite2);
+            newNode.Id = node.Id;
             newNode.transform.localPosition = new Vector3(node.Position.x - offsetX, node.Position.y - offsetY, 0f);
             newNode.transform.localScale = Vector3.one * nodeSize;
             newNode.onClick += OnClickNode;
+            newNode.onClickObject += onClickObject;
             NewNode(newNode);
         }
 

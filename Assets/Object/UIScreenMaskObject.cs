@@ -5,6 +5,12 @@ public class UIScreenMaskObject : MonoBehaviour
 {
     public Material material;
     public Image image;
+    public GameObject topDescPanel;
+    public GameObject botDescPanel;
+    public Text topDescText;
+    public Text botDescText;
+
+    private bool isBottom;
 
     private void Awake()
     {
@@ -28,6 +34,19 @@ public class UIScreenMaskObject : MonoBehaviour
             , position.x + size.x * .5f
             , position.y - size.y * .5f);
         image.material.SetVector("_Rect", rectVector);
+        isBottom = Screen.height * 0.5f < position.y;
+        SetText(null);
+    }
+
+    public void SetText(string text)
+    {
+        botDescPanel.SetActive(isBottom);
+        topDescPanel.SetActive(!isBottom);
+        if (false == string.IsNullOrEmpty(text))
+        {
+            botDescText.text = text;
+            topDescText.text = text;
+        }
     }
 
     public void SetColor(Color color)

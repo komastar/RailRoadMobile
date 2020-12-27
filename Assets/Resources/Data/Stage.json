@@ -4,6 +4,10 @@
     },
     "Stage": [
         {
+            "Id": 10000,
+            "Name": "Tutorial"
+        },
+        {
             "Id": 10001,
             "Name": "Stage01"
         },

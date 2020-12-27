@@ -26,11 +26,12 @@ public class GameScene : MonoBehaviour
     public Text timerText;
     public Text gameCodeText;
 
-    public UIScreenMaskObject screenMask;
+    public UIScreenMaskObject screenMaskObj;
     public MapObject mapObject;
     public HandObject handObject;
     public ScoreObject scoreObject;
     public GameRoomObject gameRoomObject;
+    public TutorialObject tutorialObject;
 
     public ChapterModel currentChapter;
     public StageModel currentStage;
@@ -85,7 +86,12 @@ public class GameScene : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            screenMask.Toggle();
+            screenMaskObj.Toggle();
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            screenMaskObj.SetRect(Input.mousePosition, Vector2.one * 91.5f * Camera.main.orthographicSize);
+            screenMaskObj.SetText("A");
         }
 #endif
 
@@ -197,6 +203,24 @@ public class GameScene : MonoBehaviour
         {
             Log.Error("Stage is null");
             return;
+        }
+
+        if (true == currentStage.Name.ToLower().Contains("tutorial"))
+        {
+            tutorialObject = new GameObject("TutorialObject").AddComponent<TutorialObject>();
+            tutorialObject.screenMaskObj = screenMaskObj;
+            mapObject.onClickObject += tutorialObject.OnClickObject;
+            handObject.onClickObject += tutorialObject.OnClickObject;
+        }
+        else
+        {
+            if (!ReferenceEquals(null, tutorialObject))
+            {
+                Destroy(tutorialObject.gameObject);
+                tutorialObject = null;
+            }
+            mapObject.onClickObject = null;
+            handObject.onClickObject = null;
         }
 
         chapterNameText.text = dataManager.Localize("Chapter", currentChapter?.Name);

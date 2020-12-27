@@ -17,6 +17,7 @@ public class HandObject : MonoBehaviour, IGameActor
     public DiceObject Dice;
 
     public Action onChangeHand;
+    public Action<IActor> onClickObject;
 
     public List<DiceObject> dices;
 
@@ -57,6 +58,7 @@ public class HandObject : MonoBehaviour, IGameActor
             var dice = Instantiate(dicePrefab, dicePanel.transform);
             dice.Init(stage.Dice[i]);
             dice.onClick += OnClickDice;
+            dice.onClickObject += onClickObject;
             dices.Add(dice);
         }
     }
@@ -127,7 +129,7 @@ public class HandObject : MonoBehaviour, IGameActor
 
     public void Return(NodeObject node)
     {
-        var find = dices.Find(n => n.DiceId == node.Id);
+        var find = dices.Find(n => n.DiceId == node.RouteId);
         find.TurnOn();
     }
 }

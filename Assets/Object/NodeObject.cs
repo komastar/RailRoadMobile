@@ -19,6 +19,8 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     [SerializeField]
     private int id;
+    public int Id { get => id; set => id = value; }
+
     [SerializeField]
     private int round;
     public int Round
@@ -38,7 +40,10 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
             RoundText.text = round.ToString();
         }
     }
-    public int Id { get => id; set => id = value; }
+
+    [SerializeField]
+    private int routeId;
+    public int RouteId { get => routeId; set => routeId = value; }
     public int direction = 0;
     public bool isFlip = false;
     [SerializeField]
@@ -57,6 +62,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     public SpriteRenderer RouteRenderer;
 
     public Func<NodeObject, int> onClick;
+    public Action<IActor> onClickObject;
     public Action<NodeObject> onResetBefore;
     public Action onResetAfter;
 
@@ -71,7 +77,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
 
-        round = 0;
+        Round = 0;
         var clickObserver = OnPointerClickAsObservable();
         clickObserver
             .Buffer(clickObserver.Throttle(TimeSpan.FromMilliseconds(250)))
@@ -119,6 +125,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        onClickObject?.Invoke(this);
         onClick.Invoke(this);
         base.OnPointerClick(eventData);
     }
@@ -127,7 +134,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     public void Init(int id)
     {
         NodeState = ENodeState.None;
-        Id = id;
+        RouteId = id;
         dataManager = DataManager.Get();
         spriteManager = SpriteManager.Get();
         RouteData = dataManager.RouteData[id];
@@ -186,7 +193,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public void SetupNode(RouteModel route, Sprite routeSprite, Sprite floorSprite = null)
     {
-        Id = route.Id;
+        RouteId = route.Id;
         RouteData = route;
         name = RouteData.Name;
         IsRailRoute = false;
@@ -213,7 +220,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
             TileRenderer.sprite = floorSprite;
         }
 
-        if (Id == 0)
+        if (RouteId == 0)
         {
             ResetNode();
         }
@@ -239,7 +246,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         onResetBefore?.Invoke(this);
         NodeState = ENodeState.None;
         name = "EmptyNode";
-        Id = 0;
+        RouteId = 0;
         Round = 0;
         direction = 0;
         RouteRenderer.sprite = null;
@@ -295,7 +302,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
 
     public bool IsEmpty()
     {
-        return Id == 0;
+        return RouteId == 0;
     }
 
     public int CompareTo(NodeObject other)
@@ -314,5 +321,15 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         {
             return 1;
         }
+    }
+
+    public Vector2 GetColliderCenter()
+    {
+        return Camera.main.WorldToScreenPoint(boxCollider.bounds.center);
+    }
+
+    public Vector2 GetColliderSize()
+    {
+        return boxCollider.bounds.size * Mathf.Max(Screen.height, Screen.width) * .5f / Camera.main.orthographicSize;
     }
 }
