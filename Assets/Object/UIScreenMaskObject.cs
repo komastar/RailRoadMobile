@@ -1,20 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIScreenMaskObject : MonoBehaviour
 {
     public Material material;
     public Image image;
+    public RectTransform clickArea;
     public GameObject topDescPanel;
     public GameObject botDescPanel;
     public Text topDescText;
     public Text botDescText;
 
+    public Action onClickActiveArea;
+
     private bool isBottom;
 
     private void Awake()
     {
+        TurnOff();
         Init();
+        botDescPanel.SetActive(false);
+        topDescPanel.SetActive(false);
     }
 
     public void Init()
@@ -23,7 +30,6 @@ public class UIScreenMaskObject : MonoBehaviour
         SetRect(Vector2.zero, Vector2.zero);
         SetColor(Color.black);
         SetAlpha(.5f);
-        TurnOff();
     }
 
     public void SetRect(Vector2 position, Vector2 size)
@@ -34,6 +40,8 @@ public class UIScreenMaskObject : MonoBehaviour
             , position.x + size.x * .5f
             , position.y - size.y * .5f);
         image.material.SetVector("_Rect", rectVector);
+        clickArea.position = position;
+        clickArea.sizeDelta = size;
         isBottom = Screen.height * 0.5f < position.y;
         SetText(null);
     }
@@ -72,5 +80,10 @@ public class UIScreenMaskObject : MonoBehaviour
     public void Toggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    public void OnClickActiveArea()
+    {
+        onClickActiveArea?.Invoke();
     }
 }

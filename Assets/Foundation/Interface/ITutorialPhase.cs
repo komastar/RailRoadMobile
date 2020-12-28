@@ -2,6 +2,8 @@
 {
     public interface ITutorialPhase
     {
+        void Enter();
         ITutorialPhase Update(IActor actor);
+        void Exit();
     }
 }

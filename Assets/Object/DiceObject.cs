@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class DiceObject : MonoBehaviour, IGameActor
 {
-    public Toggle diceButton;
+    public Button diceButton;
     public Image buttonRenderer;
     public Image routeRenderer;
 
@@ -48,13 +48,10 @@ public class DiceObject : MonoBehaviour, IGameActor
         onClick = null;
     }
 
-    public void OnClickDice(bool value)
+    public void OnClickDice()
     {
-        if (value)
-        {
-            onClick?.Invoke(this);
-            onClickObject?.Invoke(this);
-        }
+        onClick?.Invoke(this);
+        onClickObject?.Invoke(this);
     }
 
     public void TurnOn()

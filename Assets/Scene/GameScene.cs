@@ -31,7 +31,7 @@ public class GameScene : MonoBehaviour
     public HandObject handObject;
     public ScoreObject scoreObject;
     public GameRoomObject gameRoomObject;
-    public TutorialObject tutorialObject;
+    public GameTutorialObject tutorialObject;
 
     public ChapterModel currentChapter;
     public StageModel currentStage;
@@ -207,18 +207,13 @@ public class GameScene : MonoBehaviour
 
         if (true == currentStage.Name.ToLower().Contains("tutorial"))
         {
-            tutorialObject = new GameObject("TutorialObject").AddComponent<TutorialObject>();
-            tutorialObject.screenMaskObj = screenMaskObj;
+            tutorialObject.enabled = true;
             mapObject.onClickObject += tutorialObject.OnClickObject;
             handObject.onClickObject += tutorialObject.OnClickObject;
         }
         else
         {
-            if (!ReferenceEquals(null, tutorialObject))
-            {
-                Destroy(tutorialObject.gameObject);
-                tutorialObject = null;
-            }
+            tutorialObject.enabled = false;
             mapObject.onClickObject = null;
             handObject.onClickObject = null;
         }
