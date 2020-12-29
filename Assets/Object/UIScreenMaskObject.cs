@@ -32,18 +32,36 @@ public class UIScreenMaskObject : MonoBehaviour
         SetAlpha(.5f);
     }
 
-    public void SetRect(Vector2 position, Vector2 size)
+    public void SetRect(Vector2 position, Vector2 size, int index = 0)
     {
         Vector4 rectVector = new Vector4(
             position.x - size.x * .5f
             , position.y + size.y * .5f
             , position.x + size.x * .5f
             , position.y - size.y * .5f);
-        image.material.SetVector("_Rect", rectVector);
+        SetRect(index, rectVector);
         clickArea.position = position;
         clickArea.sizeDelta = size;
         isBottom = Screen.height * 0.5f < position.y;
         SetText(null);
+    }
+
+    public void ResetRect()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            ResetRect(i);
+        }
+    }
+
+    public void ResetRect(int index)
+    {
+        SetRect(index, Vector4.zero);
+    }
+
+    public void SetRect(int index, Vector4 rect)
+    {
+        image.material.SetVector($"_Rect{index}", rect);
     }
 
     public void SetText(string text)

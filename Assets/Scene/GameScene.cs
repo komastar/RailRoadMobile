@@ -208,8 +208,6 @@ public class GameScene : MonoBehaviour
         if (true == currentStage.Name.ToLower().Contains("tutorial"))
         {
             tutorialObject.enabled = true;
-            mapObject.onClickObject += tutorialObject.OnClickObject;
-            handObject.onClickObject += tutorialObject.OnClickObject;
         }
         else
         {
