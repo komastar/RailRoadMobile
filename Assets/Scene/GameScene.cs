@@ -208,6 +208,8 @@ public class GameScene : MonoBehaviour
         if (true == currentStage.Name.ToLower().Contains("tutorial"))
         {
             tutorialObject.enabled = true;
+            tutorialObject.onTutorialDone += SetNextStage;
+            tutorialObject.onTutorialDone += MakeStage;
         }
         else
         {

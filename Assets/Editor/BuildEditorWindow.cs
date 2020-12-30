@@ -32,25 +32,23 @@ namespace Assets.Editor
                 appVersion = EditorGUILayout.TextField(appVersion);
             }
             EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.BeginHorizontal();
             {
                 EditorGUILayout.LabelField("BundleVersionCode");
                 bundleVerCode = EditorGUILayout.IntField(bundleVerCode);
             }
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Build"))
             {
-                if (GUILayout.Button("Build"))
-                {
-                    Build();
-                    Close();
-                }
-                else if (GUILayout.Button("Cancel"))
-                {
-                    Close();
-                }
+                Close();
+                Build();
             }
-            EditorGUILayout.EndHorizontal();
+            else if (GUILayout.Button("Cancel"))
+            {
+                Close();
+            }
         }
 
         private bool Build()

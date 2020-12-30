@@ -20,6 +20,8 @@ namespace Assets.Object
         public RectTransform flipButtonRect;
         public RectTransform roundButtonRect;
 
+        public Action onTutorialDone;
+
         public UIScreenMaskObject screenMaskObj;
         private ITutorialPhase current;
         private Queue<ITutorialPhase> tutorials;
@@ -41,9 +43,12 @@ namespace Assets.Object
             tutorials.Enqueue(new ConfirmPhase(this));
             tutorials.Enqueue(new EndPhase(this));
 
-            prevTimeScale = Time.timeScale;
-            Time.timeScale = 0f;
-
+            ApplyTutorialMode();
+            screenMaskObj.onDisable += () =>
+            {
+                Time.timeScale = prevTimeScale;
+                enabled = false;
+            };
             screenMaskObj.TurnOn();
             await Task.Delay(250);
             while (0 < tutorials.Count && enabled)
@@ -64,7 +69,13 @@ namespace Assets.Object
 
         private void OnDisable()
         {
-            Time.timeScale = prevTimeScale;
+            onTutorialDone?.Invoke();
+        }
+
+        private void ApplyTutorialMode()
+        {
+            prevTimeScale = Time.timeScale;
+            Time.timeScale = 0f;
         }
 
         public void SetText(string text)
@@ -260,6 +271,7 @@ namespace Assets.Object
 
         public override void Enter()
         {
+            tutorialObject.onTutorialDone = null;
             tutorialObject.enabled = false;
             tutorialObject.screenMaskObj.TurnOff();
         }

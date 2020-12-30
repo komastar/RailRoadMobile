@@ -13,6 +13,7 @@ public class UIScreenMaskObject : MonoBehaviour
     public Text botDescText;
 
     public Action onClickActiveArea;
+    public Action onDisable;
 
     private bool isBottom;
 
@@ -22,6 +23,11 @@ public class UIScreenMaskObject : MonoBehaviour
         Init();
         botDescPanel.SetActive(false);
         topDescPanel.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        onDisable?.Invoke();
     }
 
     public void Init()
