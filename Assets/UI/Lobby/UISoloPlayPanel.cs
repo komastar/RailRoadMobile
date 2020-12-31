@@ -1,5 +1,5 @@
 ﻿using Assets.Foundation.Model;
-using Assets.UI.Common;
+using Assets.Foundation.UI.Common;
 using Manager;
 using UnityEngine;
 using UnityEngine.SceneManagement;

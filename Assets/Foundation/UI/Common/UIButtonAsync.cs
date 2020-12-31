@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.UI.Common
+namespace Assets.Foundation.UI.Common
 {
     public class UIButtonAsync
     {

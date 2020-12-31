@@ -1,4 +1,4 @@
-﻿using Assets.UI.Common;
+﻿using Assets.Foundation.UI.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;

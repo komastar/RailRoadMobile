@@ -1,5 +1,5 @@
 ﻿using Assets.Foundation.Interface;
-using Assets.UI.Common;
+using Assets.Foundation.UI.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

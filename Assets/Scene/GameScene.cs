@@ -1,5 +1,7 @@
 ﻿using Assets.Foundation.Constant;
 using Assets.Foundation.Model;
+using Assets.Foundation.UI.Common;
+using Assets.Foundation.UI.PopUp;
 using Assets.Object;
 using Manager;
 using Newtonsoft.Json.Linq;
@@ -7,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,7 +29,10 @@ public class GameScene : MonoBehaviour
     public Text timerText;
     public Text gameCodeText;
 
+    public Button[] buttons;
+
     public UIScreenMaskObject screenMaskObj;
+    public UIPopUpPanel popUpPanel;
     public MapObject mapObject;
     public HandObject handObject;
     public ScoreObject scoreObject;
@@ -76,7 +82,33 @@ public class GameScene : MonoBehaviour
         gameRoomObject.SetGameRoom(gameManager.GameRoom);
     }
 
-    private void Update()
+    private async void Start()
+    {
+        while (true)
+        {
+            var button = await UIButtonAsync.SelectButton<Button>(buttons);
+            if ("ExitButton" == button.name)
+            {
+                await ExitStage();
+            }
+        }
+    }
+
+    private async Task ExitStage()
+    {
+        var confirm = (UIConfirmPopUp)popUpPanel.Open("Confirm");
+        var result = await confirm.GetResult();
+        if (true == result)
+        {
+            GoLobbyScene();
+        }
+        else
+        {
+            popUpPanel.TurnOff();
+        }
+    }
+
+    private async void Update()
     {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
@@ -97,13 +129,15 @@ public class GameScene : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GoLobbyScene();
+            await ExitStage();
         }
     }
 
     private void Init()
     {
         score = new ScoreViewModel();
+
+        popUpPanel.Init();
 
         SpriteManager.Get();
         gameManager = GameManager.Get();
