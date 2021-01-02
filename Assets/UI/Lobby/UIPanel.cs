@@ -29,7 +29,7 @@ namespace Assets.UI.Lobby
             gameObject.SetActive(true);
         }
 
-        public void Close()
+        public virtual void Close()
         {
             gameObject.SetActive(false);
             onAfterClose?.Invoke();
@@ -37,7 +37,6 @@ namespace Assets.UI.Lobby
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Close();
         }
     }
 }

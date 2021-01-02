@@ -51,5 +51,10 @@ namespace Assets.UI.Lobby
                 };
             };
         }
+
+        public override void Close()
+        {
+            base.Close();
+        }
     }
 }

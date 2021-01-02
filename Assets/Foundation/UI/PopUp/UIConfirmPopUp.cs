@@ -9,6 +9,8 @@ namespace Assets.Foundation.UI.PopUp
     public class UIConfirmPopUp : UIPopUpPanel
     {
         public Button[] ownButtons;
+        public Text PositiveText;
+        public Text NegativeText;
 
         private void OnEnable()
         {

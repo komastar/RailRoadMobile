@@ -760,6 +760,8 @@ MonoBehaviour:
   ownButtons:
   - {fileID: 1893510896609693083}
   - {fileID: 1396752569272346854}
+  PositiveText: {fileID: 7279907910001757602}
+  NegativeText: {fileID: 1106527611315023158}
 --- !u!1 &8322827391772087458
 GameObject:
   m_ObjectHideFlags: 0

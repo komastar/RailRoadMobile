@@ -1,5 +1,6 @@
 ﻿using Assets.Foundation.Constant;
 using Assets.Foundation.Model;
+using Assets.Foundation.UI.Common;
 using Manager;
 using System.Collections;
 using UnityEngine;
@@ -80,6 +81,11 @@ namespace Assets.UI.Lobby
             yield return new WaitForSecondsRealtime(0.5f);
 
             SceneManager.LoadScene("GameScene");
+        }
+
+        public override void Close()
+        {
+            base.Close();
         }
     }
 }
