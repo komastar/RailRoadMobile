@@ -237,6 +237,7 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         SetupNode(routeData, routeSprite, floorSprite);
         NodeType = nodeData.NodeType;
         Position = nodeData.Position;
+        Floor = nodeData.Floor;
         Rotate((int)nodeData.Direction);
         Neighbors = new NodeObject[4];
     }

@@ -13,14 +13,6 @@ namespace Assets.UI.Lobby
         public Action onBeforeOpen;
         public Action onAfterClose;
 
-        private void Update()
-        {
-            if (true == Input.GetKeyDown(KeyCode.Escape))
-            {
-                Close();
-            }
-        }
-
         public virtual void Setup() { }
 
         public void Open()

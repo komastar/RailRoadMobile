@@ -25,11 +25,6 @@ public class UIScreenMaskObject : MonoBehaviour
         topDescPanel.SetActive(false);
     }
 
-    private void OnDisable()
-    {
-        onDisable?.Invoke();
-    }
-
     public void Init()
     {
         image.material = Instantiate(material);
@@ -98,6 +93,7 @@ public class UIScreenMaskObject : MonoBehaviour
 
     public void TurnOff()
     {
+        onDisable?.Invoke();
         gameObject.SetActive(false);
     }
 

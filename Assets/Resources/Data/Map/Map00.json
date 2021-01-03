@@ -3,10 +3,10 @@
   "Name": "Map00",
   "NodeSize": 1.0,
   "MapSize": {
-    "x": 3,
-    "y": 3,
-    "magnitude": 4.2426405,
-    "sqrMagnitude": 18
+    "x": 5,
+    "y": 5,
+    "magnitude": 7.071068,
+    "sqrMagnitude": 50
   },
   "Nodes": [
     {
@@ -24,7 +24,7 @@
     },
     {
       "Id": 100001,
-      "RouteId": 1001,
+      "RouteId": 0,
       "Position": {
         "x": 1,
         "y": 0,
@@ -32,8 +32,8 @@
         "sqrMagnitude": 1
       },
       "Direction": 0,
-      "NodeType": 1,
-      "Floor": "Grass"
+      "NodeType": 3,
+      "Floor": "Wall"
     },
     {
       "Id": 100002,
@@ -52,6 +52,32 @@
       "Id": 100003,
       "RouteId": 0,
       "Position": {
+        "x": 3,
+        "y": 0,
+        "magnitude": 3.0,
+        "sqrMagnitude": 9
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100004,
+      "RouteId": 0,
+      "Position": {
+        "x": 4,
+        "y": 0,
+        "magnitude": 4.0,
+        "sqrMagnitude": 16
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100005,
+      "RouteId": 0,
+      "Position": {
         "x": 0,
         "y": 1,
         "magnitude": 1.0,
@@ -62,7 +88,7 @@
       "Floor": "Wall"
     },
     {
-      "Id": 100004,
+      "Id": 100006,
       "RouteId": 0,
       "Position": {
         "x": 1,
@@ -75,7 +101,7 @@
       "Floor": "Grass"
     },
     {
-      "Id": 100005,
+      "Id": 100007,
       "RouteId": 0,
       "Position": {
         "x": 2,
@@ -84,11 +110,37 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100008,
+      "RouteId": 0,
+      "Position": {
+        "x": 3,
+        "y": 1,
+        "magnitude": 3.1622777,
+        "sqrMagnitude": 10
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100009,
+      "RouteId": 0,
+      "Position": {
+        "x": 4,
+        "y": 1,
+        "magnitude": 4.12310553,
+        "sqrMagnitude": 17
+      },
+      "Direction": 0,
       "NodeType": 3,
       "Floor": "Wall"
     },
     {
-      "Id": 100006,
+      "Id": 100010,
       "RouteId": 0,
       "Position": {
         "x": 0,
@@ -101,8 +153,8 @@
       "Floor": "Wall"
     },
     {
-      "Id": 100007,
-      "RouteId": 1001,
+      "Id": 100011,
+      "RouteId": 0,
       "Position": {
         "x": 1,
         "y": 2,
@@ -110,17 +162,173 @@
         "sqrMagnitude": 5
       },
       "Direction": 0,
-      "NodeType": 1,
+      "NodeType": 2,
       "Floor": "Grass"
     },
     {
-      "Id": 100008,
+      "Id": 100012,
       "RouteId": 0,
       "Position": {
         "x": 2,
         "y": 2,
         "magnitude": 2.828427,
         "sqrMagnitude": 8
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100013,
+      "RouteId": 0,
+      "Position": {
+        "x": 3,
+        "y": 2,
+        "magnitude": 3.60555124,
+        "sqrMagnitude": 13
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100014,
+      "RouteId": 1002,
+      "Position": {
+        "x": 4,
+        "y": 2,
+        "magnitude": 4.472136,
+        "sqrMagnitude": 20
+      },
+      "Direction": 1,
+      "NodeType": 1,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100015,
+      "RouteId": 0,
+      "Position": {
+        "x": 0,
+        "y": 3,
+        "magnitude": 3.0,
+        "sqrMagnitude": 9
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100016,
+      "RouteId": 0,
+      "Position": {
+        "x": 1,
+        "y": 3,
+        "magnitude": 3.1622777,
+        "sqrMagnitude": 10
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100017,
+      "RouteId": 0,
+      "Position": {
+        "x": 2,
+        "y": 3,
+        "magnitude": 3.60555124,
+        "sqrMagnitude": 13
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100018,
+      "RouteId": 0,
+      "Position": {
+        "x": 3,
+        "y": 3,
+        "magnitude": 4.2426405,
+        "sqrMagnitude": 18
+      },
+      "Direction": 0,
+      "NodeType": 2,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100019,
+      "RouteId": 0,
+      "Position": {
+        "x": 4,
+        "y": 3,
+        "magnitude": 5.0,
+        "sqrMagnitude": 25
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100020,
+      "RouteId": 0,
+      "Position": {
+        "x": 0,
+        "y": 4,
+        "magnitude": 4.0,
+        "sqrMagnitude": 16
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100021,
+      "RouteId": 0,
+      "Position": {
+        "x": 1,
+        "y": 4,
+        "magnitude": 4.12310553,
+        "sqrMagnitude": 17
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100022,
+      "RouteId": 1001,
+      "Position": {
+        "x": 2,
+        "y": 4,
+        "magnitude": 4.472136,
+        "sqrMagnitude": 20
+      },
+      "Direction": 0,
+      "NodeType": 1,
+      "Floor": "Grass"
+    },
+    {
+      "Id": 100023,
+      "RouteId": 0,
+      "Position": {
+        "x": 3,
+        "y": 4,
+        "magnitude": 5.0,
+        "sqrMagnitude": 25
+      },
+      "Direction": 0,
+      "NodeType": 3,
+      "Floor": "Wall"
+    },
+    {
+      "Id": 100024,
+      "RouteId": 0,
+      "Position": {
+        "x": 4,
+        "y": 4,
+        "magnitude": 5.656854,
+        "sqrMagnitude": 32
       },
       "Direction": 0,
       "NodeType": 3,

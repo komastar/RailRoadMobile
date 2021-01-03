@@ -28,6 +28,8 @@ public class GameScene : MonoBehaviour
     public Text mapNameText;
     public Text timerText;
     public Text gameCodeText;
+    public Text roundNoticeText;
+    public GameObject roundNoticePanel;
 
     public Button[] buttons;
 
@@ -149,15 +151,7 @@ public class GameScene : MonoBehaviour
             scoreObject = FindObjectOfType<ScoreObject>();
         }
         scoreObject.Init();
-        if (true == gameManager.IsSoloPlay())
-        {
-            scoreObject.onClose += SetNextStage;
-            scoreObject.onClose += MakeStage;
-        }
-        else
-        {
-            scoreObject.onClose += GoLobbyScene;
-        }
+        scoreObject.onClose += GoLobbyScene;
 
         if (ReferenceEquals(null, handObject))
         {
@@ -342,6 +336,20 @@ public class GameScene : MonoBehaviour
 
     private IEnumerator StartTimer()
     {
+        roundNoticePanel.SetActive(true);
+        if (1 == RoundCount)
+        {
+            roundNoticeText.text = $"{currentStage.Name}";
+
+            yield return new WaitForSecondsRealtime(1f);
+
+            roundNoticeText.text = $"Round {RoundCount}";
+        }
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        roundNoticePanel.SetActive(false);
+
         TimerCount = currentStage.TimePerRound == 0 ? NumTable.DefaultRoundTime : currentStage.TimePerRound;
         while (0 < TimerCount)
         {
@@ -355,6 +363,7 @@ public class GameScene : MonoBehaviour
 
     public void OnRoundCountChanged(int round)
     {
+        roundNoticeText.text = $"Round {round}";
         roundText.text = $"Round : {round} / {currentStage?.Round}";
     }
 
