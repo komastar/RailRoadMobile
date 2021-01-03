@@ -12,6 +12,7 @@ namespace Assets.Object
 {
     public class GameTutorialObject : MonoBehaviour
     {
+        public static bool IsOn = false;
         public static NodeObject clickedObject;
 
         public Button[] tutorialIndicators;
@@ -23,6 +24,7 @@ namespace Assets.Object
         public Action onTutorialDone;
 
         public UIScreenMaskObject screenMaskObj;
+        public MapObject mapObj;
         private ITutorialPhase current;
         private Queue<ITutorialPhase> tutorials;
 
@@ -40,18 +42,24 @@ namespace Assets.Object
             var rotateTutorialData = new TutorialInfo(-1, "회전 버튼으로 타일을 회전 시킬 수 있습니다.");
             var flipTutorialData = new TutorialInfo(-1, "반전 버튼으로 타일을 반전 시킬 수 있습니다.");
             var removeTutorialData = new TutorialInfo(-1, "두번 탭하여 타일 배치를 취소 할 수 있습니다.");
-            var confirmTutorialData = new TutorialInfo(-1, "");
+            var confirmTutorialData = new TutorialInfo(-1, "체크 버튼을 눌러 라운드를 종료합니다.");
 
             tutorials.Enqueue(new PickDicePhase(this, pickTutorialData));
             tutorials.Enqueue(new BuildRoutePhase(this, buildTutorialData));
-            tutorials.Enqueue(new ConfirmPhase(this, new TutorialInfo()));
+            tutorials.Enqueue(new CancelRoutePhase(this, removeTutorialData));
+            removeTutorialData.Id = 0;
+            tutorials.Enqueue(new CancelRoutePhase(this, removeTutorialData));
+            pickTutorialData.Text = "다시 타일을 선택하세요.";
+            tutorials.Enqueue(new PickDicePhase(this, pickTutorialData));
+            tutorials.Enqueue(new BuildRoutePhase(this, buildTutorialData));
+            tutorials.Enqueue(new ConfirmPhase(this, confirmTutorialData));
             pickTutorialData.Id = 1002;
 
             tutorials.Enqueue(new PickDicePhase(this, pickTutorialData));
             buildTutorialData.Id = 100013;
             tutorials.Enqueue(new BuildRoutePhase(this, buildTutorialData));
-            tutorials.Enqueue(new RotateRoutePhase(this, new TutorialInfo()));
-            tutorials.Enqueue(new ConfirmPhase(this, new TutorialInfo()));
+            tutorials.Enqueue(new RotateRoutePhase(this, rotateTutorialData));
+            tutorials.Enqueue(new ConfirmPhase(this, confirmTutorialData));
 
             pickTutorialData.Id = 2011;
             tutorials.Enqueue(new PickDicePhase(this, pickTutorialData));
@@ -86,6 +94,7 @@ namespace Assets.Object
 
         private void OnDisable()
         {
+            IsOn = false;
             onTutorialDone?.Invoke();
         }
 
@@ -103,6 +112,16 @@ namespace Assets.Object
         public void SetRect(Vector2 position, Vector2 size, int index = 0)
         {
             screenMaskObj.SetRect(position, size, index);
+        }
+
+        public void ResetRect()
+        {
+            screenMaskObj.ResetRect();
+        }
+
+        public void ResetRect(int index)
+        {
+            screenMaskObj.ResetRect(index);
         }
     }
 
@@ -142,11 +161,13 @@ namespace Assets.Object
 
         public override void Enter()
         {
+            TutorialObj.ResetRect();
             Dice = UnityEngine.Object.FindObjectsOfType<DiceObject>().Single();
             Dice.Roll(TutorialData.Id);
             AddListener(() =>
             {
                 Dice.Roll(TutorialData.Id);
+                Dice.diceButton.onClick?.Invoke();
                 Dice.OnClickDice();
             });
         }
@@ -159,7 +180,7 @@ namespace Assets.Object
         public override void Update()
         {
             var diceRect = Dice.GetComponent<RectTransform>();
-            TutorialObj.SetRect(diceRect.position, diceRect.rect.size);
+            TutorialObj.SetRect(diceRect.position, diceRect.rect.size, 0);
             TutorialObj.SetText(TutorialData.Text);
         }
     }
@@ -173,7 +194,7 @@ namespace Assets.Object
         {
             AddListener(() =>
             {
-                node.OnPointerClick(null);
+                TutorialObj.mapObj.OnClickNode(node);
             });
         }
 
@@ -186,7 +207,7 @@ namespace Assets.Object
         {
             node = UnityEngine.Object.FindObjectsOfType<NodeObject>().Single(n => n.Id == TutorialData.Id);
             GameTutorialObject.clickedObject = node;
-            TutorialObj.SetRect(node.GetColliderCenter(), node.GetColliderSize());
+            TutorialObj.SetRect(node.GetColliderCenter(), node.GetColliderSize(), 1);
             TutorialObj.SetText(TutorialData.Text);
         }
     }
@@ -199,8 +220,7 @@ namespace Assets.Object
         {
             AddListener(() =>
             {
-                var node = GameTutorialObject.clickedObject;
-                node.Rotate();
+                TutorialObj.mapObj.Rotate();
             });
         }
 
@@ -212,7 +232,7 @@ namespace Assets.Object
         public override void Update()
         {
             TutorialObj.SetText(TutorialData.Text);
-            TutorialObj.SetRect(TutorialObj.rotateButtonRect.position, TutorialObj.rotateButtonRect.sizeDelta, 1);
+            TutorialObj.SetRect(TutorialObj.rotateButtonRect.position, TutorialObj.rotateButtonRect.sizeDelta, 2);
         }
     }
 
@@ -224,8 +244,7 @@ namespace Assets.Object
         {
             AddListener(() =>
             {
-                var node = GameTutorialObject.clickedObject;
-                node.Flip();
+                TutorialObj.mapObj.Flip();
             });
         }
 
@@ -236,10 +255,8 @@ namespace Assets.Object
 
         public override void Update()
         {
-            TutorialObj.SetText(
-                "일부 타일은 반전이 가능합니다.\n" +
-                "반전 버튼으로 타일을 반전 시킬 수 있습니다.\n");
-            TutorialObj.screenMaskObj.SetRect(TutorialObj.flipButtonRect.position, TutorialObj.flipButtonRect.sizeDelta, 1);
+            TutorialObj.SetText(TutorialData.Text);
+            TutorialObj.SetRect(TutorialObj.flipButtonRect.position, TutorialObj.flipButtonRect.sizeDelta, 2);
         }
     }
 
@@ -249,6 +266,15 @@ namespace Assets.Object
 
         public override void Enter()
         {
+            TutorialObj.ResetRect(2);
+            if (0 == TutorialData.Id)
+            {
+                AddListener(() =>
+                {
+                    var node = GameTutorialObject.clickedObject;
+                    node.ResetNode();
+                });
+            }
         }
 
         public override void Exit()
@@ -258,6 +284,7 @@ namespace Assets.Object
 
         public override void Update()
         {
+            TutorialObj.SetText(TutorialData.Text);
         }
     }
 
@@ -271,7 +298,6 @@ namespace Assets.Object
             {
                 TutorialObj.roundButtonRect.GetComponent<Button>().onClick.Invoke();
             });
-            TutorialObj.screenMaskObj.ResetRect(1);
         }
 
         public override void Exit()
@@ -282,8 +308,8 @@ namespace Assets.Object
         public override void Update()
         {
             var roundRect = TutorialObj.roundButtonRect;
-            TutorialObj.SetRect(roundRect.position, roundRect.sizeDelta);
-            TutorialObj.SetText("배치를 완료했으면 완료 버튼을 누르세요");
+            TutorialObj.SetRect(roundRect.position, roundRect.sizeDelta, 2);
+            TutorialObj.SetText(TutorialData.Text);
         }
     }
 

@@ -130,6 +130,9 @@ public class HandObject : MonoBehaviour, IGameActor
     public void Return(NodeObject node)
     {
         var find = dices.Find(n => n.DiceId == node.RouteId);
-        find.TurnOn();
+        if (!ReferenceEquals(null, find))
+        {
+            find.TurnOn();
+        }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using Manager;
+using Assets.Object;
 
 [SelectionBase]
 public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<NodeObject>
@@ -72,24 +73,33 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
     public bool IsRailRoute = false;
     public bool IsRoadRoute = false;
 
+    public bool TutorialIsOn = false;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
 
         Round = 0;
-        var clickObserver = OnPointerClickAsObservable();
-        clickObserver
-            .Buffer(clickObserver.Throttle(TimeSpan.FromMilliseconds(250)))
-            .Where(xs => xs.Count > 0)
-            .Subscribe(
-            xs =>
-            {
-                if (xs.Count == 2)
+    }
+
+    private void Start()
+    {
+        if (!TutorialIsOn)
+        {
+            var clickObserver = OnPointerClickAsObservable();
+            clickObserver
+                .Buffer(clickObserver.Throttle(TimeSpan.FromMilliseconds(250)))
+                .Where(xs => xs.Count > 0 && !GameTutorialObject.IsOn)
+                .Subscribe(
+                xs =>
                 {
-                    ResetNode();
-                }
-            });
+                    if (xs.Count == 2)
+                    {
+                        ResetNode();
+                    }
+                });
+        }
     }
 
     #region GIZMOS
@@ -219,6 +229,8 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
         {
             TileRenderer.sprite = floorSprite;
         }
+
+        TutorialIsOn = GameTutorialObject.IsOn;
 
         if (RouteId == 0)
         {

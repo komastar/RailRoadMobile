@@ -6,7 +6,7 @@ public class UIScreenMaskObject : MonoBehaviour
 {
     public Material material;
     public Image image;
-    public RectTransform clickArea;
+    public RectTransform[] clickArea;
     public GameObject topDescPanel;
     public GameObject botDescPanel;
     public Text topDescText;
@@ -41,8 +41,8 @@ public class UIScreenMaskObject : MonoBehaviour
             , position.x + size.x * .5f
             , position.y - size.y * .5f);
         SetRect(index, rectVector);
-        clickArea.position = position;
-        clickArea.sizeDelta = size;
+        clickArea[index].position = position;
+        clickArea[index].sizeDelta = size;
         isBottom = Screen.height * 0.5f < position.y;
         SetText(null);
     }
@@ -58,6 +58,7 @@ public class UIScreenMaskObject : MonoBehaviour
     public void ResetRect(int index)
     {
         SetRect(index, Vector4.zero);
+        clickArea[index].rect.Set(0, 0, 0, 0);
     }
 
     public void SetRect(int index, Vector4 rect)

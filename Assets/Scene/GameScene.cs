@@ -96,6 +96,16 @@ public class GameScene : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        mapObject.onFixPhaseExit = null;
+        onRoundCountChanged = null;
+        gameRoomObject.onDisable = null;
+        onTimeOver = null;
+        scoreObject.onClose = null;
+        tutorialObject.onTutorialDone = null;
+    }
+
     private async Task ExitStage()
     {
         var confirm = (UIConfirmPopUp)popUpPanel.Open("Confirm");
@@ -235,9 +245,14 @@ public class GameScene : MonoBehaviour
 
         if (true == currentStage.Name.ToLower().Contains("tutorial"))
         {
+            GameTutorialObject.IsOn = true;
             tutorialObject.enabled = true;
             tutorialObject.onTutorialDone += SetNextStage;
             tutorialObject.onTutorialDone += MakeStage;
+            tutorialObject.onTutorialDone += () =>
+            {
+                GameTutorialObject.IsOn = false;
+            };
         }
         else
         {
