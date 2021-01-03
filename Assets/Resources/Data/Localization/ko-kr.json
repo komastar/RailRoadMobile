@@ -29,6 +29,7 @@
     },
     "Chapter": {
         "EastDale": "동녘골",
-        "WestBeach": "서쪽 바다"
+        "WestBeach": "서쪽 바다",
+        "Tutorial" : "튜토리얼"
     }
 }
