@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +12,22 @@ namespace Assets.Editor
         public static void OpenBuildWindow()
         {
             GetWindow(typeof(BuildEditorWindow)).ShowModalUtility();
+        }
+
+        [MenuItem("DevAssist/Open PersistentPath", priority = 1)]
+        public static void OpenPersistentPath()
+        {
+            EditorUtility.RevealInFinder(Application.persistentDataPath);
+        }
+
+        [MenuItem("DevAssist/Remove Save Data", priority = 2)]
+        public static void RemoveSaveData()
+        {
+            string savePath = $"{Application.persistentDataPath}/Player.json";
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+            }
         }
     }
 

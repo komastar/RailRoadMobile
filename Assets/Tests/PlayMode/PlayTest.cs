@@ -13,9 +13,20 @@ namespace Tests.Play
 {
     public class PlayTest
     {
+        private ChapterModel chapter;
+        private StageModel stage;
+        private MapModel map;
+
         [SetUp]
         public void Setup()
         {
+            chapter = DataManager.Get().ChapterData[1];
+            GameManager.Get().CurrentChapter = chapter;
+            var stageJsonText = Resources.Load<TextAsset>("Data/Stage/Stage01");
+            stage = JObject.Parse(stageJsonText.text).ToObject<StageModel>();
+            var mapJsonText = Resources.Load<TextAsset>($"Data/Map/{stage.MapName}");
+            map = JObject.Parse(mapJsonText.text).ToObject<MapModel>();
+            GameManager.Get().CurrentStage = stage;
             GameManager.Get().GameRoom = GameRoomModel.GetSoloPlay();
             SceneManager.LoadScene("GameScene");
         }
@@ -23,23 +34,12 @@ namespace Tests.Play
         [UnityTest]
         public IEnumerator MapTestSimple()
         {
-            var stageJsonText = Resources.Load<TextAsset>("Data/Stage/Stage01");
-            Assert.IsNotNull(stageJsonText);
-            Assert.IsFalse(string.IsNullOrEmpty(stageJsonText.text));
-            var stage = JObject.Parse(stageJsonText.text).ToObject<StageModel>();
-            Assert.IsNotNull(stage);
-
-            var mapJsonText = Resources.Load<TextAsset>($"Data/Map/{stage.MapName}");
-            Assert.IsNotNull(mapJsonText);
-            Assert.IsFalse(string.IsNullOrEmpty(mapJsonText.text));
-
             var rotateButton = FindObject<Button>("Canvas/CommandPanel/RotateButton");
             var flipButton = FindObject<Button>("Canvas/CommandPanel/FlipButton");
             var fixButton = FindObject<Button>("Canvas/CommandPanel/FixButton");
             var mapObject = FindObject<MapObject>();
             var handObject = FindObject<HandObject>();
 
-            MapModel map = JObject.Parse(mapJsonText.text).ToObject<MapModel>();
             mapObject.MakeMap(map);
             mapObject.OpenMap();
 

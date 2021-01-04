@@ -110,7 +110,8 @@ namespace Manager
 
         public void ReportScore(ScoreViewModel score)
         {
-            if (0 < score.TotalScore)
+            if (IsSoloPlay()
+                && 0 < score.TotalScore)
             {
                 ClearStage(score.StageId);
             }
