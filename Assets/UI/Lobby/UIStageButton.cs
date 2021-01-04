@@ -6,6 +6,8 @@ namespace Assets.UI.Lobby
 {
     public class UIStageButton : MonoBehaviour
     {
+        public Button ownButton;
+
         public StageModel StageData;
         public Text StageNumberText;
         public Text StageStatusText;

@@ -10,6 +10,7 @@ public class TitleScene : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Get();
         NetworkManager.Get();
 #if UNITY_ANDROID
         GameManager.Get().onAfterAuth +=

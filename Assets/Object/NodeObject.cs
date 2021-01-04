@@ -32,13 +32,12 @@ public class NodeObject : ObservablePointerClickTrigger, INode, IComparable<Node
             round = value;
             if (0 == round)
             {
-                RoundText.gameObject.SetActive(false);
+                RoundText.text = "";
             }
             else
             {
-                RoundText.gameObject.SetActive(true);
+                RoundText.text = round.ToString();
             }
-            RoundText.text = round.ToString();
         }
     }
 

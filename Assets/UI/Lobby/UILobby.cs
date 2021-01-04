@@ -22,6 +22,7 @@ namespace Assets.UI.Lobby
 
         private void Awake()
         {
+            Manager.GameManager.Get();
             panelOpenStack = new Stack<UIPanel>();
             uiSoloPlayPanel.Setup();
             uiMultiPlayPanel.Setup();
@@ -30,7 +31,7 @@ namespace Assets.UI.Lobby
 
         private async void Start()
         {
-            while (true)
+            while (isActiveAndEnabled)
             {
                 Button select = await UIButtonAsync.SelectButton<Button>(lobbyButtons);
                 if ("SoloPlayButton" == select.name)

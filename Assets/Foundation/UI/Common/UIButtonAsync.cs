@@ -21,6 +21,11 @@ namespace Assets.Foundation.UI.Common
             button.onClick.AddListener(() => isPressed = true);
             while (!isPressed)
             {
+                if (ReferenceEquals(null, button))
+                {
+                    Log.Warn("UIButtonAsync null button");
+                    return null;
+                }
                 await Task.Yield();
             }
 

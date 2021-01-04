@@ -2,6 +2,7 @@
 
 public class ScoreViewModel
 {
+    public int StageId { get; set; }
     public int TotalScore { get; set; }
     public int NetworkScore { get; set; }
     public int RailScore { get; set; }

@@ -87,7 +87,7 @@ public class GameScene : MonoBehaviour
 
     private async void Start()
     {
-        while (true)
+        while (isActiveAndEnabled)
         {
             var button = await UIButtonAsync.SelectButton<Button>(buttons);
             if ("ExitButton" == button.name)
@@ -248,6 +248,10 @@ public class GameScene : MonoBehaviour
         {
             GameTutorialObject.IsOn = true;
             tutorialObject.enabled = true;
+            tutorialObject.onTutorialDone += () => 
+            {
+                gameManager.ClearStage(currentStage.Id);
+            };
             tutorialObject.onTutorialDone += SetNextStage;
             tutorialObject.onTutorialDone += MakeStage;
             tutorialObject.onTutorialDone += () =>
@@ -330,8 +334,7 @@ public class GameScene : MonoBehaviour
             mapObject.NewRound(RoundCount);
             handObject.Roll();
 
-            timerCoroutine = MainThreadDispatcher.StartCoroutine(StartTimer());
-            //timerCoroutine = StartCoroutine(StartTimer());
+            timerCoroutine = StartCoroutine(StartTimer());
         }
         else
         {
@@ -390,6 +393,7 @@ public class GameScene : MonoBehaviour
         StopCoroutine(timerCoroutine);
         TimerCount = 0;
         mapObject.GetScore(score);
+        score.StageId = currentStage.Id;
         gameManager.ReportScore(score);
         scoreObject.SetScore(score);
         if (false == gameManager.IsSoloPlay())

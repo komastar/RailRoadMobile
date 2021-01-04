@@ -2,7 +2,9 @@
 using Assets.Foundation.Model;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Manager
@@ -15,6 +17,7 @@ namespace Manager
 
         public Action<bool> onAfterAuth;
 #endif
+        private PlayerSaveModel playerSaveData;
 
         private GameRoomModel gameRoom;
         public GameRoomModel GameRoom
@@ -47,6 +50,7 @@ namespace Manager
         private void Init()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            LoadPlayerData();
 #if UNITY_ANDROID
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
                 .Builder()
@@ -59,6 +63,26 @@ namespace Manager
             gpgs.Authenticate(suc => OnAuthenticate(suc), false);
             gpgs.SetGravityForPopups(Gravity.CENTER_HORIZONTAL);
 #endif
+        }
+
+        private void LoadPlayerData()
+        {
+            string savePath = $"{Application.persistentDataPath}/Player.json";
+            if (File.Exists(savePath))
+            {
+                playerSaveData = JObject.Parse(File.ReadAllText(savePath)).ToObject<PlayerSaveModel>();
+            }
+            else
+            {
+                playerSaveData = PlayerSaveModel.MakeNewPlayerData();
+                SavePlayerData();
+            }
+        }
+
+        private void SavePlayerData()
+        {
+            string savePath = $"{Application.persistentDataPath}/Player.json";
+            File.WriteAllText(savePath, JObject.FromObject(playerSaveData).ToString(Newtonsoft.Json.Formatting.Indented));
         }
 
 #if UNITY_ANDROID
@@ -86,6 +110,10 @@ namespace Manager
 
         public void ReportScore(ScoreViewModel score)
         {
+            if (0 < score.TotalScore)
+            {
+                ClearStage(score.StageId);
+            }
 #if UNITY_ANDROID
             gpgs.ReportScore(Math.Abs(score.TotalScore), GPGSIds.leaderboard_highestscore, OnReportScore);
             gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
@@ -124,6 +152,17 @@ namespace Manager
         public bool IsSoloPlay()
         {
             return (GameCode.SoloPlay == GameRoom.GameCode);
+        }
+
+        public void ClearStage(int stageId)
+        {
+            playerSaveData.ClearStage(stageId);
+            SavePlayerData();
+        }
+
+        public bool IsClearStage(int stageId)
+        {
+            return playerSaveData.IsClearStage(stageId);
         }
     }
 }

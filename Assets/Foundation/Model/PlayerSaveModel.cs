@@ -23,7 +23,7 @@ namespace Assets.Foundation.Model
             return new PlayerSaveModel(1);
         }
 
-        public bool IsClear(int stageId)
+        public bool IsClearStage(int stageId)
         {
             var find = ClearStages.Find(s => s.Id == stageId);
             if (null == find)
@@ -38,7 +38,7 @@ namespace Assets.Foundation.Model
 
         public void ClearStage(int stageId)
         {
-            if (IsClear(stageId))
+            if (!IsClearStage(stageId))
             {
                 ClearStages.Add(new StageClearModel() { Id = stageId });
             }
