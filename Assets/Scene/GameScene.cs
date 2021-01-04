@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -329,7 +330,8 @@ public class GameScene : MonoBehaviour
             mapObject.NewRound(RoundCount);
             handObject.Roll();
 
-            timerCoroutine = StartCoroutine(StartTimer());
+            timerCoroutine = MainThreadDispatcher.StartCoroutine(StartTimer());
+            //timerCoroutine = StartCoroutine(StartTimer());
         }
         else
         {
