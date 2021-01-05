@@ -3,6 +3,7 @@ using Assets.Foundation.Model;
 using Assets.Foundation.UI.Common;
 using Assets.Foundation.UI.PopUp;
 using Assets.Object;
+using GoogleMobileAds.Api;
 using GooglePlayGames;
 using Manager;
 using Newtonsoft.Json.Linq;
@@ -30,8 +31,8 @@ public class GameScene : MonoBehaviour
     public Text mapNameText;
     public Text timerText;
     public Text gameCodeText;
-    public Text roundNoticeText;
-    public GameObject roundNoticePanel;
+    public Text noticeText;
+    public GameObject noticePanel;
 
     public Button[] buttons;
 
@@ -48,6 +49,9 @@ public class GameScene : MonoBehaviour
     public ScoreViewModel score;
 
     private Coroutine timerCoroutine;
+
+    private AdRequest adRequest;
+    private RewardedAd sponsorAd;
 
     [SerializeField]
     private int timerCount;
@@ -76,11 +80,26 @@ public class GameScene : MonoBehaviour
         }
     }
 
+    public string Notice
+    {
+        get => noticeText.text;
+        set
+        {
+            noticeText.text = value;
+            noticePanel.SetActive(!string.IsNullOrEmpty(value));
+        }
+    }
+
     public Action<int> onRoundCountChanged;
     private Action onTimeOver;
 
     private void Awake()
     {
+        adRequest = new AdRequest.Builder().Build();
+        sponsorAd = new RewardedAd("ca-app-pub-3940256099942544/5224354917");
+        sponsorAd.OnAdLoaded += OnAdLoaded;
+        sponsorAd.OnAdFailedToLoad += OnFailedToLoadAd;
+        sponsorAd.OnUserEarnedReward += OnUserEarndReward;
         gameRoomObject.Open();
         Init();
         gameRoomObject.SetGameRoom(gameManager.GameRoom);
@@ -357,19 +376,18 @@ public class GameScene : MonoBehaviour
 
     private IEnumerator StartTimer()
     {
-        roundNoticePanel.SetActive(true);
         if (1 == RoundCount)
         {
-            roundNoticeText.text = $"{currentStage.Name}";
+            Notice = $"{currentStage.Name}";
 
             yield return new WaitForSecondsRealtime(1f);
 
-            roundNoticeText.text = $"Round {RoundCount}";
+            Notice = $"Round {RoundCount}";
         }
 
         yield return new WaitForSecondsRealtime(1f);
 
-        roundNoticePanel.SetActive(false);
+        Notice = null;
 
         TimerCount = currentStage.TimePerRound == 0 ? NumTable.DefaultRoundTime : currentStage.TimePerRound;
         while (0 < TimerCount)
@@ -384,7 +402,7 @@ public class GameScene : MonoBehaviour
 
     public void OnRoundCountChanged(int round)
     {
-        roundNoticeText.text = $"Round {round}";
+        Notice = $"Round {round}";
         roundText.text = $"Round : {round} / {currentStage?.Round}";
     }
 
@@ -430,5 +448,46 @@ public class GameScene : MonoBehaviour
             netManager.GetRequest(url);
         }
         SceneManager.LoadScene("LobbyScene");
+    }
+
+    public void OnClickShowAd()
+    {
+        StartCoroutine(ShowRewardAdCo());
+    }
+
+    private IEnumerator ShowRewardAdCo()
+    {
+        Notice = "광고를 불러오는 중...";
+        
+        sponsorAd.LoadAd(adRequest);
+
+        yield return new WaitForSecondsRealtime(.5f);
+
+        Notice = null;
+    }
+
+    private IEnumerator Notify(string message, float sec)
+    {
+        Notice = message;
+
+        yield return new WaitForSecondsRealtime(sec);
+
+        Notice = null;
+    }
+
+    private void OnAdLoaded(object sender, EventArgs arg)
+    {
+        Notice = null;
+        sponsorAd.Show();
+    }
+
+    private void OnFailedToLoadAd(object sender, AdErrorEventArgs e)
+    {
+        StartCoroutine(Notify("광고 불러오기 실패", 2f));
+    }
+
+    private void OnUserEarndReward(object sender, Reward e)
+    {
+        gameManager.AddRewardCount(1);
     }
 }

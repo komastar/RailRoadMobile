@@ -18,14 +18,19 @@ public class TitleScene : MonoBehaviour
         NetworkManager.Get();
 
 #if UNITY_ANDROID
+        Log.Info("GPGS config");
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
             .Builder()
             .EnableSavedGames()
             .Build();
+
+        Log.Info("GPGS Init");
         PlayGamesPlatform.InitializeInstance(config);
-        PlayGamesPlatform.Activate();
+
+        Log.Info("GPGS Activate");
+        gpgs = PlayGamesPlatform.Activate();
+
         Log.Info("Auth Start");
-        gpgs = PlayGamesPlatform.Instance;
         gpgs.Authenticate(suc => OnAuthenticate(suc));
 #endif
         versionText.text = $"{Application.version}";

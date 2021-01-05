@@ -1,6 +1,7 @@
 ﻿using Assets.Foundation.Constant;
 using Assets.Foundation.Model;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -87,6 +88,11 @@ namespace Manager
         public bool IsClearStage(int stageId)
         {
             return playerSaveData.IsClearStage(stageId);
+        }
+
+        public void AddRewardCount(int count)
+        {
+            playerSaveData.RewardAdViewCount += count;
         }
     }
 }

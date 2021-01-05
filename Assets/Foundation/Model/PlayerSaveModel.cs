@@ -6,6 +6,7 @@ namespace Assets.Foundation.Model
     {
         public int Version { get; set; }
         public List<StageClearModel> ClearStages { get; set; }
+        public int RewardAdViewCount { get; set; }
 
         public PlayerSaveModel()
         {
