@@ -156,7 +156,7 @@ namespace Assets.Object
     {
         public PickDicePhase(GameTutorialObject tutorial, TutorialInfo tutorialData) : base(tutorial, tutorialData)
         {
-            TutorialObj.screenMaskObj.SetAlpha(.1f);
+            TutorialObj.screenMaskObj.SetAlpha(.5f);
         }
 
         public override void Enter()

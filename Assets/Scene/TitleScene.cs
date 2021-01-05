@@ -12,7 +12,9 @@ public class TitleScene : MonoBehaviour
     {
         GameManager.Get();
         NetworkManager.Get();
-#if UNITY_ANDROID
+
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
         GameManager.Get().onAfterAuth +=
             (bool result) =>
             {

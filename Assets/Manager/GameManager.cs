@@ -11,7 +11,8 @@ namespace Manager
 {
     public class GameManager : Singleton<GameManager>
     {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
         private PlayGamesPlatform gpgs;
         private string authCode;
 
@@ -51,7 +52,9 @@ namespace Manager
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             LoadPlayerData();
-#if UNITY_ANDROID
+
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
                 .Builder()
                 .EnableSavedGames()
@@ -85,7 +88,8 @@ namespace Manager
             File.WriteAllText(savePath, JObject.FromObject(playerSaveData).ToString(Newtonsoft.Json.Formatting.Indented));
         }
 
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
         private void OnAuthenticate(bool suc)
         {
             if (suc)
@@ -115,12 +119,15 @@ namespace Manager
             {
                 ClearStage(score.StageId);
             }
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
             gpgs.ReportScore(Math.Abs(score.TotalScore), GPGSIds.leaderboard_highestscore, OnReportScore);
             gpgs.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, OnReportProgress);
 #endif
         }
 
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
         private void OnReportProgress(bool isDone)
         {
             if (isDone)
@@ -149,6 +156,7 @@ namespace Manager
         {
             Log.Info(obj);
         }
+#endif
 
         public bool IsSoloPlay()
         {
