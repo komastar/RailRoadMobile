@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Assets.Foundation.Model
 {
@@ -7,6 +8,7 @@ namespace Assets.Foundation.Model
         public int Version { get; set; }
         public List<StageClearModel> ClearStages { get; set; }
         public int RewardAdViewCount { get; set; }
+        public DateTime LastRewardAdViewTime { get; set; }
 
         public PlayerSaveModel()
         {

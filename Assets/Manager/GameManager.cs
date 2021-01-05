@@ -92,7 +92,13 @@ namespace Manager
 
         public void AddRewardCount(int count)
         {
+            playerSaveData.LastRewardAdViewTime = DateTime.Now.AddHours(12);
             playerSaveData.RewardAdViewCount += count;
+        }
+
+        public bool IsRewardAdAvailable()
+        {
+            return playerSaveData.LastRewardAdViewTime < DateTime.Now;
         }
     }
 }

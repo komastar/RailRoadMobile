@@ -33,6 +33,7 @@ public class GameScene : MonoBehaviour
     public Text gameCodeText;
     public Text noticeText;
     public GameObject noticePanel;
+    public Button adButton;
 
     public Button[] buttons;
 
@@ -96,10 +97,15 @@ public class GameScene : MonoBehaviour
     private void Awake()
     {
         adRequest = new AdRequest.Builder().Build();
-        sponsorAd = new RewardedAd("ca-app-pub-3940256099942544/5224354917");
+        sponsorAd = new RewardedAd("ca-app-pub-6968745975636944/3679053656");       //  LIVE ID
+        //sponsorAd = new RewardedAd("ca-app-pub-3940256099942544/5224354917");     //  TEST ID
+        sponsorAd.OnAdClosed += OnAdClosed;
         sponsorAd.OnAdLoaded += OnAdLoaded;
         sponsorAd.OnAdFailedToLoad += OnFailedToLoadAd;
         sponsorAd.OnUserEarnedReward += OnUserEarndReward;
+
+        sponsorAd.LoadAd(adRequest);
+
         gameRoomObject.Open();
         Init();
         gameRoomObject.SetGameRoom(gameManager.GameRoom);
@@ -408,6 +414,8 @@ public class GameScene : MonoBehaviour
 
     public void OnGameOver()
     {
+        adButton.interactable = gameManager.IsRewardAdAvailable();
+
         onTimeOver = null;
         StopCoroutine(timerCoroutine);
         TimerCount = 0;
@@ -457,11 +465,14 @@ public class GameScene : MonoBehaviour
 
     private IEnumerator ShowRewardAdCo()
     {
+        adButton.interactable = false;
+
         Notice = "광고를 불러오는 중...";
-        
-        sponsorAd.LoadAd(adRequest);
 
         yield return new WaitForSecondsRealtime(.5f);
+
+        Log.Info("Show Ad");
+        sponsorAd.Show();
 
         Notice = null;
     }
@@ -474,20 +485,26 @@ public class GameScene : MonoBehaviour
 
         Notice = null;
     }
+    private void OnAdClosed(object sender, EventArgs e)
+    {
+        Log.Info("Closed Ad");
+        sponsorAd.LoadAd(adRequest);
+    }
 
     private void OnAdLoaded(object sender, EventArgs arg)
     {
-        Notice = null;
-        sponsorAd.Show();
+        Log.Info("Loaded Ad");
     }
 
     private void OnFailedToLoadAd(object sender, AdErrorEventArgs e)
     {
+        Log.Info("Failed load Ad");
         StartCoroutine(Notify("광고 불러오기 실패", 2f));
     }
 
     private void OnUserEarndReward(object sender, Reward e)
     {
+        Log.Info("Earn Reward Ad");
         gameManager.AddRewardCount(1);
     }
 }
