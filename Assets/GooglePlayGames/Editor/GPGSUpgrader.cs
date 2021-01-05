@@ -101,10 +101,7 @@ namespace GooglePlayGames.Editor
                 GPGSUtil.GenerateAndroidManifest();
             }
 
-            if (!EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                AssetDatabase.Refresh();
-            }
+            AssetDatabase.Refresh();
             Debug.Log("GPGSUpgrader done");
         }
 

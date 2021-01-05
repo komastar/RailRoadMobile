@@ -1,4 +1,6 @@
 ﻿using Manager;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,30 +10,45 @@ public class TitleScene : MonoBehaviour
     public Text versionText;
     public Button startButton;
 
+    private PlayGamesPlatform gpgs;
+
     private void Awake()
     {
         GameManager.Get();
         NetworkManager.Get();
 
-#if UNITY_EDITOR
-#elif UNITY_ANDROID
-        GameManager.Get().onAfterAuth +=
-            (bool result) =>
-            {
-                startButton.interactable = result;
-            };
-#else
-        startButton.interactable = true;
+#if UNITY_ANDROID
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
+            .Builder()
+            .EnableSavedGames()
+            .Build();
+        PlayGamesPlatform.InitializeInstance(config);
+        PlayGamesPlatform.Activate();
+        Log.Info("Auth Start");
+        gpgs = PlayGamesPlatform.Instance;
+        gpgs.Authenticate(suc => OnAuthenticate(suc));
 #endif
         versionText.text = $"{Application.version}";
     }
 
     private void Start()
     {
-#if UNITY_EDITOR
         startButton.interactable = true;
-#endif
     }
+
+#if UNITY_ANDROID
+    private void OnAuthenticate(bool suc)
+    {
+        if (suc)
+        {
+            Log.Info($"Auth Suc");
+        }
+        else
+        {
+            Log.Info($"Auth Fail");
+        }
+    }
+#endif
 
     public void TouchToStart()
     {

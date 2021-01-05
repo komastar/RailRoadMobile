@@ -3,6 +3,7 @@ using Assets.Foundation.Model;
 using Assets.Foundation.UI.Common;
 using Assets.Foundation.UI.PopUp;
 using Assets.Object;
+using GooglePlayGames;
 using Manager;
 using Newtonsoft.Json.Linq;
 using System;
@@ -395,6 +396,10 @@ public class GameScene : MonoBehaviour
         mapObject.GetScore(score);
         score.StageId = currentStage.Id;
         gameManager.ReportScore(score);
+#if UNITY_ANDROID
+        PlayGamesPlatform.Instance.ReportScore(Math.Abs(score.TotalScore), GPGSIds.leaderboard_highestscore, null);
+        PlayGamesPlatform.Instance.ReportProgress(GPGSIds.achievement_stageclear, 100.0f, null);
+#endif
         scoreObject.SetScore(score);
         if (false == gameManager.IsSoloPlay())
         {
