@@ -450,12 +450,25 @@ public class GameScene : MonoBehaviour
 
     public void GoLobbyScene()
     {
-        if (false == gameManager.IsSoloPlay())
+        if (!gameManager.IsSoloPlay())
         {
             string url = UrlTable.GetExitGameUrl(gameManager.GameRoom.GameCode, gameManager.GameUserId);
             netManager.GetRequest(url);
         }
-        SceneManager.LoadScene("LobbyScene");
+
+        var loadAsync = SceneManager.LoadSceneAsync("LobbyScene");
+        loadAsync.completed += (o) =>
+        {
+            if (gameManager.IsSoloPlay())
+            {
+                var find = FindObjectOfType<Assets.UI.Lobby.UILobby>();
+                if (!ReferenceEquals(null, find))
+                {
+                    find.uiSoloPlayPanel.Open();
+                }
+            }
+            loadAsync.allowSceneActivation = true;
+        };
     }
 
     public void OnClickShowAd()
