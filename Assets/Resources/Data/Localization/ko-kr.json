@@ -30,6 +30,7 @@
     "Chapter": {
         "EastDale": "동녘골",
         "WestBeach": "서쪽 바다",
-        "Tutorial" : "튜토리얼"
+        "Tutorial" : "튜토리얼",
+        "PvP1": "경쟁전"
     }
 }
