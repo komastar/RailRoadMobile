@@ -33,10 +33,17 @@ namespace Manager
         public ChapterModel CurrentChapter { get; set; }
         public StageModel CurrentStage { get; set; }
 
+        private int lastChapterIndex;
+
         private void Awake()
         {
             UrlTable.IsRemote = false;
             Init();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SavePlayerData();
         }
 
         private void Init()
@@ -57,6 +64,16 @@ namespace Manager
                 playerSaveData = PlayerSaveModel.MakeNewPlayerData();
                 SavePlayerData();
             }
+        }
+
+        public int GetLastChapterIndex()
+        {
+            return playerSaveData.LastChapterIndex;
+        }
+
+        public void SetLastChapterIndex(int index)
+        {
+            playerSaveData.LastChapterIndex = index;
         }
 
         private void SavePlayerData()

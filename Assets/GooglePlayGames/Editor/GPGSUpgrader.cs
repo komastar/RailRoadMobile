@@ -101,7 +101,8 @@ namespace GooglePlayGames.Editor
                 GPGSUtil.GenerateAndroidManifest();
             }
 
-            AssetDatabase.Refresh();
+            //  NOTE(komastar) : 스크립트 컴파일마다 오류가 발생하여 주석처리
+            //AssetDatabase.Refresh();
             Debug.Log("GPGSUpgrader done");
         }
 

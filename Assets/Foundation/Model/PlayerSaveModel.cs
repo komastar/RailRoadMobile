@@ -9,6 +9,7 @@ namespace Assets.Foundation.Model
         public List<StageClearModel> ClearStages { get; set; }
         public int RewardAdViewCount { get; set; }
         public DateTime LastRewardAdViewTime { get; set; }
+        public int LastChapterIndex { get; set; }
 
         public PlayerSaveModel()
         {

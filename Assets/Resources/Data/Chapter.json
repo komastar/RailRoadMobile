@@ -29,9 +29,9 @@
             "Id": 2,
             "Name": "WestBeach",
             "Stages": [
-                10007,
-                10006,
-                10005
+                10101,
+                10102,
+                10103
             ],
             "NextChapterId": 1
         },
