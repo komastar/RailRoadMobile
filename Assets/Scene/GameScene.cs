@@ -29,7 +29,7 @@ public class GameScene : MonoBehaviour
     public Text chapterNameText;
     public Text stageNameText;
     public Text mapNameText;
-    public Text timerText;
+    public Image timerGauge;
     public Text gameCodeText;
     public Text noticeText;
     public GameObject noticePanel;
@@ -53,6 +53,7 @@ public class GameScene : MonoBehaviour
 
     private AdRequest adRequest;
     private RewardedAd sponsorAd;
+    private BannerView bannerAd;
 
     [SerializeField]
     private int timerCount;
@@ -62,7 +63,7 @@ public class GameScene : MonoBehaviour
         set
         {
             timerCount = value;
-            timerText.text = timerCount.ToString();
+            timerGauge.fillAmount = timerCount / (float)NumTable.DefaultRoundTime;
         }
     }
 
@@ -97,7 +98,7 @@ public class GameScene : MonoBehaviour
     private void Awake()
     {
         adRequest = new AdRequest.Builder().Build();
-        sponsorAd = new RewardedAd("ca-app-pub-6968745975636944/3679053656");       //  LIVE ID
+        sponsorAd = new RewardedAd("ca-app-pub-9075521517153750/9316179679");       //  LIVE ID
         //sponsorAd = new RewardedAd("ca-app-pub-3940256099942544/5224354917");     //  TEST ID
         sponsorAd.OnAdClosed += OnAdClosed;
         sponsorAd.OnAdLoaded += OnAdLoaded;
@@ -105,6 +106,10 @@ public class GameScene : MonoBehaviour
         sponsorAd.OnUserEarnedReward += OnUserEarndReward;
 
         sponsorAd.LoadAd(adRequest);
+
+        bannerAd = new BannerView("ca-app-pub-9075521517153750/8695672071", AdSize.SmartBanner, AdPosition.Top);
+        bannerAd.LoadAd(adRequest);
+        bannerAd.Show();
 
         gameRoomObject.Open();
         Init();
@@ -125,6 +130,11 @@ public class GameScene : MonoBehaviour
 
     private void OnDisable()
     {
+        if (null != bannerAd)
+        {
+            bannerAd.Destroy();
+        }
+
         mapObject.onFixPhaseExit = null;
         onRoundCountChanged = null;
         gameRoomObject.onDisable = null;
@@ -366,7 +376,7 @@ public class GameScene : MonoBehaviour
         {
             string url = UrlTable.GetRoundGameUrl(gameManager.GameRoom.GameCode, RoundCount);
             StartCoroutine(netManager.GetRequestCo(url, OnRoundComplete));
-            timerText.text = "Waiting...";
+            timerGauge.fillAmount = 1f;
         }
     }
 
